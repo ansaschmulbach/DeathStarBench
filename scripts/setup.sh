@@ -21,13 +21,9 @@ yes | sudo apt-get install luarocks
 yes | sudo luarocks install luasocket
 sudo apt install htop
 sudo apt install intel-cmt-cat
-yes | sudo apt install pip
+# yes | sudo apt install pip
 
-sudo docker run hello-world
-
-cd ../wrk2
-make
-cd ../scripts
+sudo apt-get install libssl-dev
 
 yes | sudo apt-get install pqos
 sudo modprobe msr
@@ -35,11 +31,14 @@ sudo pqos -s
 
 yes | sudo apt install linux-tools-common
 yes | sudo apt install linux-tools-generic
-sudo apt-get install libssl-dev
 
-pip install aiohttp
-pip install prometheus-api-client
-pip install pytz
-pip install gurobipy
-pip install gevent
-pip install scipy
+cd ../wrk2
+make
+cd ../scripts
+
+# pip install aiohttp
+# pip install prometheus-api-client
+# pip install pytz
+# pip install gurobipy
+# pip install gevent
+# pip install scipy
