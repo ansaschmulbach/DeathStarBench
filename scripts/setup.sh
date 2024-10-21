@@ -31,6 +31,7 @@ sudo pqos -s
 
 yes | sudo apt install linux-tools-common
 yes | sudo apt install linux-tools-generic
+sudo apt-get install libz-dev
 
 cd ../wrk2
 make
