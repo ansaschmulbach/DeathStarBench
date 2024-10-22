@@ -114,8 +114,6 @@ Creator ComposePostHandler::_ComposeCreaterHelper(
   auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   auto span = opentracing::Tracer::Global()->StartSpan(
       "compose_creator_client", {opentracing::ChildOf(parent_span->get())});
-  auto span_non_idle = opentracing::Tracer::Global()->StartSpan(
-      "compose_creator_client_non_idle", {opentracing::ChildOf(&(span->context()))});
   std::map<std::string, std::string> writer_text_map;
   TextMapWriter writer(writer_text_map);
   opentracing::Tracer::Global()->Inject(span->context(), writer);
@@ -133,15 +131,18 @@ Creator ComposePostHandler::_ComposeCreaterHelper(
   auto user_client = user_client_wrapper->GetClient();
   Creator _return_creator;
   try {
-    span_non_idle->Finish();
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_creator_client_network", {opentracing::ChildOf(&(span->context()))});
     user_client->ComposeCreatorWithUserId(_return_creator, req_id, user_id,
                                           username, writer_text_map);
+    span_network->Finish();
   } catch (...) {
     LOG(error) << "Failed to send compose-creator to user-service";
     _user_service_client_pool->Remove(user_client_wrapper);
     span->Finish();
     throw;
   }
+
   _user_service_client_pool->Keepalive(user_client_wrapper);
   span->Finish();
   return _return_creator;
@@ -172,7 +173,10 @@ TextServiceReturn ComposePostHandler::_ComposeTextHelper(
   auto text_client = text_client_wrapper->GetClient();
   TextServiceReturn _return_text;
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_text_client_network", {opentracing::ChildOf(&(span->context()))});
     text_client->ComposeText(_return_text, req_id, text, writer_text_map);
+    span_network->Finish();
   } catch (...) {
     LOG(error) << "Failed to send compose-text to text-service";
     _text_service_client_pool->Remove(text_client_wrapper);
@@ -210,8 +214,11 @@ std::vector<Media> ComposePostHandler::_ComposeMediaHelper(
   auto media_client = media_client_wrapper->GetClient();
   std::vector<Media> _return_media;
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_media_client_network", {opentracing::ChildOf(&(span->context()))});
     media_client->ComposeMedia(_return_media, req_id, media_types, media_ids,
                                writer_text_map);
+    span_network->Finish();
   } catch (...) {
     LOG(error) << "Failed to send compose-media to media-service";
     _media_service_client_pool->Remove(media_client_wrapper);
@@ -247,8 +254,11 @@ int64_t ComposePostHandler::_ComposeUniqueIdHelper(
   auto unique_id_client = unique_id_client_wrapper->GetClient();
   int64_t _return_unique_id;
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_unique_id_client_network", {opentracing::ChildOf(&(span->context()))});
     _return_unique_id =
         unique_id_client->ComposeUniqueId(req_id, post_type, writer_text_map);
+    span_network->Finish();
   } catch (...) {
     LOG(error) << "Failed to send compose-unique_id to unique_id-service";
     _unique_id_service_client_pool->Remove(unique_id_client_wrapper);
@@ -282,7 +292,10 @@ void ComposePostHandler::_UploadPostHelper(
   }
   auto post_storage_client = post_storage_client_wrapper->GetClient();
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "store_post_client_network", {opentracing::ChildOf(&(span->context()))});
     post_storage_client->StorePost(req_id, post, writer_text_map);
+    span_network->Finish();
   } catch (...) {
     _post_storage_client_pool->Remove(post_storage_client_wrapper);
     LOG(error) << "Failed to store post to post-storage-service";
@@ -315,8 +328,11 @@ void ComposePostHandler::_UploadUserTimelineHelper(
   }
   auto user_timeline_client = user_timeline_client_wrapper->GetClient();
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "write_user_timeline_client_network", {opentracing::ChildOf(&(span->context()))});
     user_timeline_client->WriteUserTimeline(req_id, post_id, user_id, timestamp,
                                             writer_text_map);
+    span_network->Finish();
   } catch (...) {
     _user_timeline_client_pool->Remove(user_timeline_client_wrapper);
     throw;
@@ -349,8 +365,11 @@ void ComposePostHandler::_UploadHomeTimelineHelper(
   }
   auto home_timeline_client = home_timeline_client_wrapper->GetClient();
   try {
+    auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "home_timeline_client_network", {opentracing::ChildOf(&(span->context()))});
     home_timeline_client->WriteHomeTimeline(req_id, post_id, user_id, timestamp,
                                             user_mentions_id, writer_text_map);
+    span_network->Finish();
   } catch (...) {
     _home_timeline_client_pool->Remove(home_timeline_client_wrapper);
     LOG(error) << "Failed to write home timeline to home-timeline-service";
