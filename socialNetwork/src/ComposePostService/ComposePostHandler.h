@@ -115,7 +115,7 @@ Creator ComposePostHandler::_ComposeCreaterHelper(
   auto span = opentracing::Tracer::Global()->StartSpan(
       "compose_creator_client", {opentracing::ChildOf(parent_span->get())});
   auto span_non_idle = opentracing::Tracer::Global()->StartSpan(
-      "compose_creator_client_non_idle" {opentracing::ChildOf(span->get())});
+      "compose_creator_client_non_idle", {opentracing::ChildOf(&(span->context()))});
   std::map<std::string, std::string> writer_text_map;
   TextMapWriter writer(writer_text_map);
   opentracing::Tracer::Global()->Inject(span->context(), writer);
