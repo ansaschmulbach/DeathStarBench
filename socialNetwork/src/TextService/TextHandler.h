@@ -88,7 +88,10 @@ void TextHandler::ComposeText(
     std::vector<Url> _return_urls;
     auto url_client = url_client_wrapper->GetClient();
     try {
+      auto url_idle_span = opentracing::Tracer::Global()->StartSpan(
+        "compose_urls_client_idle", {opentracing::ChildOf(&url_span->context())});
       url_client->ComposeUrls(_return_urls, req_id, urls, url_writer_text_map);
+      url_idle_span->Finish();
     } catch (...) {
       LOG(error) << "Failed to upload urls to url-shorten-service";
       _url_client_pool->Remove(url_client_wrapper);
@@ -118,9 +121,13 @@ void TextHandler::ComposeText(
     std::vector<UserMention> _return_user_mentions;
     auto user_mention_client = user_mention_client_wrapper->GetClient();
     try {
+      auto user_mention_idle_span = opentracing::Tracer::Global()->StartSpan(
+        "compose_user_mentions_client_idle",
+        {opentracing::ChildOf(&user_mention_span->context())});
       user_mention_client->ComposeUserMentions(_return_user_mentions, req_id,
                                                mention_usernames,
                                                user_mention_writer_text_map);
+      user_mention_idle_span->Finish();
     } catch (...) {
       LOG(error) << "Failed to upload user_mentions to user-mention-service";
       _user_mention_client_pool->Remove(user_mention_client_wrapper);
@@ -130,6 +137,11 @@ void TextHandler::ComposeText(
     _user_mention_client_pool->Keepalive(user_mention_client_wrapper);
     return _return_user_mentions;
   });
+
+
+  auto text_service_idle_span = opentracing::Tracer::Global()->StartSpan(
+        "compose_text_server_idle",
+        {opentracing::ChildOf(&span->context())});
 
   std::vector<Url> target_urls;
   try {
@@ -146,6 +158,8 @@ void TextHandler::ComposeText(
     LOG(error) << "Failed to upload user mentions to user-mention-service";
     throw;
   }
+
+  text_service_idle_span->Finish();
 
   std::string updated_text;
   if (!urls.empty()) {

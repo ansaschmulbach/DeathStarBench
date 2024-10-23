@@ -414,6 +414,8 @@ void ComposePostHandler::ComposePost(
 
   // try
   // {
+  auto span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_post_server_idle", {opentracing::ChildOf(&(span->context()))});
   post.post_id = unique_id_future.get();
   post.creator = creator_future.get();
   post.media = media_future.get();
@@ -423,6 +425,7 @@ void ComposePostHandler::ComposePost(
   post.user_mentions = text_return.user_mentions;
   post.req_id = req_id;
   post.post_type = post_type;
+  span_network->Finish();
   // }
   // catch (...)
   // {
@@ -451,9 +454,12 @@ void ComposePostHandler::ComposePost(
 
   // try
   // {
+  span_network = opentracing::Tracer::Global()->StartSpan(
+      "compose_post_server_idle", {opentracing::ChildOf(&(span->context()))});
   post_future.get();
   user_timeline_future.get();
   home_timeline_future.get();
+  span_network->Finish();
   // }
   // catch (...)
   // {

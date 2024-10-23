@@ -152,6 +152,10 @@ void UrlShortenHandler::ComposeUrls(
 
   }
 
+  auto idle_span = opentracing::Tracer::Global()->StartSpan(
+      "compose_urls_server_idle",
+      { opentracing::ChildOf(&(span->context())) });
+
   if (!urls.empty()) {
     try {
       mongo_future.get();
@@ -160,6 +164,8 @@ void UrlShortenHandler::ComposeUrls(
       throw;
     }
   }
+
+  idle_span->Finish();
 
   _return = target_urls;
   span->Finish();

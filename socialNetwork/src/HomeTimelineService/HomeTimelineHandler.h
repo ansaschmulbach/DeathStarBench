@@ -123,8 +123,11 @@ void HomeTimelineHandler::WriteHomeTimeline(
   auto social_graph_client = social_graph_client_wrapper->GetClient();
   std::vector<int64_t> followers_id;
   try {
+    auto followers_span_network = opentracing::Tracer::Global()->StartSpan(
+      "get_followers_client_network", {opentracing::ChildOf(&followers_span->context())});
     social_graph_client->GetFollowers(followers_id, req_id, user_id,
                                       writer_text_map);
+    followers_span_network->Finish();
   } catch (...) {
     LOG(error) << "Failed to get followers from social-network-service";
     _social_graph_client_pool->Remove(social_graph_client_wrapper);
