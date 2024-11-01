@@ -247,7 +247,10 @@ services:
       - ./config:/social-network-microservices/config
 
   nginx-thrift:
-    image: yg397/openresty-thrift:xenial
+    build: 
+      context: ./docker/openresty-thrift
+      dockerfile: ./xenial/Dockerfile
+    image: xenial-built
     hostname: nginx-thrift
     ports:
       - 8080:8080
@@ -264,7 +267,10 @@ services:
       - ./docker/openresty-thrift/lua-thrift:/usr/local/openresty/lualib/thrift
 
   media-frontend:
-    image: yg397/media-frontend:xenial
+    build:
+        context: ./docker/openresty-thrift
+        dockerfile: ./xenial/Dockerfile
+    image: media-frontend-built
     hostname: media-frontend
     ports:
       - 8081:8080
