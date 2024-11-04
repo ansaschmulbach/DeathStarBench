@@ -38,6 +38,9 @@ cd ../wrk2
 make
 cd ../scripts
 
+git clone git@github.com:brendangregg/FlameGraph.git
+
+
 # pip install aiohttp
 # pip install prometheus-api-client
 # pip install pytz
