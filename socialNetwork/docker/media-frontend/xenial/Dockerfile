@@ -1,12 +1,12 @@
 # Dockerfile - Ubuntu Xenial
 # https://github.com/openresty/docker-openresty
 
-FROM ubuntu:xenial
+FROM ubuntu:jammy
 
 LABEL maintainer="Evan Wies <evan@neomantra.net>"
 
 # Docker Build Arguments
-ARG RESTY_VERSION="1.13.6.1"
+ARG RESTY_VERSION="1.15.8.1rc1"
 ARG RESTY_LUAROCKS_VERSION="3.5.0"
 ARG RESTY_OPENSSL_VERSION="1.0.2k"
 ARG RESTY_PCRE_VERSION="8.41"
@@ -111,7 +111,13 @@ ENV PATH=$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:/
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 
-RUN apt-get install -y wget libssl-dev \
+RUN apt-get install -y wget \
+    && curl -fSL http://security.debian.org/debian-security/pool/updates/main/g/glibc/multiarch-support_2.28-10+deb10u4_amd64.deb -o multiarch-support \
+    && curl -fSL http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5.13_amd64.deb -o libssl \
+    && curl -fSL http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0-dev_1.0.2n-1ubuntu5.13_amd64.deb -o libssl-dev \
+    && dpkg -i multiarch-support \
+    && dpkg -i libssl \
+    && dpkg -i libssl-dev \
     && wget https://github.com/mongodb/mongo-c-driver/releases/download/1.9.3/mongo-c-driver-1.9.3.tar.gz \
     && tar xzf mongo-c-driver-1.9.3.tar.gz \
     && cd mongo-c-driver-1.9.3 \

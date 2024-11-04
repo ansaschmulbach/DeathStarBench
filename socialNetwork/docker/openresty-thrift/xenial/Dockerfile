@@ -1,5 +1,5 @@
 ARG RESTY_IMAGE_BASE="ubuntu"
-ARG RESTY_IMAGE_TAG="xenial"
+ARG RESTY_IMAGE_TAG="jammy"
 
 FROM ${RESTY_IMAGE_BASE}:${RESTY_IMAGE_TAG}
 
@@ -128,7 +128,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && tar xf v${JAEGER_TRACING_VERSION}.tar.gz \
     && cd jaeger-client-cpp-${JAEGER_TRACING_VERSION} \
     && mkdir build && cd build \
-    && cmake CXXFLAGS="-Wno-error=deprecated-copy" -DCMAKE_INSTALL_PREFIX=/opt -DJAEGERTRACING_PLUGIN=ON -DHUNTER_CONFIGURATION_TYPES=Release -DHUNTER_BUILD_SHARED_LIBS=OFF .. \
+    && cmake CXXFLAGS="-Wno-error=deprecated-copy" -DCMAKE_INSTALL_PREFIX=/opt -DBUILD_TESTING=OFF -DJAEGERTRACING_PLUGIN=ON -DHUNTER_CONFIGURATION_TYPES=Release -DHUNTER_BUILD_SHARED_LIBS=OFF .. \
     && make && make install \
     && cp libjaegertracing_plugin.so /usr/local/lib/ \
     && cd ../.. && rm -rf v${JAEGER_TRACING_VERSION}.tar.gz \

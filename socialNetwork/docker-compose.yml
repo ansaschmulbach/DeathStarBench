@@ -168,6 +168,7 @@ services:
   media-service:
     build: .
     hostname: media-service
+    privileged: true
     #    ports:
     #      - 10006:9090
     depends_on:
@@ -268,7 +269,7 @@ services:
 
   media-frontend:
     build:
-        context: ./docker/openresty-thrift
+        context: ./docker/media-frontend
         dockerfile: ./xenial/Dockerfile
     image: media-frontend-built
     hostname: media-frontend
