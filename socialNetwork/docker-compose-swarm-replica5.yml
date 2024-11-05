@@ -19,7 +19,7 @@ services:
     #     protocol: tcp
     #     mode: host
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     depends_on:
@@ -30,7 +30,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["ComposePostService"]
@@ -51,14 +51,14 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   home-timeline-service:
     depends_on:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["HomeTimelineService"]
@@ -74,7 +74,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     hostname: media-frontend
@@ -92,7 +92,7 @@ services:
       - jaeger-query
     hostname: media-memcached
     deploy:
-      replicas: 1
+      replicas: 5
     image: memcached
     command:
       - "-m 16384"
@@ -112,7 +112,7 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   media-service:
     depends_on:
@@ -120,7 +120,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["MediaService"]
@@ -136,7 +136,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     hostname: nginx-web-server
@@ -164,7 +164,7 @@ services:
       - "-I 32m"
       - "-c 4096"
     deploy: 
-      replicas: 1
+      replicas: 5
 
   post-storage-mongodb:
     depends_on:
@@ -178,7 +178,7 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy: 
-      replicas: 1
+      replicas: 5
 
   post-storage-service:
     depends_on:
@@ -186,7 +186,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["PostStorageService"]
@@ -209,7 +209,7 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   social-graph-redis:
     depends_on:
@@ -222,7 +222,7 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   social-graph-service:
     depends_on:
@@ -230,7 +230,7 @@ services:
       - jaeger-query
       - social-graph-mongodb
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["SocialGraphService"]
@@ -246,7 +246,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["TextService"]
@@ -262,7 +262,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["UniqueIdService"]
@@ -275,7 +275,7 @@ services:
 
   url-shorten-memcached:
     deploy:
-      replicas: 1
+      replicas: 5
     depends_on:
       - jaeger-agent
       - jaeger-query
@@ -289,7 +289,7 @@ services:
 
   url-shorten-mongodb:
     deploy:
-      replicas: 1
+      replicas: 5
     depends_on:
       - jaeger-agent
       - jaeger-query
@@ -307,7 +307,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["UrlShortenService"]
@@ -323,7 +323,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy: 
-      replicas: 1
+      replicas: 5
     hostname: user-memcached
     image: memcached
     command:
@@ -337,7 +337,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["UserMentionService"]
@@ -350,7 +350,7 @@ services:
 
   user-mongodb:
     deploy:
-      replicas: 1
+      replicas: 5
     depends_on:
       - jaeger-agent
       - jaeger-query
@@ -368,7 +368,7 @@ services:
       - jaeger-agent
       - jaeger-query
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["UserService"]
@@ -391,7 +391,7 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   user-timeline-redis:
     depends_on:
@@ -404,14 +404,14 @@ services:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
     deploy:
-      replicas: 1
+      replicas: 5
 
   user-timeline-service:
     depends_on:
       - user-timeline-mongodb
       - jaeger-agent
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     command: ["UserTimelineService"]
@@ -434,7 +434,7 @@ services:
     ports:
       - "14269:14269"
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     depends_on:
@@ -447,7 +447,7 @@ services:
     ports:
       - "16686:16686"
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: any
     depends_on:
@@ -456,7 +456,7 @@ services:
   cassandra-schema:
     image: jaegertracing/jaeger-cassandra-schema
     deploy:
-      replicas: 1
+      replicas: 5
       restart_policy:
         condition: on-failure
     depends_on:
@@ -465,7 +465,7 @@ services:
   cassandra:
     image: cassandra:3.9
     deploy:
-      replicas: 1
+      replicas: 5
 
 networks:
   default:
