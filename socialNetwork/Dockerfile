@@ -16,13 +16,16 @@ RUN cd /social-network-microservices \
     && cd build \
     && cmake -DCMAKE_BUILD_TYPE=Debug .. \
     && make -j$(nproc) \
-    && make install
+    && make install 
+
 
 FROM ubuntu:jammy
 
 # Copy compiled C++ binaries and dependencies
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
+
+
 
 # Install system dependencies
 RUN apt-get update && \
@@ -33,6 +36,16 @@ RUN apt-get update && \
         libmemcached11 \
         libmemcachedutil2 \
 	libicu-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+	curl \
+	make \
+	g++ \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    # Install pin
+    && mkdir /social-network-microservices \
+    && cd /social-network-microservices \
+    && mkdir pin \
+    && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
+    && cd pin/source/tools/ManualExamples \
+    && make all TARGET=intel64
 
 WORKDIR /social-network-microservices

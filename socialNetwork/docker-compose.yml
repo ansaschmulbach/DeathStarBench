@@ -54,13 +54,17 @@ services:
     hostname: post-storage-service
     ports:
       - 10002:9090
+    privileged: true
+    cap_add:
+      - SYS_PTRACE
     restart: always
     depends_on:
       jaeger-agent:
         condition: service_started
       post-storage-mongodb:
         condition: service_started
-    entrypoint: PostStorageService
+    entrypoint: ./pin/pin  -t ./pin/source/tools/ManualExamples/obj-intel64/inscount0.so -o inscount0.log -- /bin/ls
+    # entrypoint: ["./pin/pin", "PostStorageService"]
     volumes:
       - ./config:/social-network-microservices/config
 
