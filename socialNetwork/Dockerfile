@@ -35,6 +35,10 @@ RUN apt-get update && \
         libsasl2-2 \
         libmemcached11 \
         libmemcachedutil2 \
+		wget \
+		python3-dev \
+		libopenmpi-dev \
+		openmpi-bin \
 	libicu-dev \
 	curl \
 	make \
@@ -46,6 +50,24 @@ RUN apt-get update && \
     && mkdir pin \
     && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
     && cd pin/source/tools/ManualExamples \
-    && make all TARGET=intel64
+    && make all TARGET=intel64 \
+    # Install SST
+	&& cd /social-network-microservices \
+	&& wget https://github.com/sstsimulator/sst-core/releases/download/v14.1.0_Final/sstcore-14.1.0.tar.gz \
+	&& tar -xvf sstcore-14.1.0.tar.gz \
+	&& rm sstcore-14.1.0.tar.gz \
+	&& cd sst-core \
+	&& ./configure \
+	&& make install \
+	&& make \
+	&& cd .. \
+	&& wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_Final/sstelements-14.1.0.tar.gz \	
+	&& tar -xvf sstelements-14.1.0.tar.gz \
+	&& rm sstelements-14.1.0.tar.gz \
+	&& mkdir /root/.sst \
+	&& touch /root/.sst/sstsimulator.conf \
+	&& cd sst-elements \
+	&& ./configure \
+	&& make install 
 
 WORKDIR /social-network-microservices
