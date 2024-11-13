@@ -25,7 +25,7 @@ FROM ubuntu:jammy
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 
-
+COPY ./docker/pin-script.sh /social-network-microservices
 
 # Install system dependencies
 RUN apt-get update && \
@@ -39,6 +39,7 @@ RUN apt-get update && \
 		python3-dev \
 		libopenmpi-dev \
 		openmpi-bin \
+		git \
 	libicu-dev \
 	curl \
 	make \
@@ -68,6 +69,14 @@ RUN apt-get update && \
 	&& touch /root/.sst/sstsimulator.conf \
 	&& cd sst-elements \
 	&& ./configure \
-	&& make install 
+	&& make install  \
+	# Apply SST fix
+	&& git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
+	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tracetool/Makefile /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py /social-network-microservices/sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
+	&& cd /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
+	&& make
 
 WORKDIR /social-network-microservices
