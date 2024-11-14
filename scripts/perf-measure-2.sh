@@ -10,10 +10,9 @@ docker ps --no-trunc | tail -n +2 | while read -r line; do
 	process_id=$(echo $line | awk '{print $1}')
 	name=$(echo $line | awk '{print $3}' | tr -cd '[:alnum:]')
 	echo "recording for service $name"
-	sudo perf stat -e cycles:u,cycles:k,instructions:u,instructions:k --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 > "$name"-1.data
-	sudo perf stat -e resource_stalls.rob,icache.ifetch_stall,icache.misses --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 > "$name"-1.data
-	sudo perf stat -e cycle_activity.stalls_l1d_pending,cycle_activity.stalls_l2_pending --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 > "$name"-1.data
-	sudo perf stat -e itlb_misses.stlb_hit,itlb_misses.miss_causes_a_walk,iTLB-load-misses,dTLB-load-misses,branch-misses --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 > "$name"-2.data
+	sudo perf stat -e cycles:u,cycles:k,instructions:u,instructions:k --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 > "$name".data
+	sudo perf stat -e resource_stalls.rob,icache.ifetch_stall,icache.misses,cycle_activity.stalls_l1d_pending,cycle_activity.stalls_l2_pending --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 >> "$name".data
+	sudo perf stat -e itlb_misses.stlb_hit,itlb_misses.miss_causes_a_walk,iTLB-load-misses,dTLB-load-misses,branch-misses --cgroup=system.slice/docker-"$process_id".scope -a sleep 60 >> "$name".data
 done
 echo "Finished writing results to $output_dir"
 cd ..
