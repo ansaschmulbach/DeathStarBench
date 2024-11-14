@@ -44,7 +44,7 @@ RUN apt-get update && \
 	curl \
 	make \
 	g++ \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # Install pin
 WORKDIR /social-network-microservices
@@ -52,6 +52,7 @@ RUN mkdir pin \
     && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
     && cd pin/source/tools/ManualExamples \
     && make all TARGET=intel64 
+	
 
 # Install SST
 WORKDIR /social-network-microservices 
@@ -76,11 +77,12 @@ RUN wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_
 # Apply SST fix
 WORKDIR /social-network-microservices 
 RUN git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
+	&& ls \
 	&& cp ansa-sst/src/sst/elements/prospero/tracetool/Makefile sst-elements/src/sst/elements/prospero/tracetool/ \
 	&& cp ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc sst-elements/src/sst/elements/prospero/tracetool/ \
 	&& cp ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
 	&& cd sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
-	&& make
+	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin 
+#	&& make
 
 WORKDIR /social-network-microservices
