@@ -35,7 +35,8 @@ services:
         condition: any
     command: ["ComposePostService"]
     hostname: compose-post-service
-    image: deathstarbench/social-network-microservices:latest
+      # build: .
+    image: services-build
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -63,8 +64,8 @@ services:
         condition: any
     command: ["HomeTimelineService"]
     hostname: home-timeline-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -78,7 +79,6 @@ services:
       restart_policy:
         condition: any
     hostname: media-frontend
-    build: .
     image: yg397/media-frontend:xenial
     ports:
       - 8081:8080
@@ -125,8 +125,8 @@ services:
         condition: any
     command: ["MediaService"]
     hostname: media-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -191,8 +191,8 @@ services:
         condition: any
     command: ["PostStorageService"]
     hostname: post-storage-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+      # build: .
+    image: services-build
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -235,8 +235,8 @@ services:
         condition: any
     command: ["SocialGraphService"]
     hostname: social-graph-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+      # build: .
+    image: services-build
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -251,8 +251,8 @@ services:
         condition: any
     command: ["TextService"]
     hostname: text-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -267,8 +267,8 @@ services:
         condition: any
     command: ["UniqueIdService"]
     hostname: unique-id-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -312,8 +312,8 @@ services:
         condition: any
     command: ["UrlShortenService"]
     hostname: url-shorten-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -342,8 +342,8 @@ services:
         condition: any
     command: ["UserMentionService"]
     hostname: user-mention-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -373,8 +373,8 @@ services:
         condition: any
     command: ["UserService"]
     hostname: user-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
       - ./keys:/keys
@@ -416,8 +416,8 @@ services:
         condition: any
     command: ["UserTimelineService"]
     hostname: user-timeline-service
-    build: .
-    image: deathstarbench/social-network-microservices:latest
+    image: services-build
+      # build: .
     volumes:
       - ./config:/social-network-microservices/config
 
