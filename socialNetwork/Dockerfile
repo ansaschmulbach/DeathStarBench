@@ -19,13 +19,13 @@ RUN cd /social-network-microservices \
     && make install 
 
 
-FROM ubuntu:jammy
+FROM ubuntu:jammy AS installs
 
 # Copy compiled C++ binaries and dependencies
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 
-COPY ./docker/pin-script.sh /social-network-microservices
+COPY src/pin-script.sh /social-network-microservices/
 
 # Install system dependencies
 RUN apt-get update && \
@@ -45,37 +45,41 @@ RUN apt-get update && \
 	make \
 	g++ \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    # Install pin
-    && mkdir /social-network-microservices \
-    && cd /social-network-microservices \
-    && mkdir pin \
+
+# Install pin
+WORKDIR /social-network-microservices
+RUN mkdir pin \
     && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
     && cd pin/source/tools/ManualExamples \
-    && make all TARGET=intel64 \
-    # Install SST
-	&& cd /social-network-microservices \
-	&& wget https://github.com/sstsimulator/sst-core/releases/download/v14.1.0_Final/sstcore-14.1.0.tar.gz \
+    && make all TARGET=intel64 
+
+# Install SST
+WORKDIR /social-network-microservices 
+RUN wget https://github.com/sstsimulator/sst-core/releases/download/v14.1.0_Final/sstcore-14.1.0.tar.gz \
 	&& tar -xvf sstcore-14.1.0.tar.gz \
 	&& rm sstcore-14.1.0.tar.gz \
 	&& cd sst-core \
 	&& ./configure \
 	&& make install \
-	&& make \
-	&& cd .. \
-	&& wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_Final/sstelements-14.1.0.tar.gz \	
+	&& make 
+
+WORKDIR /social-network-microservices 
+RUN wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_Final/sstelements-14.1.0.tar.gz \	
 	&& tar -xvf sstelements-14.1.0.tar.gz \
 	&& rm sstelements-14.1.0.tar.gz \
 	&& mkdir /root/.sst \
 	&& touch /root/.sst/sstsimulator.conf \
 	&& cd sst-elements \
 	&& ./configure \
-	&& make install  \
-	# Apply SST fix
-	&& git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
-	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tracetool/Makefile /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& cp /social-network-microservices/ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py /social-network-microservices/sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
-	&& cd /social-network-microservices/sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& make install  
+
+# Apply SST fix
+WORKDIR /social-network-microservices 
+RUN git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
+	&& cp ansa-sst/src/sst/elements/prospero/tracetool/Makefile sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& cp ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc sst-elements/src/sst/elements/prospero/tracetool/ \
+	&& cp ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
+	&& cd sst-elements/src/sst/elements/prospero/tracetool/ \
 	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
 	&& make
 
