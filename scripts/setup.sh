@@ -36,9 +36,15 @@ sudo apt-get install libz-dev
 
 cd ../wrk2
 make
+
+cd ../socialNetwork
+cd docker/thrift-microservice-deps/cpp/
+docker build -t deps-build .
+cd ../../..
+
 cd ../scripts
 
-git clone git@github.com:brendangregg/FlameGraph.git
+# git clone git@github.com:brendangregg/FlameGraph.git
 
 
 # pip install aiohttp
