@@ -25,7 +25,6 @@ FROM ubuntu:jammy AS installs
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 
-COPY src/pin-script.sh /social-network-microservices/
 
 # Install system dependencies
 RUN apt-get update && \
@@ -82,7 +81,17 @@ RUN git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
 	&& cp ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc sst-elements/src/sst/elements/prospero/tracetool/ \
 	&& cp ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
 	&& cd sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin 
-#	&& make
+	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
+	&& make
+
+WORKDIR /social-network-microservices 
+RUN git clone git@github.com:ansaschmulbach/pintools.git ansa-pintools \
+	&& ls \
+	&& cp ansa-pintools/MyPinTool.cpp pin/source/Tools/MyPinTool/ \
+	&& cd pin/source/Tools/MyPinTool/ \
+	&& make
+
+WORKDIR /social-network-microservices
+COPY src/pin-script.sh .
 
 WORKDIR /social-network-microservices
