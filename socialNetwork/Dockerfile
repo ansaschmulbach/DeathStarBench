@@ -85,10 +85,10 @@ RUN git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
 	&& make
 
 WORKDIR /social-network-microservices 
-RUN git clone git@github.com:ansaschmulbach/pintools.git ansa-pintools \
+RUN git clone https://github.com/ansaschmulbach/pintools.git ansa-pintools \
 	&& ls \
-	&& cp ansa-pintools/MyPinTool.cpp pin/source/Tools/MyPinTool/ \
-	&& cd pin/source/Tools/MyPinTool/ \
+	&& cp ansa-pintools/MyPinTool.cpp pin/source/tools/MyPinTool/ \
+	&& cd pin/source/tools/MyPinTool/ \
 	&& make
 
 WORKDIR /social-network-microservices
