@@ -70,7 +70,9 @@ RUN wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_
 	&& mkdir /root/.sst \
 	&& touch /root/.sst/sstsimulator.conf \
 	&& cd sst-elements \
-	&& ./configure \
+	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
+	&& export PIN_HOME=/social-network-microservices/pin \
+	&& ./configure --with-pin=$PIN_HOME\
 	&& make install  
 
 # Apply SST fix
