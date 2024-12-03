@@ -29,9 +29,12 @@ RUN apt-get update \
   && make install \
   && cd /tmp \
   # Install lib-thrift
-  && wget -O thrift-${LIB_THRIFT_VERSION}.tar.gz https://github.com/apache/thrift/archive/v${LIB_THRIFT_VERSION}.tar.gz \
-  && tar -zxf thrift-${LIB_THRIFT_VERSION}.tar.gz \
-  && cd thrift-${LIB_THRIFT_VERSION} \
+  && git clone https://github.com/ansaschmulbach/thrift.git \
+  && cd thrift \
+  && git checkout ansa-test \
+  # && wget -O thrift-${LIB_THRIFT_VERSION}.tar.gz https://github.com/apache/thrift/archive/v${LIB_THRIFT_VERSION}.tar.gz \
+  # && tar -zxf thrift-${LIB_THRIFT_VERSION}.tar.gz \
+  # && cd thrift-${LIB_THRIFT_VERSION} \
   && mkdir -p cmake-build \
   && cd cmake-build \
   && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=0 .. \
@@ -129,14 +132,13 @@ RUN apt-get update \
   && make -j$(nproc) \
   && make install \
   # Install pyyaml
-  && pip3 install PyYAML \
+  && pip3 install --version "PyYAML==6.0.0" \
   # Clean up
   && cd /tmp \
   && rm -rf \
     mongo-c-driver-${LIB_MONGOC_VERSION}.tar.gz \
     mongo-c-driver-${LIB_MONGOC_VERSION} \
-    thrift-${LIB_THRIFT_VERSION}.tar.gz \
-    thrift-${LIB_THRIFT_VERSION} \
+    thrift \
     json-${LIB_JSON_VERSION}.tar.gz \
     json-${LIB_JSON_VERSION} \
     jaeger-client-cpp-${LIB_JAEGER_VERSION}.tar.gz \
