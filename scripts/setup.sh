@@ -13,7 +13,6 @@ echo \
   "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo chmod 666 /var/run/docker.sock
 yes | sudo apt-get update
 
 yes | sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -22,6 +21,7 @@ yes | sudo apt-get install luarocks
 yes | sudo luarocks install luasocket
 sudo apt install htop
 sudo apt install intel-cmt-cat
+sudo chmod 666 /var/run/docker.sock
 # yes | sudo apt install pip
 
 sudo apt-get install libssl-dev
