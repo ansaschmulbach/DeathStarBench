@@ -128,7 +128,7 @@ TThriftClient *ThriftClient<TThriftClient>::GetClient() const {
 
 template<class TThriftClient>
 bool ThriftClient<TThriftClient>::IsConnected() {
-  return _transport->isOpen();
+  return _transport->isOpen() && _trace_trans->isOpen();
 }
 
 template<class TThriftClient>
