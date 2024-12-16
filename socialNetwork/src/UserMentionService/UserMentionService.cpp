@@ -58,13 +58,21 @@ int main(int argc, char* argv[]) {
 
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
 
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+
   TThreadedServer server(std::make_shared<UserMentionServiceProcessor>(
                              std::make_shared<UserMentionHandler>(
-                                 memcached_client_pool, mongodb_client_pool)),
+                                 memcached_client_pool, mongodb_client_pool), trace),
                          server_socket,
                          std::make_shared<TFramedTransportFactory>(),
                          std::make_shared<TBinaryProtocolFactory>());
 
   LOG(info) << "Starting the user-mention-service server...";
+	traceT->open();
   server.serve();
+	traceT->close();
 }

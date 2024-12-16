@@ -94,6 +94,12 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<TServerSocket> server_socket =
       get_server_socket(config_json, "0.0.0.0", port);
 
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+	traceT->open();
 
   if (redis_replica_config_flag) {
           Redis redis_replica_client_pool = init_redis_replica_client_pool(config_json, "redis-replica");
@@ -104,7 +110,7 @@ int main(int argc, char *argv[]) {
                   std::make_shared<HomeTimelineHandler>(&redis_replica_client_pool,
                       &redis_primary_client_pool,
                       &post_storage_client_pool,
-                      &social_graph_client_pool)),
+                      &social_graph_client_pool), trace),
               server_socket, std::make_shared<TFramedTransportFactory>(),
               std::make_shared<TBinaryProtocolFactory>());
 
@@ -121,7 +127,7 @@ int main(int argc, char *argv[]) {
         std::make_shared<HomeTimelineServiceProcessor>(
             std::make_shared<HomeTimelineHandler>(&redis_cluster_client_pool,
                                                   &post_storage_client_pool,
-                                                  &social_graph_client_pool)),
+                                                  &social_graph_client_pool), trace),
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
 
@@ -134,11 +140,13 @@ int main(int argc, char *argv[]) {
         std::make_shared<HomeTimelineServiceProcessor>(
             std::make_shared<HomeTimelineHandler>(&redis_client_pool,
                                                   &post_storage_client_pool,
-                                                  &social_graph_client_pool)),
+                                                  &social_graph_client_pool), trace),
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
 
     LOG(info) << "Starting the home-timeline-service server...";
     server.serve();
   }
+
+	traceT->close();
 }

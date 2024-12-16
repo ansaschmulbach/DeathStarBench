@@ -50,13 +50,23 @@ int main(int argc, char *argv[]) {
 
   std::mutex thread_lock;
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+
   TThreadedServer server(
       std::make_shared<UniqueIdServiceProcessor>(
-          std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
+          std::make_shared<UniqueIdHandler>(&thread_lock, machine_id),
+					trace),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
 
   LOG(info) << "Starting the unique-id-service server ...";
+	traceT->open();
   server.serve();
+	traceT->close();
 }

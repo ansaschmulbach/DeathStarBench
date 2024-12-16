@@ -108,13 +108,20 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<TServerSocket> server_socket =
       get_server_socket(config_json, "0.0.0.0", port);
 
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+
+	traceT->open();
   if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_client_pool =
         init_redis_cluster_client_pool(config_json, "user-timeline");
     TThreadedServer server(std::make_shared<UserTimelineServiceProcessor>(
                                std::make_shared<UserTimelineHandler>(
                                    &redis_client_pool, mongodb_client_pool,
-                                   &post_storage_client_pool)),
+                                   &post_storage_client_pool), trace),
                            server_socket,
                            std::make_shared<TFramedTransportFactory>(),
                            std::make_shared<TBinaryProtocolFactory>());
@@ -127,7 +134,7 @@ int main(int argc, char *argv[]) {
       TThreadedServer server(std::make_shared<UserTimelineServiceProcessor>(
           std::make_shared<UserTimelineHandler>(
               &redis_replica_client_pool, &redis_primary_client_pool, mongodb_client_pool,
-              &post_storage_client_pool)),
+              &post_storage_client_pool), trace),
           server_socket,
           std::make_shared<TFramedTransportFactory>(),
           std::make_shared<TBinaryProtocolFactory>());
@@ -141,11 +148,12 @@ int main(int argc, char *argv[]) {
     TThreadedServer server(std::make_shared<UserTimelineServiceProcessor>(
                                std::make_shared<UserTimelineHandler>(
                                    &redis_client_pool, mongodb_client_pool,
-                                   &post_storage_client_pool)),
+                                   &post_storage_client_pool), trace),
                            server_socket,
                            std::make_shared<TFramedTransportFactory>(),
                            std::make_shared<TBinaryProtocolFactory>());
     LOG(info) << "Starting the user-timeline-service server...";
     server.serve();
   }
+	traceT->close();
 }

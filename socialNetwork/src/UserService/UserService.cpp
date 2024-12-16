@@ -84,13 +84,21 @@ int main(int argc, char *argv[]) {
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
 
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+
   TThreadedServer server(
       std::make_shared<UserServiceProcessor>(std::make_shared<UserHandler>(
           &thread_lock, machine_id, secret, memcached_client_pool,
-          mongodb_client_pool, &social_graph_client_pool)),
+          mongodb_client_pool, &social_graph_client_pool), trace),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
   LOG(info) << "Starting the user-service server ...";
+	traceT->open();
   server.serve();
+	traceT->close();
 }

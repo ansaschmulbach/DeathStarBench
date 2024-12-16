@@ -97,16 +97,24 @@ int main(int argc, char *argv[]) {
       "unique-id-service-client", unique_id_addr, unique_id_port, 0,
       unique_id_conns, unique_id_timeout, unique_id_keepalive, config_json);
 
+
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
   TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
               &user_client_pool, &unique_id_client_pool, &media_client_pool,
-              &text_client_pool, &home_timeline_client_pool)),
+              &text_client_pool, &home_timeline_client_pool), trace),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
   LOG(info) << "Starting the compose-post-service server ...";
+	traceT->open();
   server.serve();
+	traceT->close();
 }

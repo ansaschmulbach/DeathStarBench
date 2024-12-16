@@ -55,7 +55,7 @@ class ThriftClient : public GenericClient {
   std::shared_ptr<TTransport> _transport;
   std::shared_ptr<TProtocol> _protocol;
   std::shared_ptr<TBinaryProtocol> _trace_prot;
-  std::shared_ptr<TTransprot> _trace_trans;
+  std::shared_ptr<TTransport> _trace_trans;
 };
 
 template<class TThriftClient>
@@ -68,9 +68,9 @@ ThriftClient<TThriftClient>::ThriftClient(
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
 	// TODO: new one for each client
-  _trace_trans = openFileTransport("trace_out", true);
+  _trace_trans = openFileTransport((addr + "trace_out").c_str(), true);
 	_trace_prot = std::shared_ptr<TBinaryProtocol> (new TBinaryProtocol(_trace_trans));
-  _client = new TThriftClient(_protocol);
+  _client = new TThriftClient(_protocol, _trace_prot);
   _connect_timestamp = 0;
   _keepalive_ms = 0;
 }
@@ -106,7 +106,9 @@ ThriftClient<TThriftClient>::ThriftClient(
   _socket->setKeepAlive(true);
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
-  _client = new TThriftClient(_protocol);
+  _trace_trans = openFileTransport((addr + "trace_out").c_str(), true);
+	_trace_prot = std::shared_ptr<TBinaryProtocol> (new TBinaryProtocol(_trace_trans));
+  _client = new TThriftClient(_protocol, _trace_prot);
   _connect_timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
                            std::chrono::system_clock::now().time_since_epoch())
                            .count();
@@ -134,6 +136,7 @@ void ThriftClient<TThriftClient>::Connect() {
   if (!IsConnected()) {
     try {
       _transport->open();
+      _trace_trans->open();
     } catch (TException &tx) {
       throw tx;
     }
@@ -145,6 +148,7 @@ void ThriftClient<TThriftClient>::Disconnect() {
   if (IsConnected()) {
     try {
       _transport->close();
+      _trace_trans->close();
     } catch (TException &tx) {
       throw tx;
     }

@@ -27,13 +27,21 @@ int main(int argc, char *argv[]) {
 
   int port = config_json["media-service"]["port"];
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
 
   TThreadedServer server(
-      std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
+      std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>(), trace),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
 
+	traceT->open();
+
   LOG(info) << "Starting the media-service server...";
   server.serve();
+	traceT->close();
 }

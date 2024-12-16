@@ -102,6 +102,13 @@ int main(int argc, char *argv[]) {
 
   std::shared_ptr<TServerSocket> server_socket =
       get_server_socket(config_json, "0.0.0.0", port);
+	
+	std::shared_ptr<::apache::thrift::transport::TBufferedTransport> traceT = openFileTransport("server_trace", true);
+	if (!traceT) {
+		return -1;
+	}
+	std::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> trace(new ::apache::thrift::protocol::TBinaryProtocol(traceT));
+	traceT->open();
 
   if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_cluster_client_pool =
@@ -110,7 +117,7 @@ int main(int argc, char *argv[]) {
         std::make_shared<SocialGraphServiceProcessor>(
             std::make_shared<SocialGraphHandler>(mongodb_client_pool,
                                                  &redis_cluster_client_pool,
-                                                 &user_client_pool)),
+                                                 &user_client_pool), trace),
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
     LOG(info) << "Starting the social-graph-service server with Redis Cluster support...";
@@ -124,7 +131,7 @@ int main(int argc, char *argv[]) {
       TThreadedServer server(
           std::make_shared<SocialGraphServiceProcessor>(
               std::make_shared<SocialGraphHandler>(
-                  mongodb_client_pool, &redis_replica_client_pool, &redis_primary_client_pool, &user_client_pool)),
+                  mongodb_client_pool, &redis_replica_client_pool, &redis_primary_client_pool, &user_client_pool), trace),
           server_socket, std::make_shared<TFramedTransportFactory>(),
           std::make_shared<TBinaryProtocolFactory>());
       LOG(info) << "Starting the social-graph-service server with Redis replica support";
@@ -137,10 +144,11 @@ int main(int argc, char *argv[]) {
     TThreadedServer server(
         std::make_shared<SocialGraphServiceProcessor>(
             std::make_shared<SocialGraphHandler>(
-                mongodb_client_pool, &redis_client_pool, &user_client_pool)),
+                mongodb_client_pool, &redis_client_pool, &user_client_pool), trace),
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
     LOG(info) << "Starting the social-graph-service server ...";
     server.serve();
   }
+	traceT->close();
 }

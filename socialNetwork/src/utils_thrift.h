@@ -20,7 +20,7 @@ using json = nlohmann::json;
 using apache::thrift::transport::TServerSocket;
 using apache::thrift::transport::TSSLServerSocket;
 using apache::thrift::transport::TSSLSocketFactory;
-using apache::thrift::transport::TBufferTransport;
+using apache::thrift::transport::TBufferedTransport;
 using apache::thrift::transport::TFDTransport;
 
 std::shared_ptr<TBufferedTransport>  openFileTransport(const char* name, bool out) {
