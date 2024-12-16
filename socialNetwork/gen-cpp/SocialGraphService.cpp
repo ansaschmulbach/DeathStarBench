@@ -1950,6 +1950,7 @@ void SocialGraphServiceClient::send_GetFollowers(const int64_t req_id, const int
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_GetFollowers_pargs args;
   args.req_id = &req_id;
@@ -1960,6 +1961,11 @@ void SocialGraphServiceClient::send_GetFollowers(const int64_t req_id, const int
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_GetFollowers(std::vector<int64_t> & _return)
@@ -2013,6 +2019,7 @@ void SocialGraphServiceClient::send_GetFollowees(const int64_t req_id, const int
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_GetFollowees_pargs args;
   args.req_id = &req_id;
@@ -2023,6 +2030,11 @@ void SocialGraphServiceClient::send_GetFollowees(const int64_t req_id, const int
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_GetFollowees(std::vector<int64_t> & _return)
@@ -2076,6 +2088,7 @@ void SocialGraphServiceClient::send_Follow(const int64_t req_id, const int64_t u
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("Follow", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Follow", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_Follow_pargs args;
   args.req_id = &req_id;
@@ -2087,6 +2100,11 @@ void SocialGraphServiceClient::send_Follow(const int64_t req_id, const int64_t u
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_Follow()
@@ -2135,6 +2153,7 @@ void SocialGraphServiceClient::send_Unfollow(const int64_t req_id, const int64_t
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_Unfollow_pargs args;
   args.req_id = &req_id;
@@ -2146,6 +2165,11 @@ void SocialGraphServiceClient::send_Unfollow(const int64_t req_id, const int64_t
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_Unfollow()
@@ -2194,6 +2218,7 @@ void SocialGraphServiceClient::send_FollowWithUsername(const int64_t req_id, con
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_FollowWithUsername_pargs args;
   args.req_id = &req_id;
@@ -2205,6 +2230,11 @@ void SocialGraphServiceClient::send_FollowWithUsername(const int64_t req_id, con
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_FollowWithUsername()
@@ -2253,6 +2283,7 @@ void SocialGraphServiceClient::send_UnfollowWithUsername(const int64_t req_id, c
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_UnfollowWithUsername_pargs args;
   args.req_id = &req_id;
@@ -2264,6 +2295,11 @@ void SocialGraphServiceClient::send_UnfollowWithUsername(const int64_t req_id, c
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_UnfollowWithUsername()
@@ -2312,6 +2348,7 @@ void SocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_InsertUser_pargs args;
   args.req_id = &req_id;
@@ -2322,6 +2359,11 @@ void SocialGraphServiceClient::send_InsertUser(const int64_t req_id, const int64
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void SocialGraphServiceClient::recv_InsertUser()
@@ -2414,10 +2456,15 @@ void SocialGraphServiceProcessor::process_GetFollowers(int32_t seqid, ::apache::
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2426,10 +2473,16 @@ void SocialGraphServiceProcessor::process_GetFollowers(int32_t seqid, ::apache::
   }
 
   oprot->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.GetFollowers", bytes);
@@ -2471,10 +2524,15 @@ void SocialGraphServiceProcessor::process_GetFollowees(int32_t seqid, ::apache::
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2483,10 +2541,16 @@ void SocialGraphServiceProcessor::process_GetFollowees(int32_t seqid, ::apache::
   }
 
   oprot->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.GetFollowees", bytes);
@@ -2527,10 +2591,15 @@ void SocialGraphServiceProcessor::process_Follow(int32_t seqid, ::apache::thrift
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("Follow", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("Follow", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2539,10 +2608,16 @@ void SocialGraphServiceProcessor::process_Follow(int32_t seqid, ::apache::thrift
   }
 
   oprot->writeMessageBegin("Follow", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("Follow", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.Follow", bytes);
@@ -2583,10 +2658,15 @@ void SocialGraphServiceProcessor::process_Unfollow(int32_t seqid, ::apache::thri
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2595,10 +2675,16 @@ void SocialGraphServiceProcessor::process_Unfollow(int32_t seqid, ::apache::thri
   }
 
   oprot->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.Unfollow", bytes);
@@ -2639,10 +2725,15 @@ void SocialGraphServiceProcessor::process_FollowWithUsername(int32_t seqid, ::ap
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2651,10 +2742,16 @@ void SocialGraphServiceProcessor::process_FollowWithUsername(int32_t seqid, ::ap
   }
 
   oprot->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.FollowWithUsername", bytes);
@@ -2695,10 +2792,15 @@ void SocialGraphServiceProcessor::process_UnfollowWithUsername(int32_t seqid, ::
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2707,10 +2809,16 @@ void SocialGraphServiceProcessor::process_UnfollowWithUsername(int32_t seqid, ::
   }
 
   oprot->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.UnfollowWithUsername", bytes);
@@ -2751,10 +2859,15 @@ void SocialGraphServiceProcessor::process_InsertUser(int32_t seqid, ::apache::th
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2763,10 +2876,16 @@ void SocialGraphServiceProcessor::process_InsertUser(int32_t seqid, ::apache::th
   }
 
   oprot->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "SocialGraphService.InsertUser", bytes);
@@ -2776,7 +2895,7 @@ void SocialGraphServiceProcessor::process_InsertUser(int32_t seqid, ::apache::th
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > SocialGraphServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< SocialGraphServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< SocialGraphServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new SocialGraphServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new SocialGraphServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -2791,6 +2910,7 @@ int32_t SocialGraphServiceConcurrentClient::send_GetFollowers(const int64_t req_
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetFollowers", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_GetFollowers_pargs args;
   args.req_id = &req_id;
@@ -2801,6 +2921,11 @@ int32_t SocialGraphServiceConcurrentClient::send_GetFollowers(const int64_t req_
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2881,6 +3006,7 @@ int32_t SocialGraphServiceConcurrentClient::send_GetFollowees(const int64_t req_
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetFollowees", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_GetFollowees_pargs args;
   args.req_id = &req_id;
@@ -2891,6 +3017,11 @@ int32_t SocialGraphServiceConcurrentClient::send_GetFollowees(const int64_t req_
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2971,6 +3102,7 @@ int32_t SocialGraphServiceConcurrentClient::send_Follow(const int64_t req_id, co
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("Follow", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Follow", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_Follow_pargs args;
   args.req_id = &req_id;
@@ -2982,6 +3114,11 @@ int32_t SocialGraphServiceConcurrentClient::send_Follow(const int64_t req_id, co
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -3056,6 +3193,7 @@ int32_t SocialGraphServiceConcurrentClient::send_Unfollow(const int64_t req_id, 
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Unfollow", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_Unfollow_pargs args;
   args.req_id = &req_id;
@@ -3067,6 +3205,11 @@ int32_t SocialGraphServiceConcurrentClient::send_Unfollow(const int64_t req_id, 
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -3141,6 +3284,7 @@ int32_t SocialGraphServiceConcurrentClient::send_FollowWithUsername(const int64_
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("FollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_FollowWithUsername_pargs args;
   args.req_id = &req_id;
@@ -3152,6 +3296,11 @@ int32_t SocialGraphServiceConcurrentClient::send_FollowWithUsername(const int64_
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -3226,6 +3375,7 @@ int32_t SocialGraphServiceConcurrentClient::send_UnfollowWithUsername(const int6
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("UnfollowWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_UnfollowWithUsername_pargs args;
   args.req_id = &req_id;
@@ -3237,6 +3387,11 @@ int32_t SocialGraphServiceConcurrentClient::send_UnfollowWithUsername(const int6
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -3311,6 +3466,7 @@ int32_t SocialGraphServiceConcurrentClient::send_InsertUser(const int64_t req_id
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("InsertUser", ::apache::thrift::protocol::T_CALL, cseqid);
 
   SocialGraphService_InsertUser_pargs args;
   args.req_id = &req_id;
@@ -3321,6 +3477,11 @@ int32_t SocialGraphServiceConcurrentClient::send_InsertUser(const int64_t req_id
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

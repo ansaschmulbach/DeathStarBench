@@ -15,7 +15,7 @@ namespace social_network {
 
 #ifdef _MSC_VER
   #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance
+  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
 class MediaServiceIf {
@@ -191,21 +191,23 @@ class MediaService_ComposeMedia_presult {
 
 class MediaServiceClient : virtual public MediaServiceIf {
  public:
-  MediaServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  MediaServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  MediaServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  MediaServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -222,6 +224,8 @@ class MediaServiceClient : virtual public MediaServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
 };
 
 class MediaServiceProcessor : public ::apache::thrift::TDispatchProcessor {
@@ -229,13 +233,17 @@ class MediaServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ::apache::thrift::stdcxx::shared_ptr<MediaServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
+  ::apache::thrift::protocol::TBinaryProtocol* _binaryProt;
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> _binaryProtocol;
   typedef  void (MediaServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  MediaServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MediaServiceIf> iface) :
+  MediaServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MediaServiceIf> iface, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> bprot) :
     iface_(iface) {
+    _binaryProtocol = bprot;
+    _binaryProt = _binaryProtocol.get();
     processMap_["ComposeMedia"] = &MediaServiceProcessor::process_ComposeMedia;
   }
 
@@ -244,9 +252,10 @@ class MediaServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 
 class MediaServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  MediaServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MediaServiceIfFactory >& handlerFactory) :
-      handlerFactory_(handlerFactory) {}
+  MediaServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< MediaServiceIfFactory >& handlerFactory, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot) :
+      handlerFactory_(handlerFactory), bprot_(bprot) {}
 
+  apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot_;
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
@@ -282,21 +291,23 @@ class MediaServiceMultiface : virtual public MediaServiceIf {
 // only be used when you need to share a connection among multiple threads
 class MediaServiceConcurrentClient : virtual public MediaServiceIf {
  public:
-  MediaServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  MediaServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  MediaServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  MediaServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -313,6 +324,8 @@ class MediaServiceConcurrentClient : virtual public MediaServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 

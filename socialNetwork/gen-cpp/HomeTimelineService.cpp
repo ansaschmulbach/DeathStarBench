@@ -682,6 +682,7 @@ void HomeTimelineServiceClient::send_ReadHomeTimeline(const int64_t req_id, cons
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   HomeTimelineService_ReadHomeTimeline_pargs args;
   args.req_id = &req_id;
@@ -694,6 +695,11 @@ void HomeTimelineServiceClient::send_ReadHomeTimeline(const int64_t req_id, cons
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void HomeTimelineServiceClient::recv_ReadHomeTimeline(std::vector<Post> & _return)
@@ -747,6 +753,7 @@ void HomeTimelineServiceClient::send_WriteHomeTimeline(const int64_t req_id, con
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   HomeTimelineService_WriteHomeTimeline_pargs args;
   args.req_id = &req_id;
@@ -760,6 +767,11 @@ void HomeTimelineServiceClient::send_WriteHomeTimeline(const int64_t req_id, con
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void HomeTimelineServiceClient::recv_WriteHomeTimeline()
@@ -852,10 +864,15 @@ void HomeTimelineServiceProcessor::process_ReadHomeTimeline(int32_t seqid, ::apa
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -864,10 +881,16 @@ void HomeTimelineServiceProcessor::process_ReadHomeTimeline(int32_t seqid, ::apa
   }
 
   oprot->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "HomeTimelineService.ReadHomeTimeline", bytes);
@@ -908,10 +931,15 @@ void HomeTimelineServiceProcessor::process_WriteHomeTimeline(int32_t seqid, ::ap
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -920,10 +948,16 @@ void HomeTimelineServiceProcessor::process_WriteHomeTimeline(int32_t seqid, ::ap
   }
 
   oprot->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "HomeTimelineService.WriteHomeTimeline", bytes);
@@ -933,7 +967,7 @@ void HomeTimelineServiceProcessor::process_WriteHomeTimeline(int32_t seqid, ::ap
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > HomeTimelineServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< HomeTimelineServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< HomeTimelineServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new HomeTimelineServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new HomeTimelineServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -948,6 +982,7 @@ int32_t HomeTimelineServiceConcurrentClient::send_ReadHomeTimeline(const int64_t
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ReadHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   HomeTimelineService_ReadHomeTimeline_pargs args;
   args.req_id = &req_id;
@@ -960,6 +995,11 @@ int32_t HomeTimelineServiceConcurrentClient::send_ReadHomeTimeline(const int64_t
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -1040,6 +1080,7 @@ int32_t HomeTimelineServiceConcurrentClient::send_WriteHomeTimeline(const int64_
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("WriteHomeTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   HomeTimelineService_WriteHomeTimeline_pargs args;
   args.req_id = &req_id;
@@ -1053,6 +1094,11 @@ int32_t HomeTimelineServiceConcurrentClient::send_WriteHomeTimeline(const int64_
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

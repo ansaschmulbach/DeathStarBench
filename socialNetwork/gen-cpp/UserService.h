@@ -15,7 +15,7 @@ namespace social_network {
 
 #ifdef _MSC_VER
   #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance
+  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
 class UserServiceIf {
@@ -882,21 +882,23 @@ class UserService_GetUserId_presult {
 
 class UserServiceClient : virtual public UserServiceIf {
  public:
-  UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -928,6 +930,8 @@ class UserServiceClient : virtual public UserServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
 };
 
 class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
@@ -935,6 +939,8 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
+  ::apache::thrift::protocol::TBinaryProtocol* _binaryProt;
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> _binaryProtocol;
   typedef  void (UserServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
@@ -945,8 +951,10 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_ComposeCreatorWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_GetUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  UserServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface) :
+  UserServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> bprot) :
     iface_(iface) {
+    _binaryProtocol = bprot;
+    _binaryProt = _binaryProtocol.get();
     processMap_["RegisterUser"] = &UserServiceProcessor::process_RegisterUser;
     processMap_["RegisterUserWithId"] = &UserServiceProcessor::process_RegisterUserWithId;
     processMap_["Login"] = &UserServiceProcessor::process_Login;
@@ -960,9 +968,10 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 
 class UserServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  UserServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserServiceIfFactory >& handlerFactory) :
-      handlerFactory_(handlerFactory) {}
+  UserServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserServiceIfFactory >& handlerFactory, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot) :
+      handlerFactory_(handlerFactory), bprot_(bprot) {}
 
+  apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot_;
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
@@ -1045,21 +1054,23 @@ class UserServiceMultiface : virtual public UserServiceIf {
 // only be used when you need to share a connection among multiple threads
 class UserServiceConcurrentClient : virtual public UserServiceIf {
  public:
-  UserServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  UserServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  UserServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  UserServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -1091,6 +1102,8 @@ class UserServiceConcurrentClient : virtual public UserServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 

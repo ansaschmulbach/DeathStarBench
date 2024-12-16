@@ -394,6 +394,7 @@ void MediaServiceClient::send_ComposeMedia(const int64_t req_id, const std::vect
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_CALL, cseqid);
 
   MediaService_ComposeMedia_pargs args;
   args.req_id = &req_id;
@@ -405,6 +406,11 @@ void MediaServiceClient::send_ComposeMedia(const int64_t req_id, const std::vect
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void MediaServiceClient::recv_ComposeMedia(std::vector<Media> & _return)
@@ -502,10 +508,15 @@ void MediaServiceProcessor::process_ComposeMedia(int32_t seqid, ::apache::thrift
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -514,10 +525,16 @@ void MediaServiceProcessor::process_ComposeMedia(int32_t seqid, ::apache::thrift
   }
 
   oprot->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "MediaService.ComposeMedia", bytes);
@@ -527,7 +544,7 @@ void MediaServiceProcessor::process_ComposeMedia(int32_t seqid, ::apache::thrift
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MediaServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< MediaServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< MediaServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new MediaServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new MediaServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -542,6 +559,7 @@ int32_t MediaServiceConcurrentClient::send_ComposeMedia(const int64_t req_id, co
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeMedia", ::apache::thrift::protocol::T_CALL, cseqid);
 
   MediaService_ComposeMedia_pargs args;
   args.req_id = &req_id;
@@ -553,6 +571,11 @@ int32_t MediaServiceConcurrentClient::send_ComposeMedia(const int64_t req_id, co
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

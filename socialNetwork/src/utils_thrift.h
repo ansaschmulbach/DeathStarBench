@@ -7,11 +7,39 @@
 #include <thrift/transport/TSSLSocket.h>
 #include <thrift/transport/TSSLServerSocket.h>
 
+#include <iostream>
+#include <cstring>
+#include <fcntl.h>
+#include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/transport/TFileTransport.h>
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/transport/TFDTransport.h>
+
 namespace social_network{
 using json = nlohmann::json;
 using apache::thrift::transport::TServerSocket;
 using apache::thrift::transport::TSSLServerSocket;
 using apache::thrift::transport::TSSLSocketFactory;
+using apache::thrift::transport::TBufferTransport;
+using apache::thrift::transport::TFDTransport;
+
+std::shared_ptr<TBufferedTransport>  openFileTransport(const char* name, bool out) {
+	int fd;
+	if (out) {
+		fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
+	} else {
+		fd = open(name, O_RDONLY);
+	}
+	if (-1 == fd)
+	{
+		printf("ERROR: Open/create for write failed!\n");
+		return nullptr;
+	}
+
+	std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
+	std::shared_ptr<TBufferedTransport> transport(new TBufferedTransport(file));
+	return transport;
+}
 
 std::shared_ptr<TServerSocket> get_server_socket(const json &config_json, const std::string &address, int port) {
   bool ssl_enabled = config_json["ssl"]["enabled"];

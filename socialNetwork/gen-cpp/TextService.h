@@ -15,7 +15,7 @@ namespace social_network {
 
 #ifdef _MSC_VER
   #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance
+  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
 class TextServiceIf {
@@ -184,21 +184,23 @@ class TextService_ComposeText_presult {
 
 class TextServiceClient : virtual public TextServiceIf {
  public:
-  TextServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  TextServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  TextServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  TextServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -215,6 +217,8 @@ class TextServiceClient : virtual public TextServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
 };
 
 class TextServiceProcessor : public ::apache::thrift::TDispatchProcessor {
@@ -222,13 +226,17 @@ class TextServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ::apache::thrift::stdcxx::shared_ptr<TextServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
+  ::apache::thrift::protocol::TBinaryProtocol* _binaryProt;
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> _binaryProtocol;
   typedef  void (TextServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  TextServiceProcessor(::apache::thrift::stdcxx::shared_ptr<TextServiceIf> iface) :
+  TextServiceProcessor(::apache::thrift::stdcxx::shared_ptr<TextServiceIf> iface, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> bprot) :
     iface_(iface) {
+    _binaryProtocol = bprot;
+    _binaryProt = _binaryProtocol.get();
     processMap_["ComposeText"] = &TextServiceProcessor::process_ComposeText;
   }
 
@@ -237,9 +245,10 @@ class TextServiceProcessor : public ::apache::thrift::TDispatchProcessor {
 
 class TextServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  TextServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< TextServiceIfFactory >& handlerFactory) :
-      handlerFactory_(handlerFactory) {}
+  TextServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< TextServiceIfFactory >& handlerFactory, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot) :
+      handlerFactory_(handlerFactory), bprot_(bprot) {}
 
+  apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot_;
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
@@ -275,21 +284,23 @@ class TextServiceMultiface : virtual public TextServiceIf {
 // only be used when you need to share a connection among multiple threads
 class TextServiceConcurrentClient : virtual public TextServiceIf {
  public:
-  TextServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  TextServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  TextServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  TextServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -306,6 +317,8 @@ class TextServiceConcurrentClient : virtual public TextServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 

@@ -15,7 +15,7 @@ namespace social_network {
 
 #ifdef _MSC_VER
   #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance
+  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
 #endif
 
 class ComposePostServiceIf {
@@ -211,21 +211,23 @@ class ComposePostService_ComposePost_presult {
 
 class ComposePostServiceClient : virtual public ComposePostServiceIf {
  public:
-  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -242,6 +244,8 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
 };
 
 class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor {
@@ -249,13 +253,17 @@ class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor 
   ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface_;
   virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
  private:
+  ::apache::thrift::protocol::TBinaryProtocol* _binaryProt;
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> _binaryProtocol;
   typedef  void (ComposePostServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
-  ComposePostServiceProcessor(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface) :
+  ComposePostServiceProcessor(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface, ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TBinaryProtocol> bprot) :
     iface_(iface) {
+    _binaryProtocol = bprot;
+    _binaryProt = _binaryProtocol.get();
     processMap_["ComposePost"] = &ComposePostServiceProcessor::process_ComposePost;
   }
 
@@ -264,9 +272,10 @@ class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor 
 
 class ComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
  public:
-  ComposePostServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIfFactory >& handlerFactory) :
-      handlerFactory_(handlerFactory) {}
+  ComposePostServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIfFactory >& handlerFactory, apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot) :
+      handlerFactory_(handlerFactory), bprot_(bprot) {}
 
+  apache::thrift::stdcxx::shared_ptr<apache::thrift::protocol::TBinaryProtocol> bprot_;
   ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
 
  protected:
@@ -301,21 +310,23 @@ class ComposePostServiceMultiface : virtual public ComposePostServiceIf {
 // only be used when you need to share a connection among multiple threads
 class ComposePostServiceConcurrentClient : virtual public ComposePostServiceIf {
  public:
-  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-    setProtocol(prot);
+  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(prot, bprot);
   }
-  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot,apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+    setProtocol(iprot,oprot,bprot);
   }
  private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
+  setProtocol(prot,prot,bprot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
+  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot, apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol> bprot) {
     piprot_=iprot;
     poprot_=oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
+    pbprot_=bprot;
+    binaryProt_ = bprot.get();
   }
  public:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
@@ -332,6 +343,8 @@ class ComposePostServiceConcurrentClient : virtual public ComposePostServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> pbprot_;
+  ::apache::thrift::protocol::TProtocol* binaryProt_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 

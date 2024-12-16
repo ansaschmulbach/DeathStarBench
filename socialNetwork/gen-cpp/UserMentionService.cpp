@@ -350,6 +350,7 @@ void UserMentionServiceClient::send_ComposeUserMentions(const int64_t req_id, co
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserMentionService_ComposeUserMentions_pargs args;
   args.req_id = &req_id;
@@ -360,6 +361,11 @@ void UserMentionServiceClient::send_ComposeUserMentions(const int64_t req_id, co
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserMentionServiceClient::recv_ComposeUserMentions(std::vector<UserMention> & _return)
@@ -457,10 +463,15 @@ void UserMentionServiceProcessor::process_ComposeUserMentions(int32_t seqid, ::a
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -469,10 +480,16 @@ void UserMentionServiceProcessor::process_ComposeUserMentions(int32_t seqid, ::a
   }
 
   oprot->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserMentionService.ComposeUserMentions", bytes);
@@ -482,7 +499,7 @@ void UserMentionServiceProcessor::process_ComposeUserMentions(int32_t seqid, ::a
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UserMentionServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< UserMentionServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< UserMentionServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserMentionServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserMentionServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -497,6 +514,7 @@ int32_t UserMentionServiceConcurrentClient::send_ComposeUserMentions(const int64
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeUserMentions", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserMentionService_ComposeUserMentions_pargs args;
   args.req_id = &req_id;
@@ -507,6 +525,11 @@ int32_t UserMentionServiceConcurrentClient::send_ComposeUserMentions(const int64
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

@@ -408,6 +408,7 @@ void ComposePostServiceClient::send_ComposePost(const int64_t req_id, const std:
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_CALL, cseqid);
 
   ComposePostService_ComposePost_pargs args;
   args.req_id = &req_id;
@@ -423,6 +424,11 @@ void ComposePostServiceClient::send_ComposePost(const int64_t req_id, const std:
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void ComposePostServiceClient::recv_ComposePost()
@@ -514,10 +520,15 @@ void ComposePostServiceProcessor::process_ComposePost(int32_t seqid, ::apache::t
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -526,10 +537,16 @@ void ComposePostServiceProcessor::process_ComposePost(int32_t seqid, ::apache::t
   }
 
   oprot->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ComposePostService.ComposePost", bytes);
@@ -539,7 +556,7 @@ void ComposePostServiceProcessor::process_ComposePost(int32_t seqid, ::apache::t
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > ComposePostServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< ComposePostServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new ComposePostServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new ComposePostServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -554,6 +571,7 @@ int32_t ComposePostServiceConcurrentClient::send_ComposePost(const int64_t req_i
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposePost", ::apache::thrift::protocol::T_CALL, cseqid);
 
   ComposePostService_ComposePost_pargs args;
   args.req_id = &req_id;
@@ -569,6 +587,11 @@ int32_t ComposePostServiceConcurrentClient::send_ComposePost(const int64_t req_i
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

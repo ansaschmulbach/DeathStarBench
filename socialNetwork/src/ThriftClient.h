@@ -15,6 +15,7 @@
 #include <nlohmann/json.hpp>
 #include "logger.h"
 #include "GenericClient.h"
+#include "utils_thrift.h"
 
 
 namespace social_network {
@@ -53,6 +54,8 @@ class ThriftClient : public GenericClient {
   std::shared_ptr<TSocket> _socket;
   std::shared_ptr<TTransport> _transport;
   std::shared_ptr<TProtocol> _protocol;
+  std::shared_ptr<TBinaryProtocol> _trace_prot;
+  std::shared_ptr<TTransprot> _trace_trans;
 };
 
 template<class TThriftClient>
@@ -64,6 +67,9 @@ ThriftClient<TThriftClient>::ThriftClient(
   _socket->setKeepAlive(true);
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
+	// TODO: new one for each client
+  _trace_trans = openFileTransport("trace_out", true);
+	_trace_prot = std::shared_ptr<TBinaryProtocol> (new TBinaryProtocol(_trace_trans));
   _client = new TThriftClient(_protocol);
   _connect_timestamp = 0;
   _keepalive_ms = 0;

@@ -14,6 +14,7 @@
 #include <thrift/TBase.h>
 #include <thrift/protocol/TProtocol.h>
 #include <thrift/transport/TTransport.h>
+#include <thrift/protocol/TBinaryProtocol.h>
 
 #include <thrift/stdcxx.h>
 

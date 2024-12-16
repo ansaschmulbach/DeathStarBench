@@ -1754,6 +1754,7 @@ void UserServiceClient::send_RegisterUser(const int64_t req_id, const std::strin
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_RegisterUser_pargs args;
   args.req_id = &req_id;
@@ -1767,6 +1768,11 @@ void UserServiceClient::send_RegisterUser(const int64_t req_id, const std::strin
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserServiceClient::recv_RegisterUser()
@@ -1815,6 +1821,7 @@ void UserServiceClient::send_RegisterUserWithId(const int64_t req_id, const std:
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_RegisterUserWithId_pargs args;
   args.req_id = &req_id;
@@ -1829,6 +1836,11 @@ void UserServiceClient::send_RegisterUserWithId(const int64_t req_id, const std:
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserServiceClient::recv_RegisterUserWithId()
@@ -1877,6 +1889,7 @@ void UserServiceClient::send_Login(const int64_t req_id, const std::string& user
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("Login", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Login", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_Login_pargs args;
   args.req_id = &req_id;
@@ -1888,6 +1901,11 @@ void UserServiceClient::send_Login(const int64_t req_id, const std::string& user
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserServiceClient::recv_Login(std::string& _return)
@@ -1941,6 +1959,7 @@ void UserServiceClient::send_ComposeCreatorWithUserId(const int64_t req_id, cons
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_ComposeCreatorWithUserId_pargs args;
   args.req_id = &req_id;
@@ -1952,6 +1971,11 @@ void UserServiceClient::send_ComposeCreatorWithUserId(const int64_t req_id, cons
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserServiceClient::recv_ComposeCreatorWithUserId(Creator& _return)
@@ -2005,6 +2029,7 @@ void UserServiceClient::send_ComposeCreatorWithUsername(const int64_t req_id, co
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_ComposeCreatorWithUsername_pargs args;
   args.req_id = &req_id;
@@ -2015,6 +2040,11 @@ void UserServiceClient::send_ComposeCreatorWithUsername(const int64_t req_id, co
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserServiceClient::recv_ComposeCreatorWithUsername(Creator& _return)
@@ -2068,6 +2098,7 @@ void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& 
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_GetUserId_pargs args;
   args.req_id = &req_id;
@@ -2078,6 +2109,11 @@ void UserServiceClient::send_GetUserId(const int64_t req_id, const std::string& 
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 int64_t UserServiceClient::recv_GetUserId()
@@ -2174,10 +2210,15 @@ void UserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrift:
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2186,10 +2227,16 @@ void UserServiceProcessor::process_RegisterUser(int32_t seqid, ::apache::thrift:
   }
 
   oprot->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.RegisterUser", bytes);
@@ -2230,10 +2277,15 @@ void UserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache::t
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2242,10 +2294,16 @@ void UserServiceProcessor::process_RegisterUserWithId(int32_t seqid, ::apache::t
   }
 
   oprot->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.RegisterUserWithId", bytes);
@@ -2287,10 +2345,15 @@ void UserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::protoc
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("Login", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("Login", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2299,10 +2362,16 @@ void UserServiceProcessor::process_Login(int32_t seqid, ::apache::thrift::protoc
   }
 
   oprot->writeMessageBegin("Login", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("Login", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.Login", bytes);
@@ -2344,10 +2413,15 @@ void UserServiceProcessor::process_ComposeCreatorWithUserId(int32_t seqid, ::apa
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2356,10 +2430,16 @@ void UserServiceProcessor::process_ComposeCreatorWithUserId(int32_t seqid, ::apa
   }
 
   oprot->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.ComposeCreatorWithUserId", bytes);
@@ -2401,10 +2481,15 @@ void UserServiceProcessor::process_ComposeCreatorWithUsername(int32_t seqid, ::a
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2413,10 +2498,16 @@ void UserServiceProcessor::process_ComposeCreatorWithUsername(int32_t seqid, ::a
   }
 
   oprot->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.ComposeCreatorWithUsername", bytes);
@@ -2458,10 +2549,15 @@ void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::pr
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -2470,10 +2566,16 @@ void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::pr
   }
 
   oprot->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserService.GetUserId", bytes);
@@ -2483,7 +2585,7 @@ void UserServiceProcessor::process_GetUserId(int32_t seqid, ::apache::thrift::pr
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UserServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< UserServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< UserServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -2498,6 +2600,7 @@ int32_t UserServiceConcurrentClient::send_RegisterUser(const int64_t req_id, con
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("RegisterUser", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_RegisterUser_pargs args;
   args.req_id = &req_id;
@@ -2511,6 +2614,11 @@ int32_t UserServiceConcurrentClient::send_RegisterUser(const int64_t req_id, con
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2585,6 +2693,7 @@ int32_t UserServiceConcurrentClient::send_RegisterUserWithId(const int64_t req_i
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("RegisterUserWithId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_RegisterUserWithId_pargs args;
   args.req_id = &req_id;
@@ -2599,6 +2708,11 @@ int32_t UserServiceConcurrentClient::send_RegisterUserWithId(const int64_t req_i
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2673,6 +2787,7 @@ int32_t UserServiceConcurrentClient::send_Login(const int64_t req_id, const std:
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("Login", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("Login", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_Login_pargs args;
   args.req_id = &req_id;
@@ -2684,6 +2799,11 @@ int32_t UserServiceConcurrentClient::send_Login(const int64_t req_id, const std:
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2764,6 +2884,7 @@ int32_t UserServiceConcurrentClient::send_ComposeCreatorWithUserId(const int64_t
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeCreatorWithUserId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_ComposeCreatorWithUserId_pargs args;
   args.req_id = &req_id;
@@ -2775,6 +2896,11 @@ int32_t UserServiceConcurrentClient::send_ComposeCreatorWithUserId(const int64_t
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2855,6 +2981,7 @@ int32_t UserServiceConcurrentClient::send_ComposeCreatorWithUsername(const int64
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeCreatorWithUsername", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_ComposeCreatorWithUsername_pargs args;
   args.req_id = &req_id;
@@ -2865,6 +2992,11 @@ int32_t UserServiceConcurrentClient::send_ComposeCreatorWithUsername(const int64
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -2945,6 +3077,7 @@ int32_t UserServiceConcurrentClient::send_GetUserId(const int64_t req_id, const 
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetUserId", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserService_GetUserId_pargs args;
   args.req_id = &req_id;
@@ -2955,6 +3088,11 @@ int32_t UserServiceConcurrentClient::send_GetUserId(const int64_t req_id, const 
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

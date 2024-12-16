@@ -682,6 +682,7 @@ void UrlShortenServiceClient::send_ComposeUrls(const int64_t req_id, const std::
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UrlShortenService_ComposeUrls_pargs args;
   args.req_id = &req_id;
@@ -692,6 +693,11 @@ void UrlShortenServiceClient::send_ComposeUrls(const int64_t req_id, const std::
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UrlShortenServiceClient::recv_ComposeUrls(std::vector<Url> & _return)
@@ -745,6 +751,7 @@ void UrlShortenServiceClient::send_GetExtendedUrls(const int64_t req_id, const s
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UrlShortenService_GetExtendedUrls_pargs args;
   args.req_id = &req_id;
@@ -755,6 +762,11 @@ void UrlShortenServiceClient::send_GetExtendedUrls(const int64_t req_id, const s
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UrlShortenServiceClient::recv_GetExtendedUrls(std::vector<std::string> & _return)
@@ -852,10 +864,15 @@ void UrlShortenServiceProcessor::process_ComposeUrls(int32_t seqid, ::apache::th
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -864,10 +881,16 @@ void UrlShortenServiceProcessor::process_ComposeUrls(int32_t seqid, ::apache::th
   }
 
   oprot->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UrlShortenService.ComposeUrls", bytes);
@@ -909,10 +932,15 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -921,10 +949,16 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
   }
 
   oprot->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UrlShortenService.GetExtendedUrls", bytes);
@@ -934,7 +968,7 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UrlShortenServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< UrlShortenServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< UrlShortenServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UrlShortenServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UrlShortenServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -949,6 +983,7 @@ int32_t UrlShortenServiceConcurrentClient::send_ComposeUrls(const int64_t req_id
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ComposeUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UrlShortenService_ComposeUrls_pargs args;
   args.req_id = &req_id;
@@ -959,6 +994,11 @@ int32_t UrlShortenServiceConcurrentClient::send_ComposeUrls(const int64_t req_id
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -1039,6 +1079,7 @@ int32_t UrlShortenServiceConcurrentClient::send_GetExtendedUrls(const int64_t re
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("GetExtendedUrls", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UrlShortenService_GetExtendedUrls_pargs args;
   args.req_id = &req_id;
@@ -1049,6 +1090,11 @@ int32_t UrlShortenServiceConcurrentClient::send_GetExtendedUrls(const int64_t re
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;

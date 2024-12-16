@@ -638,6 +638,7 @@ void UserTimelineServiceClient::send_WriteUserTimeline(const int64_t req_id, con
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserTimelineService_WriteUserTimeline_pargs args;
   args.req_id = &req_id;
@@ -650,6 +651,11 @@ void UserTimelineServiceClient::send_WriteUserTimeline(const int64_t req_id, con
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserTimelineServiceClient::recv_WriteUserTimeline()
@@ -698,6 +704,7 @@ void UserTimelineServiceClient::send_ReadUserTimeline(const int64_t req_id, cons
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserTimelineService_ReadUserTimeline_pargs args;
   args.req_id = &req_id;
@@ -710,6 +717,11 @@ void UserTimelineServiceClient::send_ReadUserTimeline(const int64_t req_id, cons
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 }
 
 void UserTimelineServiceClient::recv_ReadUserTimeline(std::vector<Post> & _return)
@@ -806,10 +818,15 @@ void UserTimelineServiceProcessor::process_WriteUserTimeline(int32_t seqid, ::ap
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -818,10 +835,16 @@ void UserTimelineServiceProcessor::process_WriteUserTimeline(int32_t seqid, ::ap
   }
 
   oprot->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserTimelineService.WriteUserTimeline", bytes);
@@ -863,10 +886,15 @@ void UserTimelineServiceProcessor::process_ReadUserTimeline(int32_t seqid, ::apa
 
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+        _binaryProt->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
+x.write(_binaryProt);
+    _binaryProt->writeMessageEnd();
     oprot->getTransport()->writeEnd();
+        _binaryProt->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+_binaryProt->getTransport()->flush();
     return;
   }
 
@@ -875,10 +903,16 @@ void UserTimelineServiceProcessor::process_ReadUserTimeline(int32_t seqid, ::apa
   }
 
   oprot->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  _binaryProt->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+result.write(_binaryProt);
+  _binaryProt->writeMessageEnd();
   bytes = oprot->getTransport()->writeEnd();
+    bytes = _binaryProt->getTransport()->writeEnd();
   oprot->getTransport()->flush();
+
+  _binaryProt->getTransport()->flush();
 
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserTimelineService.ReadUserTimeline", bytes);
@@ -888,7 +922,7 @@ void UserTimelineServiceProcessor::process_ReadUserTimeline(int32_t seqid, ::apa
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UserTimelineServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
   ::apache::thrift::ReleaseHandler< UserTimelineServiceIfFactory > cleanup(handlerFactory_);
   ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserTimelineServiceProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > processor(new UserTimelineServiceProcessor(handler, bprot_));
   return processor;
 }
 
@@ -903,6 +937,7 @@ int32_t UserTimelineServiceConcurrentClient::send_WriteUserTimeline(const int64_
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserTimelineService_WriteUserTimeline_pargs args;
   args.req_id = &req_id;
@@ -915,6 +950,11 @@ int32_t UserTimelineServiceConcurrentClient::send_WriteUserTimeline(const int64_
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
@@ -989,6 +1029,7 @@ int32_t UserTimelineServiceConcurrentClient::send_ReadUserTimeline(const int64_t
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
   oprot_->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+  binaryProt_->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
 
   UserTimelineService_ReadUserTimeline_pargs args;
   args.req_id = &req_id;
@@ -1001,6 +1042,11 @@ int32_t UserTimelineServiceConcurrentClient::send_ReadUserTimeline(const int64_t
   oprot_->writeMessageEnd();
   oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
+  args.write(binaryProt_);
+
+  binaryProt_->writeMessageEnd();
+  binaryProt_->getTransport()->writeEnd();
+  binaryProt_->getTransport()->flush();
 
   sentry.commit();
   return cseqid;
