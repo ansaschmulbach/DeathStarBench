@@ -1,5 +1,6 @@
 *
 !/src/
+!/trace/
 !/CMakeLists.txt
 !/cmake/
 !/datasets/

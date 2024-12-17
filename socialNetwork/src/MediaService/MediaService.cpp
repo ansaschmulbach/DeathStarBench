@@ -9,6 +9,7 @@
 #include "MediaHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
+using apache::thrift::protocol::TBinaryProtocol;
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
@@ -26,13 +27,21 @@ int main(int argc, char *argv[]) {
   }
 
   int port = config_json["media-service"]["port"];
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
 
-  TThreadedServer server(
+	auto _transportIn = openFileTransport("/social-network-microservices/socialnetwork-compose-post-service-1/media-servicetrace_out", false);
+	if (!_transportIn) {
+		LOG(error) << "could not open input trace file";
+	}
+  	std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
+	auto _transportOut = openFileTransport("out", true);
+	if (!_transportOut) {
+		LOG(error) << "could not open output trace file";
+	}
+  std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
+  TFileServer server(
       std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
-      server_socket,
-      std::make_shared<TFramedTransportFactory>(),
-      std::make_shared<TBinaryProtocolFactory>());
+			_transportIn, _protocolIn, _transportOut, _protocolOut
+			);
 
   LOG(info) << "Starting the media-service server...";
   server.serve();

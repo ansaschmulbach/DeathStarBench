@@ -39,21 +39,29 @@ int main(int argc, char *argv[]) {
     int user_mention_keepalive =
         config_json["user-mention-service"]["keepalive_ms"];
 
-    ClientPool<ThriftClient<UrlShortenServiceClient>> url_client_pool(
-        "url-shorten-service", url_addr, url_port, 0, url_conns, url_timeout,
+    FileClientPool<FileClient<UrlShortenServiceClient>> url_client_pool(
+        "url-shorten-service", url_addr, "/social-network-microservices/socialnetwork-url-shorten-service-1/server_trace", 0, url_conns, url_timeout,
         url_keepalive, config_json);
 
-    ClientPool<ThriftClient<UserMentionServiceClient>> user_mention_pool(
-        "user-mention-service", user_mention_addr, user_mention_port, 0,
+    FileClientPool<FileClient<UserMentionServiceClient>> user_mention_pool(
+        "user-mention-service", user_mention_addr, "/social-network-microservices/socialnetwork-user-mention-service-1/server_trace", 0,
         user_mention_conns, user_mention_timeout, user_mention_keepalive, config_json);
 
-    std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
-    TThreadedServer server(
+	auto _transportIn = openFileTransport("/social-network-microservices/socialnetwork-compose-post-service-1/text-servicetrace_out", false);
+	if (!_transportIn) {
+		LOG(error) << "could not open input trace file";
+	}
+  	std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
+	auto _transportOut = openFileTransport("out", true);
+	if (!_transportOut) {
+		LOG(error) << "could not open output trace file";
+	}
+
+  std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
+    TFileServer server(
         std::make_shared<TextServiceProcessor>(std::make_shared<TextHandler>(
             &url_client_pool, &user_mention_pool)),
-        server_socket,
-        std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+		_transportIn, _protocolIn, _transportOut, _protocolOut);
 
     LOG(info) << "Starting the text-service server...";
     server.serve();
