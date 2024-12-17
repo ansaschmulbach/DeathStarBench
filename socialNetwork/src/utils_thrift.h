@@ -58,7 +58,7 @@ std::shared_ptr<TBufferedTransport>  openFileTransport(const char* name, bool ou
 	}
 	if (-1 == fd)
 	{
-		printf("ERROR: Open/create for write failed!\n");
+		LOG(error) << ("ERROR: Open/create for write failed!\n");
 		return nullptr;
 	}
 
@@ -77,12 +77,18 @@ public:
 			 protocolOut(protocolOut)
 			 	{ }
 	void serve() {
+		bool print = true;
 		for (;;) {
 				try {
 					processor.get()->process(protocolIn, protocolOut, NULL);
+					print = true;
 				} catch (TTransportException& ttx) {
-					if (ttx.getType() == TTransportException::TTransportExceptionType::END_OF_FILE) continue;
-					std::cout << "breaking: " << ttx.what();
+					if (ttx.getType() == TTransportException::TTransportExceptionType::END_OF_FILE) {
+						if (print) LOG(info) << "ran out of data: " << ttx.what() << "\n";
+						print = false;
+						continue;
+					}
+					LOG(error) << "breaking: " << ttx.what();
 					break;
 				}
 		}
