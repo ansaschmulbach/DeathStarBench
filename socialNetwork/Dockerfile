@@ -23,6 +23,7 @@ FROM ubuntu:16.04
 # Copy compiled C++ binaries and dependencies
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
+COPY ./entrypoints ./social-network-microservices/entrypoints
 
 # Install system dependencies
 RUN apt-get update && \
@@ -32,7 +33,7 @@ RUN apt-get update && \
         libsasl2-2 \
         libmemcached11 \
         libmemcachedutil2 \
-	tcpdump
+	tcpdump \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /social-network-microservices

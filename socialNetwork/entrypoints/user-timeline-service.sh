@@ -1,3 +1,8 @@
 #!/bin/bash
-tcpdump -i eth0 &
-exec tcpdump -i eth0 & && UserTimelineService
+exec UserTimelineService &
+sleep 120 
+tcpdump -i eth0 -w data.pcap &
+TCPDUMP_PID=$!
+sleep 60
+kill $TCPDUMP_PID
+wait

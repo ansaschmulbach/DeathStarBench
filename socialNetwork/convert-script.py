@@ -3,8 +3,13 @@ import os
 
 def create_bash_script(service_name, entrypoint, script_dir):
     script_content = f"""#!/bin/bash
-tcpdump -i eth0 &
-exec {entrypoint}
+exec {entrypoint} &
+sleep 120 
+tcpdump -i eth0 -w data.pcap &
+TCPDUMP_PID=$!
+sleep 60
+kill $TCPDUMP_PID
+wait
 """
     script_path = os.path.join(script_dir, f"{service_name}.sh")
     with open(script_path, 'w') as script_file:
@@ -17,7 +22,7 @@ def process_services(services, script_dir):
         if service_name.endswith("service"):
             entrypoint = service.get('entrypoint', service_name.replace("-", "").capitalize())
             script_path = create_bash_script(service_name, entrypoint, script_dir)
-            service['entrypoint'] = [script_path]
+            service['entrypoint'] = [os.path.join('/social-network-microservices', script_path)]
     return services
 
 def main():

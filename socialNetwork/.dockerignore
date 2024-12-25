@@ -1,5 +1,6 @@
 *
 !/src/
+!/entrypoints/
 !/CMakeLists.txt
 !/cmake/
 !/datasets/

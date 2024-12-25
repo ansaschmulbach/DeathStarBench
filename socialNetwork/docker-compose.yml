@@ -5,7 +5,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint:
-    - ./entrypoints/compose-post-service.sh
+    - /social-network-microservices/./entrypoints/compose-post-service.sh
     hostname: compose-post-service
     restart: always
     volumes:
@@ -20,7 +20,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint:
-    - ./entrypoints/home-timeline-service.sh
+    - /social-network-microservices/./entrypoints/home-timeline-service.sh
     hostname: home-timeline-service
     restart: always
     volumes:
@@ -60,7 +60,7 @@ services:
       media-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/media-service.sh
+    - /social-network-microservices/./entrypoints/media-service.sh
     hostname: media-service
     restart: always
     volumes:
@@ -97,7 +97,7 @@ services:
       post-storage-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/post-storage-service.sh
+    - /social-network-microservices/./entrypoints/post-storage-service.sh
     hostname: post-storage-service
     ports:
     - 10002:9090
@@ -120,7 +120,7 @@ services:
       social-graph-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/social-graph-service.sh
+    - /social-network-microservices/./entrypoints/social-graph-service.sh
     hostname: social-graph-service
     restart: always
     volumes:
@@ -131,7 +131,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint:
-    - ./entrypoints/text-service.sh
+    - /social-network-microservices/./entrypoints/text-service.sh
     hostname: text-service
     restart: always
     volumes:
@@ -142,7 +142,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint:
-    - ./entrypoints/unique-id-service.sh
+    - /social-network-microservices/./entrypoints/unique-id-service.sh
     hostname: unique-id-service
     restart: always
     volumes:
@@ -163,7 +163,7 @@ services:
       url-shorten-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/url-shorten-service.sh
+    - /social-network-microservices/./entrypoints/url-shorten-service.sh
     hostname: url-shorten-service
     restart: always
     volumes:
@@ -178,7 +178,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint:
-    - ./entrypoints/user-mention-service.sh
+    - /social-network-microservices/./entrypoints/user-mention-service.sh
     hostname: user-mention-service
     restart: always
     volumes:
@@ -195,7 +195,7 @@ services:
       user-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/user-service.sh
+    - /social-network-microservices/./entrypoints/user-service.sh
     hostname: user-service
     restart: always
     volumes:
@@ -216,7 +216,7 @@ services:
       user-timeline-mongodb:
         condition: service_started
     entrypoint:
-    - ./entrypoints/user-timeline-service.sh
+    - /social-network-microservices/./entrypoints/user-timeline-service.sh
     hostname: user-timeline-service
     restart: always
     volumes:
