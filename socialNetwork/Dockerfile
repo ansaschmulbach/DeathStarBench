@@ -18,7 +18,6 @@ RUN cd /social-network-microservices \
     && make -j$(nproc) \
     && make install 
 
-
 FROM ubuntu:jammy AS installs
 
 # Copy compiled C++ binaries and dependencies
@@ -45,9 +44,13 @@ RUN apt-get update && \
 # Install pin
 WORKDIR /social-network-microservices
 RUN mkdir pin \
-    && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
-    && cd pin/source/tools/MyPinTool \
-    && make all TARGET=intel64 
+    && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1
+
+WORKDIR /social-network-microservices
+RUN git clone https://github.com/ChampSim/ChampSim.git \
+	&& cd ChampSim/tracer/pin \
+	&& export PIN_ROOT=/social-network-microservices/pin \
+	&& make
 
 WORKDIR /social-network-microservices
 COPY src/pin-script.sh .

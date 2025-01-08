@@ -13,7 +13,7 @@ services:
     restart: always
     init: true
     entrypoint: /social-network-microservices/pin-script.sh
-    # entrypoint: ["tail", "-f", "/dev/null"]
+      # entrypoint: ["tail", "-f", "/dev/null"]
     environment:
       NAME: SocialGraphService
     volumes:
@@ -247,7 +247,7 @@ services:
       jaeger-agent:
         condition: service_started
     entrypoint: /social-network-microservices/pin-script.sh
-    # entrypoint: ["tail", "-f", "/dev/null"]
+      # entrypoint: ["tail", "-f", "/dev/null"]
     environment:
       NAME: UniqueIdService
     volumes:
