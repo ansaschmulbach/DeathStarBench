@@ -35,9 +35,6 @@ RUN apt-get update && \
         libmemcached11 \
         libmemcachedutil2 \
 		wget \
-		python3-dev \
-		libopenmpi-dev \
-		openmpi-bin \
 		git \
 	libicu-dev \
 	curl \
@@ -49,49 +46,8 @@ RUN apt-get update && \
 WORKDIR /social-network-microservices
 RUN mkdir pin \
     && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
-    && cd pin/source/tools/ManualExamples \
+    && cd pin/source/tools/MyPinTool \
     && make all TARGET=intel64 
-	
-
-# Install SST
-WORKDIR /social-network-microservices 
-RUN wget https://github.com/sstsimulator/sst-core/releases/download/v14.1.0_Final/sstcore-14.1.0.tar.gz \
-	&& tar -xvf sstcore-14.1.0.tar.gz \
-	&& rm sstcore-14.1.0.tar.gz \
-	&& cd sst-core \
-	&& ./configure \
-	&& make install \
-	&& make 
-
-WORKDIR /social-network-microservices 
-RUN wget https://github.com/sstsimulator/sst-elements/releases/download/v14.1.0_Final/sstelements-14.1.0.tar.gz \	
-	&& tar -xvf sstelements-14.1.0.tar.gz \
-	&& rm sstelements-14.1.0.tar.gz \
-	&& mkdir /root/.sst \
-	&& touch /root/.sst/sstsimulator.conf \
-	&& cd sst-elements \
-	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
-	&& export PIN_HOME=/social-network-microservices/pin \
-	&& ./configure --with-pin=$PIN_HOME\
-	&& make install  
-
-# Apply SST fix
-WORKDIR /social-network-microservices 
-RUN git clone https://github.com/ansaschmulbach/sst-elements.git ansa-sst \
-	&& ls \
-	&& cp ansa-sst/src/sst/elements/prospero/tracetool/Makefile sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& cp ansa-sst/src/sst/elements/prospero/tracetool/sstmemtrace.cc sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& cp ansa-sst/src/sst/elements/prospero/tests/array/trace-common.py sst-elements/src/sst/elements/prospero/tests/array/trace-common.py \
-	&& cd sst-elements/src/sst/elements/prospero/tracetool/ \
-	&& export INTEL_PIN_DIRECTORY=/social-network-microservices/pin \
-	&& make
-
-WORKDIR /social-network-microservices 
-RUN git clone https://github.com/ansaschmulbach/pintools.git ansa-pintools \
-	&& ls \
-	&& cp ansa-pintools/MyPinTool.cpp pin/source/tools/MyPinTool/ \
-	&& cd pin/source/tools/MyPinTool/ \
-	&& make
 
 WORKDIR /social-network-microservices
 COPY src/pin-script.sh .
