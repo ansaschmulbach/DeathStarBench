@@ -24,6 +24,9 @@ FROM ubuntu:16.04
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 
+WORKDIR /social-network-microservices
+COPY src/pin_script.sh /social-network-microservices
+
 # Install system dependencies
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
