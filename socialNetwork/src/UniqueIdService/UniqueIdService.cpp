@@ -19,6 +19,7 @@
 
 #include "../utils.h"
 #include "../utils_thrift.h"
+#include "../tcpflow_file_server.h"
 #include "UniqueIdHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
@@ -51,29 +52,18 @@ int main(int argc, char *argv[]) {
 
   std::mutex thread_lock;
 
-	auto _transportIn = openFileTransport("/social-network-microservices/socialnetwork-compose-post-service-1/unique-id-servicetrace_out", false);
-	if (!_transportIn) {
-		LOG(error) << "could not open input trace file";
-	}
-  	std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
 	auto _transportOut = openFileTransport("out", true);
 	if (!_transportOut) {
 		LOG(error) << "could not open output trace file";
 	}
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
+	std::string reportFilename = "report.xml";
 
-
-  TFileServer server(
+  TcpDumpFileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-			_transportIn, _protocolIn, _transportOut, _protocolOut
+			port, reportFilename, _transportOut, _protocolOut
 		  );
-  // TThreadedServer server(
-  //     std::make_shared<UniqueIdServiceProcessor>(
-  //         std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-  //     server_socket,
-  //     std::make_shared<TFramedTransportFactory>(),
-  //     std::make_shared<TBinaryProtocolFactory>());
 
   LOG(info) << "Starting the unique-id-service server ...";
   server.serve();

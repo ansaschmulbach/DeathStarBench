@@ -123,13 +123,17 @@ RUN apt-get update \
   && git clone https://github.com/sewenew/redis-plus-plus.git \
   && cd redis-plus-plus \
   && git checkout ${LIB_REDIS_PLUS_PLUS_VERSION} \
-  && sed -i '/Transaction transaction/i\\    ShardsPool* get_shards_pool(){\n        return &_pool;\n    }\n' \
-     src/sw/redis++/redis_cluster.h \
   && cmake -DREDIS_PLUS_PLUS_USE_TLS=ON . \
   && make -j$(nproc) \
   && make install \
   # Install pyyaml
-  && pip3 install PyYAML \
+  && pip3 --version "PyYAML==6.0.0" \
+  && cd /tmp \
+  && wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz \
+  && tar -xvf 10.0.0.tar.gz \
+  && cd tinyxml2-10.0.0 \
+  && make \
+  && make install \
   # Clean up
   && cd /tmp \
   && rm -rf \

@@ -1,4 +1,5 @@
 *
+!/report.xml
 !/src/
 !/trace/
 !/CMakeLists.txt

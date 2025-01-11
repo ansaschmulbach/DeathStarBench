@@ -4,6 +4,7 @@ add_executable(
     ${THRIFT_GEN_CPP_DIR}/UniqueIdService.cpp
     ${THRIFT_GEN_CPP_DIR}/ComposePostService.cpp
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
+    ../stream.cpp
 )
 
 target_include_directories(
@@ -20,6 +21,7 @@ target_link_libraries(
     Boost::log
     Boost::log_setup
     jaegertracing
+    tinyxml2
 )
 
 install(TARGETS UniqueIdService DESTINATION ./)

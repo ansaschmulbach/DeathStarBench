@@ -1,4 +1,4 @@
-FROM yg397/thrift-microservice-deps:xenial AS builder
+FROM deps-build AS builder
 
 ARG LIB_REDIS_PLUS_PLUS_VERSION=1.2.3
 
@@ -23,7 +23,8 @@ FROM ubuntu:16.04
 # Copy compiled C++ binaries and dependencies
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
-COPY ./trace /social-network-microservices
+WORKDIR /social-network-microservices
+COPY ./report.xml /social-network-microservices
 
 # Install system dependencies
 RUN apt-get update && \
