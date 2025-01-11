@@ -6,7 +6,6 @@ yes | sudo apt-get update
 yes | sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod 666 /var/run/docker.sock
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
 # Add the repository to Apt sources:
@@ -22,6 +21,7 @@ yes | sudo apt-get install luarocks
 yes | sudo luarocks install luasocket
 sudo apt install htop
 sudo apt install intel-cmt-cat
+sudo chmod 666 /var/run/docker.sock
 # yes | sudo apt install pip
 
 sudo apt-get install libssl-dev
