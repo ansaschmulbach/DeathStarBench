@@ -25,6 +25,7 @@ COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /usr/local/lib/* /usr/local/lib/
 WORKDIR /social-network-microservices
 COPY ./report.xml /social-network-microservices
+COPY ./traces /social-network-microservices
 
 # Install system dependencies
 RUN apt-get update && \

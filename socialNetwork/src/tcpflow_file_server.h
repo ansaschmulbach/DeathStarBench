@@ -39,7 +39,7 @@ public:
 		for (;;) {
 				try {
 					auto filename = client.streamData();
-					auto transportIn = openFileTransport(filename.c_str(), false);
+					auto transportIn = openFileTransport(("traces/" + filename).c_str(), false);
 					if (!transportIn) {
 						LOG(error) << "could not open input trace file";
 					}

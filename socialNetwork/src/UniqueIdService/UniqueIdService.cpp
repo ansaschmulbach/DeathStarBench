@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 		LOG(error) << "could not open output trace file";
 	}
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
-	std::string reportFilename = "report.xml";
+	std::string reportFilename = "/social-network-microservices/report.xml";
 
   TcpDumpFileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
