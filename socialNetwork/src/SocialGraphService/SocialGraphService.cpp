@@ -1,5 +1,5 @@
 #include <signal.h>
-#include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/protocol/TJSONProtocol.h>
 #include <thrift/server/TThreadedServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
@@ -13,7 +13,7 @@
 #include "SocialGraphHandler.h"
 
 using json = nlohmann::json;
-using apache::thrift::protocol::TBinaryProtocolFactory;
+using apache::thrift::protocol::TJSONProtocolFactory;
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
                                                  &redis_cluster_client_pool,
                                                  &user_client_pool)),
         server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+        std::make_shared<TJSONProtocolFactory>());
     LOG(info) << "Starting the social-graph-service server with Redis Cluster support...";
     server.serve();
   }
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
               std::make_shared<SocialGraphHandler>(
                   mongodb_client_pool, &redis_replica_client_pool, &redis_primary_client_pool, &user_client_pool)),
           server_socket, std::make_shared<TFramedTransportFactory>(),
-          std::make_shared<TBinaryProtocolFactory>());
+          std::make_shared<TJSONProtocolFactory>());
       LOG(info) << "Starting the social-graph-service server with Redis replica support";
       server.serve();
   }
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
             std::make_shared<SocialGraphHandler>(
                 mongodb_client_pool, &redis_client_pool, &user_client_pool)),
         server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+        std::make_shared<TJSONProtocolFactory>());
     LOG(info) << "Starting the social-graph-service server ...";
     server.serve();
   }

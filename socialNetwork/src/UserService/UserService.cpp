@@ -1,5 +1,5 @@
 #include <signal.h>
-#include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/protocol/TJSONProtocol.h>
 #include <thrift/server/TThreadedServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
@@ -10,7 +10,7 @@
 #include "../utils_thrift.h"
 #include "UserHandler.h"
 
-using apache::thrift::protocol::TBinaryProtocolFactory;
+using apache::thrift::protocol::TJSONProtocolFactory;
 using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
           mongodb_client_pool, &social_graph_client_pool)),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
-      std::make_shared<TBinaryProtocolFactory>());
+      std::make_shared<TJSONProtocolFactory>());
   LOG(info) << "Starting the user-service server ...";
   server.serve();
 }
