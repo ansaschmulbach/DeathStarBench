@@ -18,7 +18,6 @@
 
 namespace social_network{
 using json = nlohmann::json;
-using apache::thrift::transport::TBufferedTransport;
 using apache::thrift::transport::TFDTransport;
 using apache::thrift::TProcessor;
 using apache::thrift::protocol::TTransport;
@@ -39,6 +38,10 @@ public:
 		for (;;) {
 				try {
 					auto filename = client.streamData();
+					if (filename == "") {
+						LOG(error) << "ran out of files" << std::endl;
+						break;
+					}
 					auto transportIn = openFileTransport(("traces/" + filename).c_str(), false);
 					if (!transportIn) {
 						LOG(error) << "could not open input trace file";

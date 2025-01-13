@@ -148,7 +148,7 @@ void Client::preprocessXml(const char* filename) {
 
 std::string Client::streamData() {
 	if (streams.empty()) {
-		return NULL;
+		return "";
 	}
 
 	Stream nextStream = streams.front();
