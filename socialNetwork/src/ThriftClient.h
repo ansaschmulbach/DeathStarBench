@@ -8,6 +8,7 @@
 #include <boost/log/trivial.hpp>
 
 #include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/protocol/TJSONProtocol.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TSSLSocket.h>
 #include <thrift/transport/TTransportUtils.h>
@@ -22,6 +23,7 @@ namespace social_network {
 
 using apache::thrift::protocol::TProtocol;
 using apache::thrift::protocol::TBinaryProtocol;
+using apache::thrift::protocol::TJSONProtocol;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TSocket;
 using apache::thrift::transport::TSSLSocketFactory;
@@ -54,7 +56,7 @@ class ThriftClient : public GenericClient {
   std::shared_ptr<TSocket> _socket;
   std::shared_ptr<TTransport> _transport;
   std::shared_ptr<TProtocol> _protocol;
-  std::shared_ptr<TBinaryProtocol> _trace_prot;
+  std::shared_ptr<TProtocol> _trace_prot;
   std::shared_ptr<TTransport> _trace_trans;
 };
 
@@ -69,7 +71,7 @@ ThriftClient<TThriftClient>::ThriftClient(
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
 	// TODO: new one for each client
   _trace_trans = openFileTransport((addr + "trace_out").c_str(), true);
-	_trace_prot = std::shared_ptr<TBinaryProtocol> (new TBinaryProtocol(_trace_trans));
+	_trace_prot = std::shared_ptr<TJSONProtocol> (new TJSONProtocol(_trace_trans));
   _client = new TThriftClient(_protocol, _trace_prot);
   _connect_timestamp = 0;
   _keepalive_ms = 0;
@@ -107,7 +109,7 @@ ThriftClient<TThriftClient>::ThriftClient(
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
   _trace_trans = openFileTransport((addr + "trace_out").c_str(), true);
-	_trace_prot = std::shared_ptr<TBinaryProtocol> (new TBinaryProtocol(_trace_trans));
+	_trace_prot = std::shared_ptr<TJSONProtocol> (new TJSONProtocol(_trace_trans));
   _client = new TThriftClient(_protocol, _trace_prot);
   _connect_timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
                            std::chrono::system_clock::now().time_since_epoch())
