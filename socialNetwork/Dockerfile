@@ -40,13 +40,18 @@ RUN apt-get update && \
 	curl \
 	make \
 	g++ \
+	git \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # Install pin
 WORKDIR /social-network-microservices
+RUN git clone https://github.com/ansaschmulbach/pintools.git
+
+WORKDIR /social-network-microservices
 RUN mkdir pin \
     && curl https://software.intel.com/sites/landingpage/pintool/downloads/pin-external-3.31-98869-gfa6f126a8-gcc-linux.tar.gz | tar xvz -C pin --strip-components 1 \
     && cd pin/source/tools/MyPinTool \
+    && cp /social-network-microservices/pintools/MyPinTool.cpp . \
     && make all TARGET=intel64 
 
 WORKDIR /social-network-microservices

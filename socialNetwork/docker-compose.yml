@@ -71,8 +71,8 @@ services:
       post-storage-mongodb:
         condition: service_started
     init: true
-    entrypoint: /social-network-microservices/pin-script.sh
-      # entrypoint: ["tail", "-f", "/dev/null"]
+      # entrypoint: /social-network-microservices/pin-script.sh
+    entrypoint: ["tail", "-f", "/dev/null"]
     environment: 
       NAME: PostStorageService
     volumes:
