@@ -8,6 +8,7 @@
 #include "../../gen-cpp/MediaService.h"
 #include "../logger.h"
 #include "../tracing.h"
+#include "../zsim_hooks.h"
 
 // 2018-01-01 00:00:00 UTC
 #define CUSTOM_EPOCH 1514764800000
@@ -32,14 +33,16 @@ void MediaHandler::ComposeMedia(
     const std::vector<std::string> &media_types,
     const std::vector<int64_t> &media_ids,
     const std::map<std::string, std::string> &carrier) {
+  //zsim_roi_begin();
+
   // Initialize a span
-  TextMapReader reader(carrier);
+  // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
-  TextMapWriter writer(writer_text_map);
-  auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  auto span = opentracing::Tracer::Global()->StartSpan(
-      "compose_media_server", {opentracing::ChildOf(parent_span->get())});
-  opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "compose_media_server", {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   if (media_types.size() != media_ids.size()) {
     ServiceException se;
@@ -56,7 +59,8 @@ void MediaHandler::ComposeMedia(
     _return.emplace_back(new_media);
   }
 
-  span->Finish();
+  // span->Finish();
+  //zsim_roi_end();
 }
 
 }  // namespace social_network

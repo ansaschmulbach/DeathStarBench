@@ -52,10 +52,10 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  SetUpTracer("config/jaeger-config.yml", "user-timeline-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "user-timeline-service");
 
   json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -69,7 +69,6 @@ int main(int argc, char *argv[]) {
       config_json["post-storage-service"]["keepalive_ms"];
 
   int mongodb_conns = config_json["user-timeline-mongodb"]["connections"];
-  int mongodb_timeout = config_json["user-timeline-mongodb"]["timeout_ms"];
 
   int redis_cluster_config_flag = config_json["user-timeline-redis"]["use_cluster"];
   int redis_replica_config_flag = config_json["user-timeline-redis"]["use_replica"];
@@ -78,6 +77,7 @@ int main(int argc, char *argv[]) {
       init_mongodb_client_pool(config_json, "user-timeline", mongodb_conns);
 
   if (mongodb_client_pool == nullptr) {
+    LOG(fatal) << "Mongodb client pool initiation failure";
     return EXIT_FAILURE;
   }
 
@@ -101,12 +101,12 @@ int main(int argc, char *argv[]) {
     r = CreateIndex(mongodb_client, "user-timeline", "user_id", true);
     if (!r) {
       LOG(error) << "Failed to create mongodb index, try again";
-      sleep(1);
+      sleep(0.1);
     }
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
   std::shared_ptr<TServerSocket> server_socket =
-      get_server_socket(config_json, "0.0.0.0", port);
+      get_server_socket(config_json, "localhost", port);
 
   if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_client_pool =

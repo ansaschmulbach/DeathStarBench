@@ -16,6 +16,7 @@
 #include <thrift/transport/TTransport.h>
 
 #include <thrift/stdcxx.h>
+#include "zsim_hooks.h"
 
 
 namespace social_network {

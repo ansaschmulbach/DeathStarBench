@@ -32,10 +32,10 @@ void sigintHandler(int sig) {
 int main(int argc, char* argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
-  SetUpTracer("config/jaeger-config.yml", "post-storage-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "post-storage-service");
 
   json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -65,11 +65,11 @@ int main(int argc, char* argv[]) {
     r = CreateIndex(mongodb_client, "post", "post_id", true);
     if (!r) {
       LOG(error) << "Failed to create mongodb index, try again";
-      sleep(1);
+      sleep(0.1);
     }
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
 
   TThreadedServer server(std::make_shared<PostStorageServiceProcessor>(
                              std::make_shared<PostStorageHandler>(

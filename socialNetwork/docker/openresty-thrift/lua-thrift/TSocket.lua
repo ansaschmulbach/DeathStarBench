@@ -26,7 +26,7 @@ local terror = Thrift.terror
 -- TSocketBase
 local TSocketBase = TTransportBase:new{
   __type = 'TSocketBase',
-  timeout = 10000,
+  timeout =  4294967295,
   host = 'localhost',
   port = 9090,
   handle
@@ -83,6 +83,7 @@ function TSocket:open()
     self.handle:settimeout(self.timeout)
   end
   local ok, err = self.handle:connect(self.host, self.port)
+  print("hi")
   if not ok then
     terror(TTransportException:new{
       message = 'Could not connect to ' .. self.host .. ':' .. self.port

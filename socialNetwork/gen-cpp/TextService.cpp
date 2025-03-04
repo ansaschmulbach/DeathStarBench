@@ -344,6 +344,7 @@ void TextServiceClient::recv_ComposeText(TextServiceReturn& _return)
 }
 
 bool TextServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
+  zsim_roi_begin();
   ProcessMap::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
@@ -356,9 +357,11 @@ bool TextServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* i
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
     oprot->getTransport()->flush();
+    zsim_roi_end();
     return true;
   }
   (this->*(pfn->second))(seqid, iprot, oprot, callContext);
+zsim_roi_end();
   return true;
 }
 

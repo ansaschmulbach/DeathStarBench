@@ -49,10 +49,10 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  SetUpTracer("config/jaeger-config.yml", "social-graph-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "social-graph-service");
 
   json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -95,13 +95,13 @@ int main(int argc, char *argv[]) {
     r = CreateIndex(mongodb_client, "social-graph", "user_id", true);
     if (!r) {
       LOG(error) << "Failed to create mongodb index, try again";
-      sleep(1);
+      sleep(0.1);
     }
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
   std::shared_ptr<TServerSocket> server_socket =
-      get_server_socket(config_json, "0.0.0.0", port);
+      get_server_socket(config_json, "localhost", port);
 
   if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_cluster_client_pool =

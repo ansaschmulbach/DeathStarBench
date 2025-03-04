@@ -152,10 +152,10 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
 
-  SetUpTracer("config/jaeger-config.yml", "write-home-timeline-service");
+  SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/gjaeger-config.yml", "write-home-timeline-service");
 
   json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/gservice-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 

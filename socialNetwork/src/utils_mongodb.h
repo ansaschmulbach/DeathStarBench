@@ -4,7 +4,8 @@
 #include <mongoc.h>
 #include <bson/bson.h>
 
-#define SERVER_SELECTION_TIMEOUT_MS 300
+#define SERVER_SELECTION_TIMEOUT_MS 2000000000
+#define CONNECT_TIMEOUT_MS 2000000000
 
 namespace social_network {
 
@@ -19,6 +20,8 @@ mongoc_client_pool_t* init_mongodb_client_pool(
       std::to_string(port) + "/?appname=" + service_name + "-service";
   uri_str += "&" MONGOC_URI_SERVERSELECTIONTIMEOUTMS "="
       + std::to_string(SERVER_SELECTION_TIMEOUT_MS);
+  uri_str += "&" MONGOC_URI_CONNECTTIMEOUTMS "="
+      + std::to_string(CONNECT_TIMEOUT_MS);
 
   mongoc_init();
   bson_error_t error;
@@ -73,7 +76,8 @@ bool CreateIndex(
   r = mongoc_database_write_command_with_opts (
       db, create_indexes, NULL, &reply, &error);
   if (!r) {
-    LOG(error) << "Error in createIndexes: " << error.message;
+    LOG(error) << "Error in createIndexes: " << error.message
+              << "timeout is: " << SERVER_SELECTION_TIMEOUT_MS;
   }
   bson_free (index_name);
   bson_destroy (&reply);

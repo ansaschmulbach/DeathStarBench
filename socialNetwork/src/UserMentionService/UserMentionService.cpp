@@ -33,10 +33,10 @@ void sigintHandler(int sig) {
 int main(int argc, char* argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
-  SetUpTracer("config/jaeger-config.yml", "user-mention-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "user-mention-service");
 
   json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
 
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
 
   TThreadedServer server(std::make_shared<UserMentionServiceProcessor>(
                              std::make_shared<UserMentionHandler>(

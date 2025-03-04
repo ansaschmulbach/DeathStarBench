@@ -9,7 +9,7 @@ local GenericObjectPool = Object:new({
     __type = 'GenericObjectPool',
     maxTotal = 100,
     maxIdleTime = 10000,
-    timeout = 10000
+    timeout = 2147483647
     })
 function GenericObjectPool:init(conf)
 end
