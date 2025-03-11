@@ -7,7 +7,7 @@
 
 #include "../../gen-cpp/MediaService.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../zsim_hooks.h"
 
 // 2018-01-01 00:00:00 UTC

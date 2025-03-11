@@ -14,7 +14,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../zsim_hooks.h"
 
 using namespace sw::redis;

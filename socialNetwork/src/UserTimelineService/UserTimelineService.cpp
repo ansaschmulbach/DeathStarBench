@@ -9,7 +9,7 @@
 #include "../../gen-cpp/social_network_types.h"
 #include "../ClientPool.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 #include "../utils_mongodb.h"
 #include "../utils_redis.h"

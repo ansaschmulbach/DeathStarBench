@@ -8,7 +8,7 @@
 
 #include "../ClientPool.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 #include "../utils_redis.h"
 #include "../utils_thrift.h"

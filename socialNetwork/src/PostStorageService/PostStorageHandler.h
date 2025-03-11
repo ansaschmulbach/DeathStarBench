@@ -13,7 +13,7 @@
 
 #include "../../gen-cpp/PostStorageService.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../zsim_hooks.h"
 
 namespace social_network {

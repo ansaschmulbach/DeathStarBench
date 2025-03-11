@@ -4,14 +4,14 @@
     "addr": "172.18.0.9",
     "timeout_ms": 0,
     "port": 27017,
-    "connections": 10
+    "connections": 512
   },
   "secret": "secret",
   "unique-id-service": {
     "keepalive_ms": 2147483647,
     "netif": "enxd85ed36935c8",
     "addr": "localhost",
-    "connections": 10,
+    "connections": 512,
     "timeout_ms": 0,
     "port": 39327
   },
@@ -20,14 +20,14 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39326,
-    "connections": 10
+    "connections": 512
   },
   "url-shorten-memcached": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.3",
     "timeout_ms": 0,
     "port": 11211,
-    "connections": 10,
+    "connections": 512,
     "binary_protocol": 1
   },
   "social-graph-service": {
@@ -35,14 +35,14 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39325,
-    "connections": 10
+    "connections": 512
   },
   "user-timeline-redis": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.11",
     "timeout_ms": 0,
     "port": 6379,
-    "connections": 10,
+    "connections": 512,
     "use_cluster": 0,
     "use_replica": 0
   },
@@ -51,7 +51,7 @@
     "addr": "172.18.0.6",
     "timeout_ms": 0,
     "port": 6379,
-    "connections": 10,
+    "connections": 512,
     "use_cluster": 0,
     "use_replica": 0
   },
@@ -60,28 +60,28 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39324,
-    "connections": 10
+    "connections": 512
   },
   "user-timeline-mongodb": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.4",
     "timeout_ms": 0,
     "port": 27017,
-    "connections": 10
+    "connections": 512
   },
   "user-mongodb": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.8",
     "timeout_ms": 0,
     "port": 27017,
-    "connections": 10
+    "connections": 512
   },
   "user-memcached": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.7",
     "timeout_ms": 0,
     "port": 11211,
-    "connections": 10,
+    "connections": 512,
     "binary_protocol": 1
   },
   "ssl": {
@@ -96,12 +96,12 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39323,
-    "connections": 10
+    "connections": 512
   },
   "write-home-timeline-service": {
     "keepalive_ms": 2147483647,
     "workers": 32,
-    "connections": 10,
+    "connections": 512,
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39322
@@ -111,7 +111,7 @@
     "addr": "172.18.0.14",
     "timeout_ms": 0,
     "port": 6379,
-    "connections": 10,
+    "connections": 512,
     "use_cluster": 0,
     "use_replica": 0
   },
@@ -120,13 +120,13 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39328,
-    "connections": 10
+    "connections": 512
   },
   "user-service": {
     "keepalive_ms": 2147483647,
     "netif": "enxd85ed36935c8",
     "addr": "localhost",
-    "connections": 10,
+    "connections": 512,
     "timeout_ms": 0,
     "port": 39321
   },
@@ -135,7 +135,7 @@
     "addr": "172.18.0.2",
     "timeout_ms": 0,
     "port": 11211,
-    "connections": 10,
+    "connections": 512,
     "binary_protocol": 1
   },
   "user-mention-service": {
@@ -143,55 +143,55 @@
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39320,
-    "connections": 10
+    "connections": 512
   },
   "post-storage-mongodb": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.5",
     "timeout_ms": 0,
     "port": 27017,
-    "connections": 10
+    "connections": 512
   },
   "user-timeline-service": {
     "keepalive_ms": 2147483647,
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39319,
-    "connections": 10
+    "connections": 512
   },
   "home-timeline-service": {
     "keepalive_ms": 2147483647,
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39318,
-    "connections": 10
+    "connections": 512
   },
   "url-shorten-mongodb": {
     "keepalive_ms": 2147483647,
     "addr": "172.18.0.15",
     "timeout_ms": 0,
     "port": 27017,
-    "connections": 10
+    "connections": 512
   },
   "url-shorten-service": {
     "keepalive_ms": 2147483647,
     "addr": "localhost",
     "timeout_ms": 0,
     "port": 39317,
-    "connections": 10
+    "connections": 512
   },
   "redis-primary": {
     "keepalive_ms": 2147483647,
     "addr": "redis-primary",
     "timeout_ms": 0,
     "port": 6379,
-    "connections": 10
+    "connections": 512
   },
   "redis-replica": {
     "keepalive_ms": 2147483647,
     "addr": "redis-replica",
     "timeout_ms": 0,
     "port": 6379,
-    "connections": 10
+    "connections": 512
   }
 }

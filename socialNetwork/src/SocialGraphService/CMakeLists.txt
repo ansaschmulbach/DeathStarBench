@@ -9,7 +9,7 @@ add_executable(
 target_include_directories(
     SocialGraphService PRIVATE
     ${MONGOC_INCLUDE_DIRS}
-    /usr/local/include/jaegertracing
+	# /usr/local/include/jaegertracing
     /usr/local/include/hiredis
     /usr/local/include/sw
 )
@@ -24,7 +24,7 @@ target_link_libraries(
     Boost::log
     Boost::log_setup
     Boost::program_options
-    /usr/local/lib/libjaegertracing.so
+	# /usr/local/lib/libjaegertracing.so
     /usr/local/lib/libhiredis.a
     /usr/local/lib/libhiredis_ssl.a
     /usr/local/lib/libredis++.a
