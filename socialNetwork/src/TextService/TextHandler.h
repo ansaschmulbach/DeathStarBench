@@ -12,7 +12,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 namespace social_network {
 
@@ -75,7 +75,7 @@ void TextHandler::ComposeText(
     //     "compose_urls_client", {opentracing::ChildOf(&span->context())});
 
     std::map<std::string, std::string> url_writer_text_map;
-    TextMapWriter url_writer(url_writer_text_map);
+    // TextMapWriter url_writer(url_writer_text_map);
     // opentracing::Tracer::Global()->Inject(url_span->context(), url_writer);
 
     auto url_client_wrapper = _url_client_pool->Pop();

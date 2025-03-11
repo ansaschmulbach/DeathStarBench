@@ -11,7 +11,7 @@
 #include "../../gen-cpp/UniqueIdService.h"
 #include "../../gen-cpp/social_network_types.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 // Custom Epoch (January 1, 2018 Midnight GMT = 2018-01-01T00:00:00Z)
 #define CUSTOM_EPOCH 1514764800000

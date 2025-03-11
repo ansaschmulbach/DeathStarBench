@@ -12,7 +12,7 @@ target_include_directories(
     ${LIBMEMCACHED_INCLUDE_DIR}
     ${MONGOC_INCLUDE_DIRS}
     /usr/local/include/jwt
-    /usr/local/include/jaegertracing
+    # /usr/local/include/jaegertracing
 )
 
 target_link_libraries(
@@ -25,7 +25,7 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     Boost::log
     Boost::log_setup
-    jaegertracing
+    # jaegertracing
     OpenSSL::SSL
 )
 

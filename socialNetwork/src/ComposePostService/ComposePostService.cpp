@@ -19,7 +19,7 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
-  SetUpTracer("config/jaeger-config.yml", "compose-post-service");
+  // SetUpTracer("config/jaeger-config.yml", "compose-post-service");
 
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {
@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
       unique_id_conns, unique_id_timeout, unique_id_keepalive, config_json);
 
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+
   TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(

@@ -1,0 +1,11 @@
+instructions: 253230.43119266056
+cycles: 698310.6238532111
+branches: 50670.752293577985
+branch-instructions: 50670.752293577985
+branch-misses: 4435.376146788991
+cache-misses: 754.94
+cache-references: 26294.747474747473
+L1-dcache-loads: 68103.36363636363
+L1-dcache-load-misses: 11947.9898989899
+L1-icache-load-misses: 13017.22
+context-switches: 5.03

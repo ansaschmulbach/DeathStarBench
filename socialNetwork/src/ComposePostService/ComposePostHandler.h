@@ -1,6 +1,15 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_SRC_COMPOSEPOSTSERVICE_COMPOSEPOSTHANDLER_H_
 #define SOCIAL_NETWORK_MICROSERVICES_SRC_COMPOSEPOSTSERVICE_COMPOSEPOSTHANDLER_H_
 
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/perf_event.h>
+#include <asm/unistd.h>
+#include <string.h>
+
 #include <chrono>
 #include <future>
 #include <iostream>
@@ -20,13 +29,27 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+#include <perfcpp/event_counter.h>
+
+// #include "../tracing.h"
+
 
 namespace social_network {
 using json = nlohmann::json;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 using std::chrono::system_clock;
+
+static long
+	perf_event_open(struct perf_event_attr *hw_event, pid_t pid,
+			                int cpu, int group_fd, unsigned long flags)
+	{
+		    int ret;
+
+		        ret = syscall(__NR_perf_event_open, hw_event, pid, cpu,
+					                  group_fd, flags);
+			    return ret;
+	}
 
 class ComposePostHandler : public ComposePostServiceIf {
  public:
@@ -36,7 +59,8 @@ class ComposePostHandler : public ComposePostServiceIf {
                      ClientPool<ThriftClient<UniqueIdServiceClient>> *,
                      ClientPool<ThriftClient<MediaServiceClient>> *,
                      ClientPool<ThriftClient<TextServiceClient>> *,
-                     ClientPool<ThriftClient<HomeTimelineServiceClient>> *);
+                     ClientPool<ThriftClient<HomeTimelineServiceClient>> *
+		     );
   ~ComposePostHandler() override = default;
 
   void ComposePost(int64_t req_id, const std::string &username, int64_t user_id,
@@ -97,7 +121,9 @@ ComposePostHandler::ComposePostHandler(
     ClientPool<ThriftClient<MediaServiceClient>> *media_service_client_pool,
     ClientPool<ThriftClient<TextServiceClient>> *text_service_client_pool,
     ClientPool<ThriftClient<HomeTimelineServiceClient>>
-        *home_timeline_client_pool) {
+        *home_timeline_client_pool
+    ) {
+    // ) : counter(), event_counter(counter) {
   _post_storage_client_pool = post_storage_client_pool;
   _user_timeline_client_pool = user_timeline_client_pool;
   _user_service_client_pool = user_service_client_pool;
@@ -105,6 +131,7 @@ ComposePostHandler::ComposePostHandler(
   _media_service_client_pool = media_service_client_pool;
   _text_service_client_pool = text_service_client_pool;
   _home_timeline_client_pool = home_timeline_client_pool;
+
 }
 
 Creator ComposePostHandler::_ComposeCreaterHelper(
@@ -147,7 +174,7 @@ Creator ComposePostHandler::_ComposeCreaterHelper(
 TextServiceReturn ComposePostHandler::_ComposeTextHelper(
     int64_t req_id, const std::string &text,
     const std::map<std::string, std::string> &carrier) {
-  TextMapReader reader(carrier);
+  // TextMapReader reader(carrier);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(
   //     "compose_text_client", {opentracing::ChildOf(parent_span->get())});
@@ -363,6 +390,7 @@ void ComposePostHandler::ComposePost(
     const std::string &text, const std::vector<int64_t> &media_ids,
     const std::vector<std::string> &media_types, const PostType::type post_type,
     const std::map<std::string, std::string> &carrier) {
+
   // TextMapReader reader(carrier);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(
@@ -370,6 +398,57 @@ void ComposePostHandler::ComposePost(
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // opentracing::Tracer::Global()->Inject(span->context(), writer);
+
+
+  // struct perf_event_attr pe;
+  // long long cache_misses;
+  // int fd;
+  // 
+  // memset(&pe, 0, sizeof(struct perf_event_attr));
+  // pe.type = PERF_TYPE_HARDWARE;
+  // pe.size = sizeof(struct perf_event_attr);
+  // pe.config = PERF_COUNT_HW_CACHE_MISSES;
+  // pe.disabled = 1;
+  // pe.exclude_kernel = 1;
+  // pe.exclude_idle = 1;
+  // pe.exclude_hv = 1;
+  // 
+  // fd = perf_event_open(&pe, 0, -1, -1, 0);
+  // if (fd == -1) {
+  // fprintf(stderr, "Error opening leader %llx\n", pe.config);
+  // exit(EXIT_FAILURE);
+  // }
+  // 
+  // ioctl(fd, PERF_EVENT_IOC_RESET, 0);
+  // ioctl(fd, PERF_EVENT_IOC_ENABLE, 0);
+
+  
+  auto counter_definitions = perf::CounterDefinition{};
+  auto event_counter = perf::EventCounter{ counter_definitions };
+
+  // Add all the performance counters we want to record.
+  try {
+    // event_counter.add({ "instructions",
+    //                     "cycles",
+    //                     "branches",
+    //                     "branch-instructions",
+    //                     "branch-misses"
+    //                     });
+    // event_counter.add(std::vector<std::string>{ "cache-misses" }); 
+    // event_counter.add(std::vector<std::string>{ "cache-references" }); 
+    // event_counter.add(std::vector<std::string>{ "L1-dcache-loads" });
+    // event_counter.add(std::vector<std::string>{ "L1-dcache-load-misses"});
+    // event_counter.add(std::vector<std::string>{ "L1-icache-loads"});
+    // event_counter.add(std::vector<std::string>{"L1-icache-load-misses"});
+    // event_counter.add(std::vector<std::string>{"stalled-cycles-backend"});
+    // event_counter.add(std::vector<std::string>{"stalled-cycles-frontend"});
+    event_counter.add(std::vector<std::string>{"context-switches"});
+    // event_counter.add(std::vector<std::string>{"instructions-per-cycle" });
+  	event_counter.start();
+  } catch (std::runtime_error& e) {
+	std::cerr << e.what() << std::endl;
+	exit(1);
+  }
 
   auto text_future =
       std::async(std::launch::async, &ComposePostHandler::_ComposeTextHelper,
@@ -438,6 +517,27 @@ void ComposePostHandler::ComposePost(
   //   throw;
   // }
   // span->Finish();
+
+  try {
+  	event_counter.stop();
+  } catch (std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+        exit(1);
+  }
+
+  const auto result = event_counter.result();
+  for (const auto [event_name, value] : result)
+  {
+     LOG(info) << "[perf] " << event_name << ": " << value;
+  }
+  
+  //  ioctl(fd, PERF_EVENT_IOC_DISABLE, 0);
+  //  read(fd, &cache_misses, sizeof(long long));
+
+  //  LOG(info) << "Cache Misses: " << cache_misses << std::endl;
+
+  //  close(fd);
+  
 }
 
 }  // namespace social_network

@@ -8,7 +8,7 @@
 
 #include "../ClientPool.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 #include "../utils_redis.h"
 #include "../utils_thrift.h"
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  SetUpTracer("config/jaeger-config.yml", "home-timeline-service");
+  // SetUpTracer("config/jaeger-config.yml", "home-timeline-service");
 
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {

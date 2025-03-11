@@ -13,7 +13,7 @@
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 using namespace sw::redis;
 namespace social_network {

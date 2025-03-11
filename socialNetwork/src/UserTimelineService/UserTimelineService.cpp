@@ -9,7 +9,7 @@
 #include "../../gen-cpp/social_network_types.h"
 #include "../ClientPool.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 #include "../utils.h"
 #include "../utils_mongodb.h"
 #include "../utils_redis.h"
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  SetUpTracer("config/jaeger-config.yml", "user-timeline-service");
+  // SetUpTracer("config/jaeger-config.yml", "user-timeline-service");
 
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {

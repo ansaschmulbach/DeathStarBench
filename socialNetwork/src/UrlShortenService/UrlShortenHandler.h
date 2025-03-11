@@ -13,7 +13,7 @@
 #include "../../gen-cpp/UrlShortenService.h"
 #include "../../gen-cpp/social_network_types.h"
 #include "../logger.h"
-#include "../tracing.h"
+// #include "../tracing.h"
 
 #define HOSTNAME "http://short-url/"
 
