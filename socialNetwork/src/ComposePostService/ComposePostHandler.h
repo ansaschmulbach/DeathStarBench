@@ -40,16 +40,13 @@ using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 using std::chrono::system_clock;
 
-static long
-	perf_event_open(struct perf_event_attr *hw_event, pid_t pid,
-			                int cpu, int group_fd, unsigned long flags)
-	{
-		    int ret;
-
-		        ret = syscall(__NR_perf_event_open, hw_event, pid, cpu,
-					                  group_fd, flags);
-			    return ret;
-	}
+static long perf_event_open(struct perf_event_attr *hw_event, pid_t pid, 
+		int cpu, int group_fd, unsigned long flags)
+{
+    int ret;
+    ret = syscall(__NR_perf_event_open, hw_event, pid, cpu, group_fd, flags);
+    return ret;
+}
 
 class ComposePostHandler : public ComposePostServiceIf {
  public:
@@ -59,7 +56,8 @@ class ComposePostHandler : public ComposePostServiceIf {
                      ClientPool<ThriftClient<UniqueIdServiceClient>> *,
                      ClientPool<ThriftClient<MediaServiceClient>> *,
                      ClientPool<ThriftClient<TextServiceClient>> *,
-                     ClientPool<ThriftClient<HomeTimelineServiceClient>> *
+                     ClientPool<ThriftClient<HomeTimelineServiceClient>> *,
+		     int
 		     );
   ~ComposePostHandler() override = default;
 
@@ -82,6 +80,8 @@ class ComposePostHandler : public ComposePostServiceIf {
   ClientPool<ThriftClient<TextServiceClient>> *_text_service_client_pool;
   ClientPool<ThriftClient<HomeTimelineServiceClient>>
       *_home_timeline_client_pool;
+
+  int _perf_fd;
 
   void _UploadUserTimelineHelper(
       int64_t req_id, int64_t post_id, int64_t user_id, int64_t timestamp,
@@ -121,8 +121,9 @@ ComposePostHandler::ComposePostHandler(
     ClientPool<ThriftClient<MediaServiceClient>> *media_service_client_pool,
     ClientPool<ThriftClient<TextServiceClient>> *text_service_client_pool,
     ClientPool<ThriftClient<HomeTimelineServiceClient>>
-        *home_timeline_client_pool
-    ) {
+        *home_timeline_client_pool,
+    int perf_fd
+    ) : _perf_fd(perf_fd) {
     // ) : counter(), event_counter(counter) {
   _post_storage_client_pool = post_storage_client_pool;
   _user_timeline_client_pool = user_timeline_client_pool;
@@ -419,21 +420,48 @@ void ComposePostHandler::ComposePost(
   // exit(EXIT_FAILURE);
   // }
   // 
-  // ioctl(fd, PERF_EVENT_IOC_RESET, 0);
-  // ioctl(fd, PERF_EVENT_IOC_ENABLE, 0);
+  // ioctl(_perf_fd, PERF_EVENT_IOC_DISABLE, 0);
 
-  
-  auto counter_definitions = perf::CounterDefinition{};
-  auto event_counter = perf::EventCounter{ counter_definitions };
+  __sync_synchronize();
+
+  if (ioctl(_perf_fd, PERF_EVENT_IOC_DISABLE, 0) == -1) {
+	  LOG(error) << "unable to disable perf";
+  }
+
+  long long count;
+  if (read(_perf_fd, &count, sizeof(long long)) == -1) {
+	  LOG(error) << "unable to read perf";
+  }
+  LOG(info) << "Number of instructions 1: " << count;
+
+  if (ioctl(_perf_fd, PERF_EVENT_IOC_RESET, 0) == -1) {
+	  LOG(error) << "unable to reset perf";
+  }
+  if (ioctl(_perf_fd, PERF_EVENT_IOC_ENABLE, 0) == -1) {
+	  LOG(error) << "unable to enable perf";
+  }
+
+  __sync_synchronize();
+
+
+  // ioctl(_perf_fd, PERF_EVENT_IOC_RESET, 0);
+  // ioctl(_perf_fd, PERF_EVENT_IOC_ENABLE, 0);
+
+  //auto counter_definitions = perf::CounterDefinition{};
+  //auto config = perf::Config{};
+  //config.include_kernel(false);
+  //config.include_user(true);
+  //config.include_child_threads(true);
+  //auto event_counter = perf::EventCounter{ counter_definitions, config };
 
   // Add all the performance counters we want to record.
-  try {
-    // event_counter.add({ "instructions",
-    //                     "cycles",
-    //                     "branches",
-    //                     "branch-instructions",
-    //                     "branch-misses"
-    //                     });
+  // try {
+  //   event_counter.add({ "instructions",
+  //                       "cycles",
+  //                       "branches",
+  //                       "branch-instructions",
+  //                       "branch-misses"
+  //                       });
     // event_counter.add(std::vector<std::string>{ "cache-misses" }); 
     // event_counter.add(std::vector<std::string>{ "cache-references" }); 
     // event_counter.add(std::vector<std::string>{ "L1-dcache-loads" });
@@ -442,13 +470,13 @@ void ComposePostHandler::ComposePost(
     // event_counter.add(std::vector<std::string>{"L1-icache-load-misses"});
     // event_counter.add(std::vector<std::string>{"stalled-cycles-backend"});
     // event_counter.add(std::vector<std::string>{"stalled-cycles-frontend"});
-    event_counter.add(std::vector<std::string>{"context-switches"});
+    // event_counter.add(std::vector<std::string>{"context-switches"});
     // event_counter.add(std::vector<std::string>{"instructions-per-cycle" });
-  	event_counter.start();
-  } catch (std::runtime_error& e) {
-	std::cerr << e.what() << std::endl;
-	exit(1);
-  }
+ // 	event_counter.start();
+ // } catch (std::runtime_error& e) {
+ //       std::cerr << e.what() << std::endl;
+ //       exit(1);
+ // }
 
   auto text_future =
       std::async(std::launch::async, &ComposePostHandler::_ComposeTextHelper,
@@ -518,18 +546,18 @@ void ComposePostHandler::ComposePost(
   // }
   // span->Finish();
 
-  try {
-  	event_counter.stop();
-  } catch (std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
-        exit(1);
-  }
+  //try {
+  //	event_counter.stop();
+  //} catch (std::runtime_error& e) {
+  //      std::cerr << e.what() << std::endl;
+  //      exit(1);
+  //}
 
-  const auto result = event_counter.result();
-  for (const auto [event_name, value] : result)
-  {
-     LOG(info) << "[perf] " << event_name << ": " << value;
-  }
+  //const auto result = event_counter.result();
+  //for (const auto [event_name, value] : result)
+  //{
+  //   LOG(info) << "[perf] " << event_name << ": " << value;
+  //}
   
   //  ioctl(fd, PERF_EVENT_IOC_DISABLE, 0);
   //  read(fd, &cache_misses, sizeof(long long));

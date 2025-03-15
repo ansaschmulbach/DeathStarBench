@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -9,7 +10,7 @@
 #include "ComposePostHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -18,6 +19,26 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
+
+  struct perf_event_attr pe;
+  memset(&pe, 0, sizeof(struct perf_event_attr));
+  pe.type = PERF_TYPE_HARDWARE;
+  pe.size = sizeof(struct perf_event_attr);
+  pe.config = PERF_COUNT_HW_INSTRUCTIONS;
+  pe.disabled = 1;
+  pe.exclude_kernel = 1;
+  pe.inherit = 1;
+  pe.exclude_hv = 1;
+
+  int perf_fd = syscall(__NR_perf_event_open, &pe, -1, 0, -1, 0);
+  if (perf_fd == -1) {
+    perror("perf_event_open");
+    return 1;
+  }
+
+  ioctl(perf_fd, PERF_EVENT_IOC_RESET, 0);
+  ioctl(perf_fd, PERF_EVENT_IOC_ENABLE, 0);
+  
   init_logger();
   // SetUpTracer("config/jaeger-config.yml", "compose-post-service");
 
@@ -99,15 +120,27 @@ int main(int argc, char *argv[]) {
 
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
 
-  TThreadedServer server(
+
+
+  TSimpleServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
               &user_client_pool, &unique_id_client_pool, &media_client_pool,
-              &text_client_pool, &home_timeline_client_pool)),
+              &text_client_pool, &home_timeline_client_pool, perf_fd)),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
+
+  // TThreadedServer server(
+  //     std::make_shared<ComposePostServiceProcessor>(
+  //         std::make_shared<ComposePostHandler>(
+  //             &post_storage_client_pool, &user_timeline_client_pool,
+  //             &user_client_pool, &unique_id_client_pool, &media_client_pool,
+  //             &text_client_pool, &home_timeline_client_pool)),
+  //     server_socket,
+  //     std::make_shared<TFramedTransportFactory>(),
+  //     std::make_shared<TBinaryProtocolFactory>());
   LOG(info) << "Starting the compose-post-service server ...";
   server.serve();
 }
