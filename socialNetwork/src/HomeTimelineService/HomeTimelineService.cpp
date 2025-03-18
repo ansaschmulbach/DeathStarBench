@@ -1,6 +1,6 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -15,7 +15,7 @@
 #include "HomeTimelineHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
           Redis redis_replica_client_pool = init_redis_replica_client_pool(config_json, "redis-replica");
           Redis redis_primary_client_pool = init_redis_replica_client_pool(config_json, "redis-primary");
 
-          TThreadedServer server(
+          TSimpleServer server(
               std::make_shared<HomeTimelineServiceProcessor>(
                   std::make_shared<HomeTimelineHandler>(&redis_replica_client_pool,
                       &redis_primary_client_pool,
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
   else if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_cluster_client_pool =
         init_redis_cluster_client_pool(config_json, "home-timeline");
-    TThreadedServer server(
+    TSimpleServer server(
         std::make_shared<HomeTimelineServiceProcessor>(
             std::make_shared<HomeTimelineHandler>(&redis_cluster_client_pool,
                                                   &post_storage_client_pool,
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
   } else {
     Redis redis_client_pool =
         init_redis_client_pool(config_json, "home-timeline");
-    TThreadedServer server(
+    TSimpleServer server(
         std::make_shared<HomeTimelineServiceProcessor>(
             std::make_shared<HomeTimelineHandler>(&redis_client_pool,
                                                   &post_storage_client_pool,

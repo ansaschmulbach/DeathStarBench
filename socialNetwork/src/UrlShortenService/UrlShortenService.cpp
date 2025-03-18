@@ -1,6 +1,6 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -12,7 +12,7 @@
 #include "nlohmann/json.hpp"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
 
   std::mutex thread_lock;
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
-  TThreadedServer server(
+  TSimpleServer server(
       std::make_shared<UrlShortenServiceProcessor>(
           std::make_shared<UrlShortenHandler>(
               memcached_client_pool, mongodb_client_pool, &thread_lock)),

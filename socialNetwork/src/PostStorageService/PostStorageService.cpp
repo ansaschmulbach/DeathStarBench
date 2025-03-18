@@ -1,6 +1,6 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -11,7 +11,7 @@
 #include "PostStorageHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
 
-  TThreadedServer server(std::make_shared<PostStorageServiceProcessor>(
+  TSimpleServer server(std::make_shared<PostStorageServiceProcessor>(
                              std::make_shared<PostStorageHandler>(
                                  memcached_client_pool, mongodb_client_pool)),
                          server_socket,
