@@ -60,7 +60,7 @@ ThriftClient<TThriftClient>::ThriftClient(
     const std::string &addr, int port) {
   _addr = addr;
   _port = port;
-  _socket = std::shared_ptr<TSocket>(new TSocket("/data/sanchez/users/ansa/dsb-sock-" + std::to_string(port)));
+  _socket = std::shared_ptr<TSocket>(new TSocket("/users/ansa/dsb-sock-" + std::to_string(port)));
   _socket->setKeepAlive(true);
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));
   _protocol = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transport));
@@ -95,7 +95,7 @@ ThriftClient<TThriftClient>::ThriftClient(
     factory->authenticate(true);
     _socket = factory->createSocket(addr, port);
   } else {
-    _socket = std::shared_ptr<TSocket>(new TSocket("/data/sanchez/users/ansa/dsb-sock-" + std::to_string(port)));
+    _socket = std::shared_ptr<TSocket>(new TSocket("/users/ansa/dsb-sock-" + std::to_string(port)));
   }
   _socket->setKeepAlive(true);
   _transport = std::shared_ptr<TTransport>(new TFramedTransport(_socket));

@@ -21,7 +21,7 @@ function RpcClient:init(ip,port,timeout,ssl)
 		 }
 	else
 		socket = TSocket:new{
-			host = "/data/sanchez/users/ansa/dsb-sock-" .. tostring(port)
+			host = "/users/ansa/dsb-sock-" .. tostring(port)
 			-- host = ip,
 			-- port = port
 		}

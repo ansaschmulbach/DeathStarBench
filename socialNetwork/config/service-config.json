@@ -1,7 +1,7 @@
 {
   "social-graph-mongodb": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.4",
+    "addr": "172.18.0.8",
     "timeout_ms": 0,
     "port": 27017,
     "connections": 512
@@ -9,7 +9,7 @@
   "secret": "secret",
   "unique-id-service": {
     "keepalive_ms": 2147483647,
-    "netif": "enxd85ed36935c8",
+    "netif": "eno1",
     "addr": "localhost",
     "connections": 512,
     "timeout_ms": 0,
@@ -24,7 +24,7 @@
   },
   "url-shorten-memcached": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.10",
+    "addr": "172.18.0.5",
     "timeout_ms": 0,
     "port": 11211,
     "connections": 512,
@@ -39,7 +39,7 @@
   },
   "user-timeline-redis": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.7",
+    "addr": "172.18.0.4",
     "timeout_ms": 0,
     "port": 6379,
     "connections": 512,
@@ -48,7 +48,7 @@
   },
   "social-graph-redis": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.13",
+    "addr": "172.18.0.6",
     "timeout_ms": 0,
     "port": 6379,
     "connections": 512,
@@ -64,21 +64,21 @@
   },
   "user-timeline-mongodb": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.2",
+    "addr": "172.18.0.9",
     "timeout_ms": 0,
     "port": 27017,
     "connections": 512
   },
   "user-mongodb": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.5",
+    "addr": "172.18.0.7",
     "timeout_ms": 0,
     "port": 27017,
     "connections": 512
   },
   "user-memcached": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.12",
+    "addr": "172.18.0.13",
     "timeout_ms": 0,
     "port": 11211,
     "connections": 512,
@@ -108,7 +108,7 @@
   },
   "home-timeline-redis": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.11",
+    "addr": "172.18.0.12",
     "timeout_ms": 0,
     "port": 6379,
     "connections": 512,
@@ -124,7 +124,7 @@
   },
   "user-service": {
     "keepalive_ms": 2147483647,
-    "netif": "enxd85ed36935c8",
+    "netif": "eno1",
     "addr": "localhost",
     "connections": 512,
     "timeout_ms": 0,
@@ -132,7 +132,7 @@
   },
   "post-storage-memcached": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.8",
+    "addr": "172.18.0.3",
     "timeout_ms": 0,
     "port": 11211,
     "connections": 512,
@@ -147,7 +147,7 @@
   },
   "post-storage-mongodb": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.9",
+    "addr": "172.18.0.10",
     "timeout_ms": 0,
     "port": 27017,
     "connections": 512
@@ -168,7 +168,7 @@
   },
   "url-shorten-mongodb": {
     "keepalive_ms": 2147483647,
-    "addr": "172.18.0.6",
+    "addr": "172.18.0.11",
     "timeout_ms": 0,
     "port": 27017,
     "connections": 512
