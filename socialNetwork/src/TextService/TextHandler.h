@@ -73,7 +73,7 @@ void TextHandler::ComposeText(
     s = m.suffix().str();
   }
 
-  auto shortened_urls_future = std::async(std::launch::async, [&]() {
+  // auto shortened_urls_future = std::async(std::launch::async, [&]() {
     // auto url_span = opentracing::Tracer::Global()->StartSpan(
     //     "compose_urls_client", {opentracing::ChildOf(&span->context())});
 
@@ -98,10 +98,10 @@ void TextHandler::ComposeText(
       throw;
     }
     _url_client_pool->Keepalive(url_client_wrapper);
-    return _return_urls;
-  });
+    // return _return_urls;
+  // });
 
-  auto user_mention_future = std::async(std::launch::async, [&]() {
+  // auto user_mention_future = std::async(std::launch::async, [&]() {
     // auto user_mention_span = opentracing::Tracer::Global()->StartSpan(
     //     "compose_user_mentions_client",
     //     {opentracing::ChildOf(&span->context())});
@@ -131,24 +131,26 @@ void TextHandler::ComposeText(
     }
 
     _user_mention_client_pool->Keepalive(user_mention_client_wrapper);
-    return _return_user_mentions;
-  });
+    //return _return_user_mentions;
+  // });
 
   std::vector<Url> target_urls;
-  try {
-    target_urls = shortened_urls_future.get();
-  } catch (...) {
-    LOG(error) << "Failed to get shortened urls from url-shorten-service";
-    throw;
-  }
+  target_urls = _return_urls;
+  // try {
+  //   target_urls = shortened_urls_future.get();
+  // } catch (...) {
+  //   LOG(error) << "Failed to get shortened urls from url-shorten-service";
+  //   throw;
+  // }
 
   std::vector<UserMention> user_mentions;
-  try {
-    user_mentions = user_mention_future.get();
-  } catch (...) {
-    LOG(error) << "Failed to upload user mentions to user-mention-service";
-    throw;
-  }
+  user_mentions = _return_user_mentions;
+  // try {
+  //   user_mentions = user_mention_future.get();
+  // } catch (...) {
+  //   LOG(error) << "Failed to upload user mentions to user-mention-service";
+  //   throw;
+  // }
 
   std::string updated_text;
   if (!urls.empty()) {
