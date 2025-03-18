@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "compose-post-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/users/ansa/DeathStarBench/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
       unique_id_conns, unique_id_timeout, unique_id_keepalive, config_json);
 
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
+  //std::shared_ptr<TServerSocket> server_socket = std::make_shared<TServerSocket>("0.0.0.0", port);
   TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(

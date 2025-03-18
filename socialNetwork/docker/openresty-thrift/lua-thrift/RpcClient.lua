@@ -21,8 +21,9 @@ function RpcClient:init(ip,port,timeout,ssl)
 		 }
 	else
 		socket = TSocket:new{
-			host = ip,
-			port = port
+			host = "/users/ansa/dsb-sock-" .. tostring(port)
+			-- host = ip,
+			-- port = port
 		}
 	end
 	socket:setTimeout(timeout)
