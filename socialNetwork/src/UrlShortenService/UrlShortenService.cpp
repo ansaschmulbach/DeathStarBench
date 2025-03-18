@@ -34,7 +34,8 @@ int main(int argc, char* argv[]) {
   init_logger();
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "url-shorten-service");
   json config_json;
-  if (load_config_file("/users/ansa/DeathStarBench/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
+    LOG(fatal) << "Failed to open cfg";
     exit(EXIT_FAILURE);
   }
   int port = config_json["url-shorten-service"]["port"];
@@ -50,6 +51,7 @@ int main(int argc, char* argv[]) {
   mongodb_client_pool =
       init_mongodb_client_pool(config_json, "url-shorten", mongodb_conns);
   if (memcached_client_pool == nullptr || mongodb_client_pool == nullptr) {
+    LOG(fatal) << "Failed to pop memcached client";
     return EXIT_FAILURE;
   }
 

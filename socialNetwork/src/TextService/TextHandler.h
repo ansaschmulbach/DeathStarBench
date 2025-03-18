@@ -43,7 +43,7 @@ void TextHandler::ComposeText(
     TextServiceReturn &_return, int64_t req_id, const std::string &text,
     const std::map<std::string, std::string> &carrier) {
 
-  //zsim_roi_begin();
+  zsim_roi_begin();
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

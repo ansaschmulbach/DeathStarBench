@@ -111,7 +111,7 @@ services:
       - ./nginx-web-server/jaeger-config.json:/usr/local/openresty/nginx/jaeger-config.json
       - ./gen-lua:/gen-lua
       - ./docker/openresty-thrift/lua-thrift:/usr/local/openresty/lualib/thrift
-      - /users/ansa/dsb-sock-39328:/users/ansa/dsb-sock-39328
+      - /data/sanchez/users/ansa/dsb-sock-39328:/data/sanchez/users/ansa/dsb-sock-39328
 
   media-frontend:
     image: yg397/media-frontend:xenial

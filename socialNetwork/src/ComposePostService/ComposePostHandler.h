@@ -21,7 +21,7 @@
 #include "../ThriftClient.h"
 #include "../logger.h"
 // #include "../tracing.h"
-// #include "../zsim_hooks.h"
+#include "../zsim_hooks.h"
 
 namespace social_network {
 using json = nlohmann::json;
@@ -365,7 +365,7 @@ void ComposePostHandler::ComposePost(
     const std::vector<std::string> &media_types, const PostType::type post_type,
     const std::map<std::string, std::string> &carrier) {
 
-  // zsim_roi_begin();
+  //zsim_roi_begin();
   // TextMapReader reader(carrier);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(
