@@ -3,6 +3,8 @@ import string
 import random
 import sys
 
+random.seed(42)
+
 def stringRandom(length):
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for _ in range(length))

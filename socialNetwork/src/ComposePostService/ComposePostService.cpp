@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TThreadedServer.h>
+#include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -10,6 +11,7 @@
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::server::TThreadedServer;
+using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -17,6 +19,7 @@ using namespace social_network;
 void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 
 int main(int argc, char *argv[]) {
+  // zsim_roi_begin();
   signal(SIGINT, sigintHandler);
   init_logger();
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "compose-post-service");
@@ -98,7 +101,7 @@ int main(int argc, char *argv[]) {
       unique_id_conns, unique_id_timeout, unique_id_keepalive, config_json);
 
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
-  TThreadedServer server(
+  TSimpleServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
