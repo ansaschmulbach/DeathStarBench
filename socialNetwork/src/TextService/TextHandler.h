@@ -9,8 +9,8 @@
 #include "../../gen-cpp/TextService.h"
 #include "../../gen-cpp/UrlShortenService.h"
 #include "../../gen-cpp/UserMentionService.h"
-#include "../ClientPool.h"
-#include "../ThriftClient.h"
+#include "../FileClientPool.h"
+#include "../ThriftFileClient.h"
 #include "../logger.h"
 // #include "../tracing.h"
 #include "../zsim_hooks.h"
@@ -19,21 +19,21 @@ namespace social_network {
 
 class TextHandler : public TextServiceIf {
  public:
-  TextHandler(ClientPool<ThriftClient<UrlShortenServiceClient>> *,
-              ClientPool<ThriftClient<UserMentionServiceClient>> *);
+  TextHandler(FileClientPool<FileClient<UrlShortenServiceClient>> *,
+              FileClientPool<FileClient<UserMentionServiceClient>> *);
   ~TextHandler() override = default;
 
   void ComposeText(TextServiceReturn &_return, int64_t, const std::string &,
                    const std::map<std::string, std::string> &) override;
 
  private:
-  ClientPool<ThriftClient<UrlShortenServiceClient>> *_url_client_pool;
-  ClientPool<ThriftClient<UserMentionServiceClient>> *_user_mention_client_pool;
+  FileClientPool<FileClient<UrlShortenServiceClient>> *_url_client_pool;
+  FileClientPool<FileClient<UserMentionServiceClient>> *_user_mention_client_pool;
 };
 
 TextHandler::TextHandler(
-    ClientPool<ThriftClient<UrlShortenServiceClient>> *url_client_pool,
-    ClientPool<ThriftClient<UserMentionServiceClient>>
+    FileClientPool<FileClient<UrlShortenServiceClient>> *url_client_pool,
+    FileClientPool<FileClient<UserMentionServiceClient>>
         *user_mention_client_pool) {
   _url_client_pool = url_client_pool;
   _user_mention_client_pool = user_mention_client_pool;

@@ -1,0 +1,1932 @@
+Listening...
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 78  34 ED 54 CA C9 00 0F 00  .......x4.T.....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 32 37 00 00  00 0C 75 73 65 72 6E 61  me_327....userna
+00000050: 6D 65 5F 32 34 31 0D 00  03 0B 0B 00 00 00 00 00  me_241..........
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 03 68  A0 53 57 6A 75 20 0F 00  .......h.SWju ..
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 00 D4  93 84 BE 86 0F 80 0F 00  ................
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 37 33 00 00  00 0C 75 73 65 72 6E 61  me_873....userna
+00000050: 6D 65 5F 39 30 36 00 00  00 0C 75 73 65 72 6E 61  me_906....userna
+00000060: 6D 65 5F 33 37 30 00 00  00 0C 75 73 65 72 6E 61  me_370....userna
+00000070: 6D 65 5F 35 31 31 0D 00  03 0B 0B 00 00 00 00 00  me_511..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 E9  53 4B 82 45 99 80 0F 00  ........SK.E....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 35 30 00 00  00 0C 75 73 65 72 6E 61  me_150....userna
+00000050: 6D 65 5F 35 36 32 00 00  00 0C 75 73 65 72 6E 61  me_562....userna
+00000060: 6D 65 5F 35 31 35 00 00  00 0C 75 73 65 72 6E 61  me_515....userna
+00000070: 6D 65 5F 35 32 31 0D 00  03 0B 0B 00 00 00 00 00  me_521..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 2A  4F 2B F9 4B 43 80 0F 00  .......*O+.KC...
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 31 30 00 00  00 0C 75 73 65 72 6E 61  me_810....userna
+00000050: 6D 65 5F 38 37 39 00 00  00 0C 75 73 65 72 6E 61  me_879....userna
+00000060: 6D 65 5F 31 32 37 00 00  00 0C 75 73 65 72 6E 61  me_127....userna
+00000070: 6D 65 5F 38 33 35 00 00  00 0C 75 73 65 72 6E 61  me_835....userna
+00000080: 6D 65 5F 36 32 33 0D 00  03 0B 0B 00 00 00 00 00  me_623..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 143
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8B 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B 2F  E8 BC 69 4F E9 80 0F 00  ......./..iO....
+00000030: 02 0B 00 00 00 05 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 32 00 00 00  0C 75 73 65 72 6E 61 6D  me_32....usernam
+00000050: 65 5F 36 32 33 00 00 00  0C 75 73 65 72 6E 61 6D  e_623....usernam
+00000060: 65 5F 34 30 38 00 00 00  0C 75 73 65 72 6E 61 6D  e_408....usernam
+00000070: 65 5F 34 33 30 00 00 00  0C 75 73 65 72 6E 61 6D  e_430....usernam
+00000080: 65 5F 39 35 37 0D 00 03  0B 0B 00 00 00 00 00     e_957..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 02 44  A2 E3 41 0B 66 E0 0F 00  .......D..A.f...
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 31 39 00 00  00 0C 75 73 65 72 6E 61  me_919....userna
+00000050: 6D 65 5F 34 33 33 00 00  00 0C 75 73 65 72 6E 61  me_433....userna
+00000060: 6D 65 5F 35 39 37 00 00  00 0C 75 73 65 72 6E 61  me_597....userna
+00000070: 6D 65 5F 33 34 38 0D 00  03 0B 0B 00 00 00 00 00  me_348..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A 0A  7A AD A2 BD DF 00 0F 00  ........z.......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 36 39 0D 00  03 0B 0B 00 00 00 00 00  me_869..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 79
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...K........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 19  0E 8E 19 34 52 00 0F 00  ...........4R...
+00000030: 02 0B 00 00 00 01 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 31 0D 00 03  0B 0B 00 00 00 00 00     me_81..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 98  9A 1A 8D 3C F4 80 0F 00  ...........<....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 31 35 00 00  00 0C 75 73 65 72 6E 61  me_715....userna
+00000050: 6D 65 5F 33 30 30 00 00  00 0C 75 73 65 72 6E 61  me_300....userna
+00000060: 6D 65 5F 36 33 30 00 00  00 0C 75 73 65 72 6E 61  me_630....userna
+00000070: 6D 65 5F 35 39 32 0D 00  03 0B 0B 00 00 00 00 00  me_592..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 07 C7  BA 10 22 C3 73 40 0F 00  ..........".s@..
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 30 30 00 00  00 0C 75 73 65 72 6E 61  me_200....userna
+00000050: 6D 65 5F 31 31 31 0D 00  03 0B 0B 00 00 00 00 00  me_111..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 19  9E 24 6C 6E 7B 00 0F 00  .........$ln{...
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 36 30 00 00  00 0C 75 73 65 72 6E 61  me_560....userna
+00000050: 6D 65 5F 31 30 38 00 00  00 0C 75 73 65 72 6E 61  me_108....userna
+00000060: 6D 65 5F 37 38 36 00 00  00 0C 75 73 65 72 6E 61  me_786....userna
+00000070: 6D 65 5F 36 34 39 0D 00  03 0B 0B 00 00 00 00 00  me_649..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 E4  85 CB 9D 4B CF C0 0F 00  ...........K....
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 35 38 0D 00  03 0B 0B 00 00 00 00 00  me_958..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 95
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...[........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 07 55  7A 64 95 FE F6 C0 0F 00  .......Uzd......
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 34 33 00 00  00 0B 75 73 65 72 6E 61  me_743....userna
+00000050: 6D 65 5F 38 38 0D 00 03  0B 0B 00 00 00 00 00     me_88..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 17  A0 2E 4E 5E 7F 80 0F 00  ..........N^....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 33 39 00 00  00 0C 75 73 65 72 6E 61  me_739....userna
+00000050: 6D 65 5F 35 35 33 00 00  00 0C 75 73 65 72 6E 61  me_553....userna
+00000060: 6D 65 5F 32 30 39 0D 00  03 0B 0B 00 00 00 00 00  me_209..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 16  22 60 9E D5 C2 00 0F 00  ........"`......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 37 39 0D 00  03 0B 0B 00 00 00 00 00  me_679..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E 98  0E 0A 1F A7 CA 00 0F 00  ................
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 32 36 0D 00  03 0B 0B 00 00 00 00 00  me_326..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 5B  E6 D8 3C 24 C3 40 0F 00  .......[..<$.@..
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 39 30 0D 00  03 0B 0B 00 00 00 00 00  me_190..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 66  F2 DE 47 4A 8C C0 0F 00  .......f..GJ....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 38 39 00 00  00 0C 75 73 65 72 6E 61  me_789....userna
+00000050: 6D 65 5F 37 32 33 00 00  00 0C 75 73 65 72 6E 61  me_723....userna
+00000060: 6D 65 5F 32 34 36 0D 00  03 0B 0B 00 00 00 00 00  me_246..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B E5  08 BD E1 33 DB 80 0F 00  ...........3....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 32 31 00 00  00 0C 75 73 65 72 6E 61  me_521....userna
+00000050: 6D 65 5F 39 33 35 0D 00  03 0B 0B 00 00 00 00 00  me_935..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 111
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...k........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B 4A  DE 82 33 E5 B3 80 0F 00  .......J..3.....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 34 31 31 00 00  00 0C 75 73 65 72 6E 61  me_411....userna
+00000050: 6D 65 5F 35 35 38 00 00  00 0B 75 73 65 72 6E 61  me_558....userna
+00000060: 6D 65 5F 33 39 0D 00 03  0B 0B 00 00 00 00 00     me_39..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 143
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8B 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 5F  C9 FD 77 35 DC 00 0F 00  ......._..w5....
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 36 35 00 00  00 0C 75 73 65 72 6E 61  me_865....userna
+00000050: 6D 65 5F 31 31 35 00 00  00 0C 75 73 65 72 6E 61  me_115....userna
+00000060: 6D 65 5F 34 31 36 00 00  00 0B 75 73 65 72 6E 61  me_416....userna
+00000070: 6D 65 5F 32 38 00 00 00  0C 75 73 65 72 6E 61 6D  me_28....usernam
+00000080: 65 5F 38 37 35 0D 00 03  0B 0B 00 00 00 00 00     e_875..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 141
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 89 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 66  EF 4B 37 A0 44 C0 0F 00  .......f.K7.D...
+00000030: 02 0B 00 00 00 05 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 32 00 00 00  0C 75 73 65 72 6E 61 6D  me_62....usernam
+00000050: 65 5F 37 37 37 00 00 00  0C 75 73 65 72 6E 61 6D  e_777....usernam
+00000060: 65 5F 31 30 34 00 00 00  0C 75 73 65 72 6E 61 6D  e_104....usernam
+00000070: 65 5F 36 32 37 00 00 00  0A 75 73 65 72 6E 61 6D  e_627....usernam
+00000080: 65 5F 38 0D 00 03 0B 0B  00 00 00 00 00           e_8..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B F8  77 70 76 4D BB 80 0F 00  ........wpvM....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 35 36 00 00  00 0C 75 73 65 72 6E 61  me_256....userna
+00000050: 6D 65 5F 33 38 30 00 00  00 0C 75 73 65 72 6E 61  me_380....userna
+00000060: 6D 65 5F 37 36 38 0D 00  03 0B 0B 00 00 00 00 00  me_768..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 6B  76 3A 9C 89 EF 80 0F 00  .......kv:......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 32 37 0D 00  03 0B 0B 00 00 00 00 00  me_627..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 1E  62 50 43 DC A0 00 0F 00  ........bPC.....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 37 39 00 00  00 0C 75 73 65 72 6E 61  me_679....userna
+00000050: 6D 65 5F 35 37 32 0D 00  03 0B 0B 00 00 00 00 00  me_572..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 67  65 05 05 65 CF 00 0F 00  .......ge..e....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 34 35 34 00 00  00 0C 75 73 65 72 6E 61  me_454....userna
+00000050: 6D 65 5F 36 37 38 0D 00  03 0B 0B 00 00 00 00 00  me_678..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 111
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...k........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 98  3E 8F 35 02 A8 60 0F 00  ........>.5..`..
+00000030: 02 0B 00 00 00 03 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 30 00 00 00  0C 75 73 65 72 6E 61 6D  me_10....usernam
+00000050: 65 5F 32 37 35 00 00 00  0C 75 73 65 72 6E 61 6D  e_275....usernam
+00000060: 65 5F 34 33 39 0D 00 03  0B 0B 00 00 00 00 00     e_439..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 E1  D4 B2 B8 1A 32 80 0F 00  ............2...
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 39 35 00 00  00 0C 75 73 65 72 6E 61  me_295....userna
+00000050: 6D 65 5F 35 38 34 00 00  00 0C 75 73 65 72 6E 61  me_584....userna
+00000060: 6D 65 5F 38 37 30 0D 00  03 0B 0B 00 00 00 00 00  me_870..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 1F  FC C4 77 1F 6C 00 0F 00  ..........w.l...
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 111
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...k........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A A1  29 88 6C 82 DB 80 0F 00  ........).l.....
+00000030: 02 0B 00 00 00 03 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 33 00 00 00  0C 75 73 65 72 6E 61 6D  me_53....usernam
+00000050: 65 5F 37 31 37 00 00 00  0C 75 73 65 72 6E 61 6D  e_717....usernam
+00000060: 65 5F 36 32 30 0D 00 03  0B 0B 00 00 00 00 00     e_620..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 03 4A  83 D9 8D 8A 82 20 0F 00  .......J..... ..
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 39 36 00 00  00 0C 75 73 65 72 6E 61  me_196....userna
+00000050: 6D 65 5F 31 32 34 00 00  00 0C 75 73 65 72 6E 61  me_124....userna
+00000060: 6D 65 5F 33 37 38 00 00  00 0C 75 73 65 72 6E 61  me_378....userna
+00000070: 6D 65 5F 36 32 34 00 00  00 0C 75 73 65 72 6E 61  me_624....userna
+00000080: 6D 65 5F 31 33 35 0D 00  03 0B 0B 00 00 00 00 00  me_135..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B 6B  48 B3 1F 91 08 00 0F 00  .......kH.......
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 35 39 00 00  00 0C 75 73 65 72 6E 61  me_159....userna
+00000050: 6D 65 5F 37 39 34 00 00  00 0C 75 73 65 72 6E 61  me_794....userna
+00000060: 6D 65 5F 37 34 32 00 00  00 0C 75 73 65 72 6E 61  me_742....userna
+00000070: 6D 65 5F 33 36 32 0D 00  03 0B 0B 00 00 00 00 00  me_362..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 0A  E8 31 63 7F DB F0 0F 00  .........1c.....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 34 31 00 00  00 0C 75 73 65 72 6E 61  me_541....userna
+00000050: 6D 65 5F 37 30 30 00 00  00 0C 75 73 65 72 6E 61  me_700....userna
+00000060: 6D 65 5F 38 32 31 0D 00  03 0B 0B 00 00 00 00 00  me_821..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0C 78  7B 5F 53 53 92 00 0F 00  .......x{_SS....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 34 33 00 00  00 0C 75 73 65 72 6E 61  me_943....userna
+00000050: 6D 65 5F 37 37 33 0D 00  03 0B 0B 00 00 00 00 00  me_773..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A EB  39 10 5E C6 97 80 0F 00  ........9.^.....
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 0B  88 84 27 19 70 80 0F 00  ..........'.p...
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 71  5F 33 8D 36 B6 40 0F 00  .......q_3.6.@..
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 31 37 00 00  00 0C 75 73 65 72 6E 61  me_517....userna
+00000050: 6D 65 5F 34 34 39 00 00  00 0C 75 73 65 72 6E 61  me_449....userna
+00000060: 6D 65 5F 35 39 32 0D 00  03 0B 0B 00 00 00 00 00  me_592..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A 5D  43 F5 13 A6 B9 80 0F 00  .......]C.......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 31 39 0D 00  03 0B 0B 00 00 00 00 00  me_619..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E 22  8E 86 CE B2 8C 80 0F 00  ......."........
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 37 38 00 00  00 0C 75 73 65 72 6E 61  me_578....userna
+00000050: 6D 65 5F 38 33 35 00 00  00 0C 75 73 65 72 6E 61  me_835....userna
+00000060: 6D 65 5F 33 37 33 00 00  00 0C 75 73 65 72 6E 61  me_373....userna
+00000070: 6D 65 5F 36 31 30 0D 00  03 0B 0B 00 00 00 00 00  me_610..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E F6  3F CA BE 2E EE 80 0F 00  ........?.......
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 30 34 00 00  00 0C 75 73 65 72 6E 61  me_204....userna
+00000050: 6D 65 5F 35 34 31 00 00  00 0C 75 73 65 72 6E 61  me_541....userna
+00000060: 6D 65 5F 36 32 36 00 00  00 0C 75 73 65 72 6E 61  me_626....userna
+00000070: 6D 65 5F 36 32 36 0D 00  03 0B 0B 00 00 00 00 00  me_626..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 46  BA A1 EF E9 C6 00 0F 00  .......F........
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 34 37 34 00 00  00 0C 75 73 65 72 6E 61  me_474....userna
+00000050: 6D 65 5F 37 30 31 0D 00  03 0B 0B 00 00 00 00 00  me_701..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 02  B0 78 84 1B 80 80 0F 00  .........x......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 34 31 0D 00  03 0B 0B 00 00 00 00 00  me_541..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 03 A5  28 9D FC 2D F4 C0 0F 00  ........(..-....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 35 35 00 00  00 0C 75 73 65 72 6E 61  me_955....userna
+00000050: 6D 65 5F 38 37 34 00 00  00 0C 75 73 65 72 6E 61  me_874....userna
+00000060: 6D 65 5F 36 30 30 0D 00  03 0B 0B 00 00 00 00 00  me_600..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 93  53 6B 7C A1 B9 80 0F 00  ........Sk|.....
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 F7  98 78 05 E6 64 50 0F 00  .........x..dP..
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 36 33 00 00  00 0C 75 73 65 72 6E 61  me_363....userna
+00000050: 6D 65 5F 32 35 32 00 00  00 0C 75 73 65 72 6E 61  me_252....userna
+00000060: 6D 65 5F 31 31 38 00 00  00 0C 75 73 65 72 6E 61  me_118....userna
+00000070: 6D 65 5F 33 32 31 00 00  00 0C 75 73 65 72 6E 61  me_321....userna
+00000080: 6D 65 5F 34 32 37 0D 00  03 0B 0B 00 00 00 00 00  me_427..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 EB  AA B8 4B 32 AD 00 0F 00  ..........K2....
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 31 34 0D 00  03 0B 0B 00 00 00 00 00  me_114..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 111
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...k........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 28  A1 4E E4 9B 04 00 0F 00  .......(.N......
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 34 34 00 00  00 0C 75 73 65 72 6E 61  me_544....userna
+00000050: 6D 65 5F 32 38 34 00 00  00 0B 75 73 65 72 6E 61  me_284....userna
+00000060: 6D 65 5F 37 34 0D 00 03  0B 0B 00 00 00 00 00     me_74..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 127
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...{........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A 34  10 E8 28 04 0E 00 0F 00  .......4..(.....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 30 39 00 00  00 0B 75 73 65 72 6E 61  me_809....userna
+00000050: 6D 65 5F 38 30 00 00 00  0C 75 73 65 72 6E 61 6D  me_80....usernam
+00000060: 65 5F 38 35 36 00 00 00  0C 75 73 65 72 6E 61 6D  e_856....usernam
+00000070: 65 5F 34 33 33 0D 00 03  0B 0B 00 00 00 00 00     e_433..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 B0  F6 B2 DD A2 6A 40 0F 00  ............j@..
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 34 30 00 00  00 0C 75 73 65 72 6E 61  me_740....userna
+00000050: 6D 65 5F 32 34 39 00 00  00 0C 75 73 65 72 6E 61  me_249....userna
+00000060: 6D 65 5F 37 35 39 0D 00  03 0B 0B 00 00 00 00 00  me_759..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 143
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8B 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F F2  E3 8C 3B F9 B2 00 0F 00  ..........;.....
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 35 36 00 00  00 0B 75 73 65 72 6E 61  me_856....userna
+00000050: 6D 65 5F 35 32 00 00 00  0C 75 73 65 72 6E 61 6D  me_52....usernam
+00000060: 65 5F 35 33 38 00 00 00  0C 75 73 65 72 6E 61 6D  e_538....usernam
+00000070: 65 5F 36 30 36 00 00 00  0C 75 73 65 72 6E 61 6D  e_606....usernam
+00000080: 65 5F 36 33 39 0D 00 03  0B 0B 00 00 00 00 00     e_639..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 03 3C  29 5A 4D AF 93 60 0F 00  .......<)ZM..`..
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 30 38 00 00  00 0C 75 73 65 72 6E 61  me_908....userna
+00000050: 6D 65 5F 35 37 30 0D 00  03 0B 0B 00 00 00 00 00  me_570..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 127
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...{........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 8F  72 94 B7 4E 16 80 0F 00  ........r..N....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 38 31 00 00  00 0B 75 73 65 72 6E 61  me_681....userna
+00000050: 6D 65 5F 38 38 00 00 00  0C 75 73 65 72 6E 61 6D  me_88....usernam
+00000060: 65 5F 33 33 32 00 00 00  0C 75 73 65 72 6E 61 6D  e_332....usernam
+00000070: 65 5F 31 33 39 0D 00 03  0B 0B 00 00 00 00 00     e_139..........
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 79
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...K........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 B7  14 94 C8 7E 71 40 0F 00  ...........~q@..
+00000030: 02 0B 00 00 00 01 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 34 0D 00 03  0B 0B 00 00 00 00 00     me_34..........
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0C 4F  0A 5E 78 90 21 80 0F 00  .......O.^x.!...
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 36 39 00 00  00 0C 75 73 65 72 6E 61  me_569....userna
+00000050: 6D 65 5F 38 38 31 00 00  00 0C 75 73 65 72 6E 61  me_881....userna
+00000060: 6D 65 5F 38 39 37 0D 00  03 0B 0B 00 00 00 00 00  me_897..........
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 02 F9  A9 E2 27 DA 38 A0 0F 00  ..........'.8...
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E 86  BF 35 35 8A 2D 80 0F 00  .........55.-...
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 39 37 00 00  00 0C 75 73 65 72 6E 61  me_597....userna
+00000050: 6D 65 5F 35 38 36 00 00  00 0C 75 73 65 72 6E 61  me_586....userna
+00000060: 6D 65 5F 35 39 37 00 00  00 0C 75 73 65 72 6E 61  me_597....userna
+00000070: 6D 65 5F 35 36 33 00 00  00 0C 75 73 65 72 6E 61  me_563....userna
+00000080: 6D 65 5F 37 30 39 0D 00  03 0B 0B 00 00 00 00 00  me_709..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F CB  48 FD 53 F0 86 00 0F 00  ........H.S.....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 31 33 00 00  00 0C 75 73 65 72 6E 61  me_813....userna
+00000050: 6D 65 5F 33 34 30 0D 00  03 0B 0B 00 00 00 00 00  me_340..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 143
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8B 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 97  D2 7B DE EF 0B 80 0F 00  .........{......
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 38 32 00 00  00 0C 75 73 65 72 6E 61  me_282....userna
+00000050: 6D 65 5F 32 38 37 00 00  00 0C 75 73 65 72 6E 61  me_287....userna
+00000060: 6D 65 5F 37 30 32 00 00  00 0B 75 73 65 72 6E 61  me_702....userna
+00000070: 6D 65 5F 35 33 00 00 00  0C 75 73 65 72 6E 61 6D  me_53....usernam
+00000080: 65 5F 38 37 30 0D 00 03  0B 0B 00 00 00 00 00     e_870..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 06 E9  F7 CE 44 2C C5 80 0F 00  ..........D,....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 34 39 00 00  00 0C 75 73 65 72 6E 61  me_249....userna
+00000050: 6D 65 5F 35 35 36 0D 00  03 0B 0B 00 00 00 00 00  me_556..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 24  BE 58 21 B7 14 00 0F 00  .......$.X!.....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 33 35 00 00  00 0C 75 73 65 72 6E 61  me_835....userna
+00000050: 6D 65 5F 31 39 39 00 00  00 0C 75 73 65 72 6E 61  me_199....userna
+00000060: 6D 65 5F 33 30 32 00 00  00 0C 75 73 65 72 6E 61  me_302....userna
+00000070: 6D 65 5F 31 32 38 0D 00  03 0B 0B 00 00 00 00 00  me_128..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 DF  AB 62 10 2C 78 00 0F 00  .........b.,x...
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 32 30 00 00  00 0C 75 73 65 72 6E 61  me_520....userna
+00000050: 6D 65 5F 35 30 31 00 00  00 0C 75 73 65 72 6E 61  me_501....userna
+00000060: 6D 65 5F 39 35 33 0D 00  03 0B 0B 00 00 00 00 00  me_953..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B C2  26 95 4A A5 7F 00 0F 00  ........&.J.....
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 37 31 00 00  00 0C 75 73 65 72 6E 61  me_271....userna
+00000050: 6D 65 5F 32 31 39 00 00  00 0C 75 73 65 72 6E 61  me_219....userna
+00000060: 6D 65 5F 34 30 36 00 00  00 0C 75 73 65 72 6E 61  me_406....userna
+00000070: 6D 65 5F 31 34 39 00 00  00 0C 75 73 65 72 6E 61  me_149....userna
+00000080: 6D 65 5F 35 34 30 0D 00  03 0B 0B 00 00 00 00 00  me_540..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A 0D  54 8F F8 6E 91 80 0F 00  ........T..n....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 32 31 00 00  00 0C 75 73 65 72 6E 61  me_121....userna
+00000050: 6D 65 5F 32 35 32 00 00  00 0C 75 73 65 72 6E 61  me_252....userna
+00000060: 6D 65 5F 38 37 30 00 00  00 0C 75 73 65 72 6E 61  me_870....userna
+00000070: 6D 65 5F 36 33 38 0D 00  03 0B 0B 00 00 00 00 00  me_638..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A 83  E3 D1 21 4A 08 80 0F 00  ..........!J....
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 21  FD 71 9B 0C E8 00 0F 00  .......!.q......
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 39 32 0D 00  03 0B 0B 00 00 00 00 00  me_892..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E 35  E8 3E 13 1E 89 00 0F 00  .......5.>......
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 33 32 00 00  00 0C 75 73 65 72 6E 61  me_932....userna
+00000050: 6D 65 5F 37 34 34 00 00  00 0C 75 73 65 72 6E 61  me_744....userna
+00000060: 6D 65 5F 36 37 34 00 00  00 0C 75 73 65 72 6E 61  me_674....userna
+00000070: 6D 65 5F 36 38 35 00 00  00 0C 75 73 65 72 6E 61  me_685....userna
+00000080: 6D 65 5F 33 30 34 0D 00  03 0B 0B 00 00 00 00 00  me_304..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E C7  47 11 EA 91 57 00 0F 00  ........G...W...
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 33 36 30 0D 00  03 0B 0B 00 00 00 00 00  me_360..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 37  E8 20 F7 EC E8 00 0F 00  .......7. ......
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0A C1  DD C0 34 1D 55 80 0F 00  ..........4.U...
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 35 33 00 00  00 0C 75 73 65 72 6E 61  me_653....userna
+00000050: 6D 65 5F 33 31 30 00 00  00 0C 75 73 65 72 6E 61  me_310....userna
+00000060: 6D 65 5F 34 36 36 00 00  00 0C 75 73 65 72 6E 61  me_466....userna
+00000070: 6D 65 5F 32 31 32 0D 00  03 0B 0B 00 00 00 00 00  me_212..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0C D0  28 A8 03 AF 2F 00 0F 00  ........(.../...
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 38 38 00 00  00 0C 75 73 65 72 6E 61  me_288....userna
+00000050: 6D 65 5F 38 39 34 0D 00  03 0B 0B 00 00 00 00 00  me_894..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 66  8F 7C 64 A0 CC 80 0F 00  .......f.|d.....
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 35 31 0D 00  03 0B 0B 00 00 00 00 00  me_651..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F F3  C1 31 85 37 BB 80 0F 00  .........1.7....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 38 30 35 00 00  00 0C 75 73 65 72 6E 61  me_805....userna
+00000050: 6D 65 5F 35 30 31 00 00  00 0C 75 73 65 72 6E 61  me_501....userna
+00000060: 6D 65 5F 34 36 36 0D 00  03 0B 0B 00 00 00 00 00  me_466..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 95
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...[........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 6A  5C 3A DA 64 0A 00 0F 00  .......j\:.d....
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 39 33 00 00  00 0B 75 73 65 72 6E 61  me_693....userna
+00000050: 6D 65 5F 35 35 0D 00 03  0B 0B 00 00 00 00 00     me_55..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B F0  67 FA 66 E8 0E 00 0F 00  ........g.f.....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 33 37 00 00  00 0C 75 73 65 72 6E 61  me_637....userna
+00000050: 6D 65 5F 39 33 32 00 00  00 0C 75 73 65 72 6E 61  me_932....userna
+00000060: 6D 65 5F 36 38 37 0D 00  03 0B 0B 00 00 00 00 00  me_687..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B 49  0E F0 AE 14 0B 80 0F 00  .......I........
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 32 36 00 00  00 0C 75 73 65 72 6E 61  me_226....userna
+00000050: 6D 65 5F 33 36 37 00 00  00 0C 75 73 65 72 6E 61  me_367....userna
+00000060: 6D 65 5F 31 37 32 00 00  00 0C 75 73 65 72 6E 61  me_172....userna
+00000070: 6D 65 5F 32 35 36 0D 00  03 0B 0B 00 00 00 00 00  me_256..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 48  86 A8 87 53 3F 00 0F 00  .......H...S?...
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 39 34 00 00  00 0C 75 73 65 72 6E 61  me_294....userna
+00000050: 6D 65 5F 33 33 38 00 00  00 0C 75 73 65 72 6E 61  me_338....userna
+00000060: 6D 65 5F 31 38 32 00 00  00 0C 75 73 65 72 6E 61  me_182....userna
+00000070: 6D 65 5F 39 33 37 00 00  00 0C 75 73 65 72 6E 61  me_937....userna
+00000080: 6D 65 5F 33 31 37 0D 00  03 0B 0B 00 00 00 00 00  me_317..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 89  C1 07 AB 1B 55 80 0F 00  ............U...
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 37 36 00 00  00 0C 75 73 65 72 6E 61  me_776....userna
+00000050: 6D 65 5F 39 31 36 00 00  00 0C 75 73 65 72 6E 61  me_916....userna
+00000060: 6D 65 5F 35 32 33 00 00  00 0C 75 73 65 72 6E 61  me_523....userna
+00000070: 6D 65 5F 36 34 37 0D 00  03 0B 0B 00 00 00 00 00  me_647..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 14  47 A6 1D 30 64 80 0F 00  ........G..0d...
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 31 31 00 00  00 0C 75 73 65 72 6E 61  me_511....userna
+00000050: 6D 65 5F 37 39 36 00 00  00 0C 75 73 65 72 6E 61  me_796....userna
+00000060: 6D 65 5F 37 35 32 0D 00  03 0B 0B 00 00 00 00 00  me_752..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0F 1F  44 C0 24 8F 2A 80 0F 00  ........D.$.*...
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 38 33 00 00  00 0C 75 73 65 72 6E 61  me_583....userna
+00000050: 6D 65 5F 34 36 35 0D 00  03 0B 0B 00 00 00 00 00  me_465..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 A9  74 7E 8A 87 B0 00 0F 00  ........t~......
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 30 39 00 00  00 0C 75 73 65 72 6E 61  me_109....userna
+00000050: 6D 65 5F 35 33 39 00 00  00 0C 75 73 65 72 6E 61  me_539....userna
+00000060: 6D 65 5F 35 35 36 00 00  00 0C 75 73 65 72 6E 61  me_556....userna
+00000070: 6D 65 5F 38 35 33 0D 00  03 0B 0B 00 00 00 00 00  me_853..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 128
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...|........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0B E0  65 55 D4 4A A9 00 0F 00  ........eU.J....
+00000030: 02 0B 00 00 00 04 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 39 38 00 00  00 0C 75 73 65 72 6E 61  me_798....userna
+00000050: 6D 65 5F 33 33 38 00 00  00 0C 75 73 65 72 6E 61  me_338....userna
+00000060: 6D 65 5F 36 38 32 00 00  00 0C 75 73 65 72 6E 61  me_682....userna
+00000070: 6D 65 5F 36 38 31 0D 00  03 0B 0B 00 00 00 00 00  me_681..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0C 8A  DF 4C 71 01 58 00 0F 00  .........Lq.X...
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 33 32 00 00  00 0C 75 73 65 72 6E 61  me_132....userna
+00000050: 6D 65 5F 35 35 39 00 00  00 0C 75 73 65 72 6E 61  me_559....userna
+00000060: 6D 65 5F 39 33 33 00 00  00 0C 75 73 65 72 6E 61  me_933....userna
+00000070: 6D 65 5F 33 37 30 00 00  00 0C 75 73 65 72 6E 61  me_370....userna
+00000080: 6D 65 5F 33 32 31 0D 00  03 0B 0B 00 00 00 00 00  me_321..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 01 3F  49 F5 1D FF DC A0 0F 00  .......?I.......
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 35 31 00 00  00 0C 75 73 65 72 6E 61  me_151....userna
+00000050: 6D 65 5F 33 34 34 0D 00  03 0B 0B 00 00 00 00 00  me_344..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 06 62  D2 7F 2F BD 49 80 0F 00  .......b../.I...
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 36 38 31 00 00  00 0C 75 73 65 72 6E 61  me_681....userna
+00000050: 6D 65 5F 38 36 33 00 00  00 0C 75 73 65 72 6E 61  me_863....userna
+00000060: 6D 65 5F 31 34 37 00 00  00 0C 75 73 65 72 6E 61  me_147....userna
+00000070: 6D 65 5F 38 38 38 00 00  00 0C 75 73 65 72 6E 61  me_888....userna
+00000080: 6D 65 5F 37 37 36 0D 00  03 0B 0B 00 00 00 00 00  me_776..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 08 A0  CE DF CF 78 22 80 0F 00  ...........x"...
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 125
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 79 80 01 00 01  00 00 00 13 43 6F 6D 70  ...y........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 06 66  AD CF 50 BD 46 40 0F 00  .......f..P.F@..
+00000030: 02 0B 00 00 00 04 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 31 00 00 00  0B 75 73 65 72 6E 61 6D  me_91....usernam
+00000050: 65 5F 39 35 00 00 00 0C  75 73 65 72 6E 61 6D 65  e_95....username
+00000060: 5F 38 39 34 00 00 00 0B  75 73 65 72 6E 61 6D 65  _894....username
+00000070: 5F 38 36 0D 00 03 0B 0B  00 00 00 00 00           _86..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 5F  FC 0A F0 83 D0 C0 0F 00  ......._........
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 34 39 00 00  00 0C 75 73 65 72 6E 61  me_149....userna
+00000050: 6D 65 5F 31 33 35 0D 00  03 0B 0B 00 00 00 00 00  me_135..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 95
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...[........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0D 03  03 B7 05 A6 CF 00 0F 00  ................
+00000030: 02 0B 00 00 00 02 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 34 31 00 00 00  0C 75 73 65 72 6E 61 6D  me_41....usernam
+00000050: 65 5F 36 30 32 0D 00 03  0B 0B 00 00 00 00 00     e_602..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 98  A5 90 40 9D 2A 00 0F 00  ..........@.*...
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 34 39 00 00  00 0C 75 73 65 72 6E 61  me_249....userna
+00000050: 6D 65 5F 36 39 35 00 00  00 0C 75 73 65 72 6E 61  me_695....userna
+00000060: 6D 65 5F 31 34 32 0D 00  03 0B 0B 00 00 00 00 00  me_142..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 AA  B8 2A C8 9B 01 00 0F 00  .........*......
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 32 37 36 00 00  00 0C 75 73 65 72 6E 61  me_276....userna
+00000050: 6D 65 5F 37 36 37 0D 00  03 0B 0B 00 00 00 00 00  me_767..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 00 8D  3F 10 0D B1 D7 70 0F 00  ........?....p..
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 35 33 00 00  00 0C 75 73 65 72 6E 61  me_753....userna
+00000050: 6D 65 5F 33 34 35 0D 00  03 0B 0B 00 00 00 00 00  me_345..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 0E F9  25 08 F9 F8 DE 80 0F 00  ........%.......
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 35 32 34 00 00  00 0C 75 73 65 72 6E 61  me_524....userna
+00000050: 6D 65 5F 34 32 39 00 00  00 0C 75 73 65 72 6E 61  me_429....userna
+00000060: 6D 65 5F 31 39 37 00 00  00 0C 75 73 65 72 6E 61  me_197....userna
+00000070: 6D 65 5F 38 33 37 00 00  00 0C 75 73 65 72 6E 61  me_837....userna
+00000080: 6D 65 5F 35 34 37 0D 00  03 0B 0B 00 00 00 00 00  me_547..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 80
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 4C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...L........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 09 B6  BC D7 A7 82 23 00 0F 00  ............#...
+00000030: 02 0B 00 00 00 01 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 34 39 34 0D 00  03 0B 0B 00 00 00 00 00  me_494..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 96
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 5C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...\........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 03 08  52 A9 C0 77 31 E0 0F 00  ........R..w1...
+00000030: 02 0B 00 00 00 02 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 35 35 00 00  00 0C 75 73 65 72 6E 61  me_155....userna
+00000050: 6D 65 5F 35 32 33 0D 00  03 0B 0B 00 00 00 00 00  me_523..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 02 18  5D 87 20 8A A8 00 0F 00  ........]. .....
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 39 33 30 00 00  00 0C 75 73 65 72 6E 61  me_930....userna
+00000050: 6D 65 5F 31 32 39 00 00  00 0C 75 73 65 72 6E 61  me_129....userna
+00000060: 6D 65 5F 37 30 30 0D 00  03 0B 0B 00 00 00 00 00  me_700..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 127
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 7B 80 01 00 01  00 00 00 13 43 6F 6D 70  ...{........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 02 C5  4E FB B3 5D DD 60 0F 00  ........N..].`..
+00000030: 02 0B 00 00 00 04 00 00  00 0B 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 31 38 00 00 00  0C 75 73 65 72 6E 61 6D  me_18....usernam
+00000050: 65 5F 34 37 32 00 00 00  0C 75 73 65 72 6E 61 6D  e_472....usernam
+00000060: 65 5F 35 37 34 00 00 00  0C 75 73 65 72 6E 61 6D  e_574....usernam
+00000070: 65 5F 34 35 35 0D 00 03  0B 0B 00 00 00 00 00     e_455..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 144
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 8C 80 01 00 01  00 00 00 13 43 6F 6D 70  ............Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 05 FE  01 2E 5A 74 F3 00 0F 00  ..........Zt....
+00000030: 02 0B 00 00 00 05 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 33 33 00 00  00 0C 75 73 65 72 6E 61  me_733....userna
+00000050: 6D 65 5F 35 35 35 00 00  00 0C 75 73 65 72 6E 61  me_555....userna
+00000060: 6D 65 5F 35 39 35 00 00  00 0C 75 73 65 72 6E 61  me_595....userna
+00000070: 6D 65 5F 39 35 36 00 00  00 0C 75 73 65 72 6E 61  me_956....userna
+00000080: 6D 65 5F 32 35 31 0D 00  03 0B 0B 00 00 00 00 00  me_251..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 64
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 3C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...<........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 04 0A  C8 9B F4 CE 34 00 0F 00  ............4...
+00000030: 02 0B 00 00 00 00 0D 00  03 0B 0B 00 00 00 00 00  ................
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
+====
+STREAM PID 40016.0xffff9482c72c1000 (C) > 11160.0xffff9482c7808800 (S), length 112
+command[40016]: b'./cmake-build/src/TextService/TextService'
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+----
+00000000: 00 00 00 6C 80 01 00 01  00 00 00 13 43 6F 6D 70  ...l........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0A 00 01 06 E4  E4 66 80 EF E0 80 0F 00  .........f......
+00000030: 02 0B 00 00 00 03 00 00  00 0C 75 73 65 72 6E 61  ..........userna
+00000040: 6D 65 5F 37 30 31 00 00  00 0C 75 73 65 72 6E 61  me_701....userna
+00000050: 6D 65 5F 38 33 30 00 00  00 0C 75 73 65 72 6E 61  me_830....userna
+00000060: 6D 65 5F 34 38 34 0D 00  03 0B 0B 00 00 00 00 00  me_484..........
+====
+STREAM PID 11160.0xffff9482c7808800 (S) > 40016.0xffff9482c72c1000 (C), length 44
+command[11160]: b'./cmake-build/src/UserMentionService/UserMentionService'
+command[40016]: b'./cmake-build/src/TextService/TextService'
+----
+00000000: 00 00 00 28 80 01 00 02  00 00 00 13 43 6F 6D 70  ...(........Comp
+00000010: 6F 73 65 55 73 65 72 4D  65 6E 74 69 6F 6E 73 00  oseUserMentions.
+00000020: 00 00 00 0F 00 00 0C 00  00 00 00 00              ............
