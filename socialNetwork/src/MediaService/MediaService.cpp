@@ -1,5 +1,5 @@
 #include <signal.h>
-#include <thrift/protocol/TBinaryProtocol.h>
+#include <thrift/protocol/TJSONProtocol.h>
 // #include <thrift/server/TSimpleServer.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -9,7 +9,7 @@
 #include "../utils_thrift.h"
 #include "MediaHandler.h"
 
-using apache::thrift::protocol::TBinaryProtocolFactory;
+using apache::thrift::protocol::TJSONProtocolFactory;
 using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
       std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
       server_socket,
       std::make_shared<TFramedTransportFactory>(),
-      std::make_shared<TBinaryProtocolFactory>());
+      std::make_shared<TJSONProtocolFactory>());
 
   LOG(info) << "Starting the media-service server...";
   server.serve();
