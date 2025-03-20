@@ -1,6 +1,6 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/protocol/TJSONProtocol.h>
+#include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
@@ -11,8 +11,8 @@
 #include "TextHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::protocol::TJSONProtocolFactory;
-using apache::thrift::protocol::TJSONProtocol;
+using apache::thrift::protocol::TBinaryProtocolFactory;
+using apache::thrift::protocol::TBinaryProtocol;
 using apache::thrift::server::TSimpleServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
@@ -58,11 +58,11 @@ int main(int argc, char *argv[]) {
     }
     std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
 
-    auto _transportIn = openFileTransport("/users/ansa/DeathStarBench/socialNetwork/stream-39328-json.bin", false);
+    auto _transportIn = openFileTransport("/users/ansa/DeathStarBench/socialNetwork/stream-39328.bin", false);
     if (!_transportIn) {
          LOG(error) << "could not open input trace file";
     }
-    std::shared_ptr<TProtocol> _protocolIn(new TJSONProtocol(_transportIn));
+    std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
 
 
     FileServer server(

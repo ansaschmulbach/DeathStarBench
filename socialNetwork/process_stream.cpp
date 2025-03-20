@@ -63,7 +63,7 @@ std::vector<StreamData> processFile(const std::string& fileName) {
 		std::cout << std::endl;
             }
 
-	    if (streamData.dst_pid == 40016) {
+	    if (streamData.dst_pid == 79932) {
             	streams.push_back(streamData);
 	    }
         }
@@ -103,10 +103,14 @@ void writeBinaryFiles(const std::vector<StreamData>& streams, std::string fileNa
 }
 
 int main() {
-    std::string fileName = "compose_post_in";
+    // std::string fileName = "compose_post_in";
+    std::string fileName = "url_shorten_out";
+    //std::string fileName = "user_mention_out";
     std::vector<StreamData> streams = processFile(fileName);
     
-    // writeBinaryFiles(streams, "stream-39328.bin");
+    //writeBinaryFiles(streams, "stream-39328.bin");
+    writeBinaryFiles(streams, "stream-39317.bin");
+    //writeBinaryFiles(streams, "stream-39320.bin");
     
     return 0;
 }
