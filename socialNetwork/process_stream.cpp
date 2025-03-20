@@ -50,12 +50,17 @@ std::vector<StreamData> processFile(const std::string& fileName) {
             while (std::getline(file, line) && !line.empty() && line[0] != '=') {
 		std::istringstream dataStream(line.substr(10, 48));
                 std::string byteStr;
-		for (int i = 0; i < 16; i++) {
-                    dataStream >> byteStr;
+		int byteCount = 0;
+		while (dataStream >> byteStr && byteCount < 16) {
+		    std::cout << byteStr << " ";
+		// for (int i = 0; i < 16; i++) {
                     if (byteStr.size() == 2) {
                         streamData.data.push_back(static_cast<uint8_t>(std::stoi(byteStr, nullptr, 16)));
                     }
-                }
+		    byteCount++;
+                // }
+		}
+		std::cout << std::endl;
             }
 
 	    if (streamData.dst_pid == 40016) {
@@ -98,10 +103,10 @@ void writeBinaryFiles(const std::vector<StreamData>& streams, std::string fileNa
 }
 
 int main() {
-    std::string fileName = "user_mention_out";
+    std::string fileName = "compose_post_in";
     std::vector<StreamData> streams = processFile(fileName);
     
-    writeBinaryFiles(streams, "stream-39320.bin");
+    // writeBinaryFiles(streams, "stream-39328.bin");
     
     return 0;
 }

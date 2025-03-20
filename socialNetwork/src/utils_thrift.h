@@ -17,7 +17,7 @@ using json = nlohmann::json;
 using apache::thrift::transport::TServerSocket;
 using apache::thrift::transport::TSSLServerSocket;
 using apache::thrift::transport::TSSLSocketFactory;
-using apache::thrift::transport::TBufferedTransport;
+using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TFDTransport;
 using apache::thrift::TProcessor;
 using apache::thrift::protocol::TTransport;
@@ -46,7 +46,7 @@ std::shared_ptr<TServerSocket> get_server_socket(const json &config_json, const 
   return std::make_shared<TServerSocket>("/users/ansa/dsb-sock-" + std::to_string(port));
 };
 
-std::shared_ptr<TBufferedTransport>  openFileTransport(const char* name, bool out) {
+std::shared_ptr<TFramedTransport>  openFileTransport(const char* name, bool out) {
 	int fd;
 	if (out) {
 		fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
@@ -59,7 +59,7 @@ std::shared_ptr<TBufferedTransport>  openFileTransport(const char* name, bool ou
 	}
 
 	std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
-	std::shared_ptr<TBufferedTransport> transport(new TBufferedTransport(file));
+	std::shared_ptr<TFramedTransport> transport(new TFramedTransport(file));
 	return transport;
 }
 
