@@ -47,7 +47,7 @@ public:
 		for (;;) {
 				try {
 					processor.get()->process(protocolIn, protocolOut, NULL);
-					LOG(info) << "success!" << std::endl;
+					// LOG(info) << "success!" << std::endl;
 				} catch (TTransportException& ttx) {
 					LOG(error) << "breaking: " << ttx.what();
 					break;

@@ -43,7 +43,7 @@ void TextHandler::ComposeText(
     TextServiceReturn &_return, int64_t req_id, const std::string &text,
     const std::map<std::string, std::string> &carrier) {
 
-  zsim_roi_begin();
+  // LOG(info) << "text handler -- begin compose text, req id: " << std::hex << req_id;
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -83,6 +83,7 @@ void TextHandler::ComposeText(
 
     auto url_client_wrapper = _url_client_pool->Pop();
     if (!url_client_wrapper) {
+      LOG(error) << "Failed to connect to url-shorten-service";
       ServiceException se;
       se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
       se.message = "Failed to connect to url-shorten-service";
@@ -113,6 +114,7 @@ void TextHandler::ComposeText(
 
     auto user_mention_client_wrapper = _user_mention_client_pool->Pop();
     if (!user_mention_client_wrapper) {
+      LOG(error) << "failed to connect to user mention service";
       ServiceException se;
       se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
       se.message = "Failed to connect to user-mention-service";
@@ -155,6 +157,7 @@ void TextHandler::ComposeText(
   std::string updated_text;
   if (!urls.empty()) {
     s = text;
+    // LOG(info) << "s is " << s;
     int idx = 0;
     while (std::regex_search(s, m, e)) {
       auto url = m.str();
@@ -162,7 +165,9 @@ void TextHandler::ComposeText(
       updated_text += m.prefix().str() + target_urls[idx].shortened_url;
       s = m.suffix().str();
       idx++;
+      // LOG(info) << "s is " << s << ", idx " << idx;
     }
+    //LOG(info) << "exited~";
   } else {
     updated_text = text;
   }
@@ -172,6 +177,7 @@ void TextHandler::ComposeText(
   _return.urls = target_urls;
   // span->Finish();
   //zsim_roi_end();
+  // LOG(info) << "text handler -- end compose text, req id: " << std::hex << req_id;
 }
 
 }  // namespace social_network
