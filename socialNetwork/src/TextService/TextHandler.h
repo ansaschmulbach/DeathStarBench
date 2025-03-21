@@ -171,7 +171,7 @@ void TextHandler::ComposeText(
   _return.text = updated_text;
   _return.urls = target_urls;
   // span->Finish();
-  //zsim_roi_end();
+  zsim_heartbeat();
 }
 
 }  // namespace social_network
