@@ -82,8 +82,8 @@ function TSocket:open()
     self.handle = ngx.socket.tcp()
     self.handle:settimeout(self.timeout)
   end
-  -- local ok, err = self.handle:connect(self.host, self.port)
-  local ok, err = self.handle:connect("unix:/" .. self.host)
+  local ok, err = self.handle:connect(self.host, self.port)
+  -- local ok, err = self.handle:connect("unix:/" .. self.host)
   print("hi")
   if not ok then
     terror(TTransportException:new{

@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "text-service");
 
   json config_json;
-  if (load_config_file("/users/ansa/DeathStarBench/socialNetwork/config/service-config.json", &config_json) == 0) {
+  if (load_config_file("config/service-config.json", &config_json) == 0) {
     int port = config_json["text-service"]["port"];
 
     std::string url_addr = config_json["url-shorten-service"]["addr"];
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
         "user-mention-service", user_mention_addr, user_mention_port, 0,
         user_mention_conns, user_mention_timeout, user_mention_keepalive, config_json);
 
-    std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+    std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "0.0.0.0", port);
     TSimpleServer server(
         std::make_shared<TextServiceProcessor>(std::make_shared<TextHandler>(
             &url_client_pool, &user_mention_pool)),

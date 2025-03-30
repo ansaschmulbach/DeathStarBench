@@ -32,7 +32,8 @@ std::shared_ptr<TServerSocket> get_server_socket(const json &config_json, const 
     // }
     return std::make_shared<TSSLServerSocket>(address, port, ssl_socket_factory);
   }
-  return std::make_shared<TServerSocket>("/users/ansa/dsb-sock-" + std::to_string(port));
+  // return std::make_shared<TServerSocket>("/users/ansa/dsb-sock-" + std::to_string(port));
+  return std::make_shared<TServerSocket>(address, port);
 };
 
 } //namespace social_network

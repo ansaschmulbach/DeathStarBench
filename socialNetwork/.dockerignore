@@ -1,4 +1,5 @@
 *
+!textservice-entrypoint.sh
 !/src/
 !/CMakeLists.txt
 !/cmake/
