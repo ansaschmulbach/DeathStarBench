@@ -12,7 +12,7 @@ services:
       social-graph-mongodb:
         condition: service_started
     restart: always
-    entrypoint: SocialGraphService
+    entrypoint: /social-network-microservices/entrypoints/social-graph-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -47,7 +47,7 @@ services:
     depends_on:
       jaeger-agent:
         condition: service_started
-    entrypoint: ComposePostService
+    entrypoint: /social-network-microservices/entrypoints/compose-post-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -63,7 +63,7 @@ services:
         condition: service_started
       post-storage-mongodb:
         condition: service_started
-    entrypoint: PostStorageService
+    entrypoint: /social-network-microservices/entrypoints/post-storage-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -93,7 +93,7 @@ services:
         condition: service_started
       user-timeline-mongodb:
         condition: service_started
-    entrypoint: UserTimelineService
+    entrypoint: /social-network-microservices/entrypoints/user-timeline-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -118,7 +118,7 @@ services:
     #    ports:
     #      - 10004:9090
     restart: always
-    entrypoint: UrlShortenService
+    entrypoint: /social-network-microservices/entrypoints/url-shorten-service-entrypoint.sh
     depends_on:
       jaeger-agent:
         condition: service_started
@@ -153,7 +153,7 @@ services:
         condition: service_started
       user-mongodb:
         condition: service_started
-    entrypoint: UserService
+    entrypoint: /social-network-microservices/entrypoints/user-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -183,7 +183,7 @@ services:
       media-mongodb:
         condition: service_started
     restart: always
-    entrypoint: MediaService
+    entrypoint: /social-network-microservices/entrypoints/media-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -211,7 +211,7 @@ services:
     depends_on:
       jaeger-agent:
         condition: service_started
-    entrypoint: /social-network-microservices/textservice-entrypoint.sh
+    entrypoint: /social-network-microservices/entrypoints/text-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -225,7 +225,7 @@ services:
     depends_on:
       jaeger-agent:
         condition: service_started
-    entrypoint: UniqueIdService
+    entrypoint: /social-network-microservices/entrypoints/unique-id-service-entrypoint.sh
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -239,7 +239,8 @@ services:
       jaeger-agent:
         condition: service_started
     restart: always
-    entrypoint: UserMentionService
+    entrypoint: /social-network-microservices/entrypoints/user-mention-service-entrypoint.sh
+      # entrypoint: UserMentionService
     volumes:
       - ./config:/social-network-microservices/config
 
@@ -253,7 +254,8 @@ services:
       jaeger-agent:
         condition: service_started
     restart: always
-    entrypoint: HomeTimelineService
+    entrypoint: /social-network-microservices/entrypoints/home-timeline-service-entrypoint.sh
+      # entrypoint: HomeTimelineService
     volumes:
       - ./config:/social-network-microservices/config
 
