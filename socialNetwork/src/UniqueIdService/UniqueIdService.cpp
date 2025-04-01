@@ -18,6 +18,7 @@
 #include <thrift/transport/TServerSocket.h>
 
 #include "../utils.h"
+#include "../dump_file_server.h"
 #include "../utils_thrift.h"
 #include "UniqueIdHandler.h"
 
@@ -48,14 +49,27 @@ int main(int argc, char *argv[]) {
   }
   LOG(info) << "machine_id = " << machine_id;
 
+  auto _transportOut = openFileTransport("out", true);
+  if (!_transportOut) {
+   LOG(error) << "could not open output trace file";
+  }
+  std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
+  
+  auto _transportIn = openFileTransport(("tcpdump_out/unique-id-service/" + std::to_string(port) + "-in").c_str(), false);
+  if (!_transportIn) {
+   LOG(error) << "could not open input trace file";
+  }
+  std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
+
   std::mutex thread_lock;
   std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
-  TSimpleServer server(
+  FileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
-          std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-      server_socket,
-      std::make_shared<TFramedTransportFactory>(),
-      std::make_shared<TBinaryProtocolFactory>());
+        std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
+	_transportIn,
+	_protocolIn, 
+	_transportOut,
+	_protocolOut);
 
   LOG(info) << "Starting the unique-id-service server ...";
   server.serve();
