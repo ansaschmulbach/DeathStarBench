@@ -4,8 +4,11 @@
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
+#include "../dump_file_server.h"
 #include "../utils.h"
 #include "../utils_thrift.h"
+// #include "../FileServerTransport.h"
+#include "../SocketServerTransport.h"
 #include "TextHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
@@ -47,11 +50,38 @@ int main(int argc, char *argv[]) {
         "user-mention-service", user_mention_addr, user_mention_port, 0,
         user_mention_conns, user_mention_timeout, user_mention_keepalive, config_json);
 
-    std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+    // auto _transportOut = openFileTransport("out", true);
+    // if (!_transportOut) {
+    //      LOG(error) << "could not open output trace file";
+    // }
+    // std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
+
+    // auto _transportIn = openFileTransport("//data/sanchez/users/ansa/DSB/socialNetwork/stream-39328.bin", false);
+    // if (!_transportIn) {
+    //      LOG(error) << "could not open input trace file";
+    // }
+    // std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
+
+
+//     FileServer server(
+//         std::make_shared<TextServiceProcessor>(std::make_shared<TextHandler>(
+//             &url_client_pool, &user_mention_pool)),
+// 	_transportIn,
+// 	_protocolIn,
+// 	_transportOut,
+// 	_protocolOut);
+
+    // std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+
+    // auto filepathIn = "//data/sanchez/users/ansa/DSB/socialNetwork/stream-new.bin";
+    // auto server_transport = std::make_shared<FileServerTransport>(filepathIn);
+    // auto server_transport = std::make_shared<SocketServerTransport>(TCP_SOCKET, "localhost", port);
+    auto server_transport = std::make_shared<SocketServerTransport>(UNIX_DOMAIN, "dsb-sock-" + std::to_string(port));
     TSimpleServer server(
         std::make_shared<TextServiceProcessor>(std::make_shared<TextHandler>(
             &url_client_pool, &user_mention_pool)),
-        server_socket,
+        // server_socket,
+	server_transport,
         std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
 
