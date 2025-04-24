@@ -28,6 +28,8 @@ class UserMentionHandler : public UserMentionServiceIf {
  private:
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
+  uint64_t req_serve_count;
+  bool obey_req_serve_max = false;
 };
 
 UserMentionHandler::UserMentionHandler(
@@ -41,7 +43,17 @@ void UserMentionHandler::ComposeUserMentions(
     std::vector<UserMention> &_return, int64_t req_id,
     const std::vector<std::string> &usernames,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

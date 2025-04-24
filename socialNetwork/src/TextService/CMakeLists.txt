@@ -27,8 +27,8 @@ target_link_libraries(
 )
 
 # Set the linker flags to ensure static linking
-set_target_properties(TextService PROPERTIES
-	LINK_FLAGS "-static"
-)
+# set_target_properties(TextService PROPERTIES
+# 	LINK_FLAGS "-static -Wl,--verbose"
+# )
 
 install(TARGETS TextService DESTINATION ./)

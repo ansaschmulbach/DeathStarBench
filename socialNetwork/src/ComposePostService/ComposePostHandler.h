@@ -85,6 +85,9 @@ class ComposePostHandler : public ComposePostServiceIf {
   int64_t _ComposeUniqueIdHelper(
       int64_t req_id, PostType::type post_type,
       const std::map<std::string, std::string> &carrier);
+
+  uint64_t req_serve_count;
+  bool obey_req_serve_max = false;
 };
 
 ComposePostHandler::ComposePostHandler(
@@ -106,6 +109,7 @@ ComposePostHandler::ComposePostHandler(
   _media_service_client_pool = media_service_client_pool;
   _text_service_client_pool = text_service_client_pool;
   _home_timeline_client_pool = home_timeline_client_pool;
+  req_serve_count = 0;
 }
 
 Creator ComposePostHandler::_ComposeCreaterHelper(
@@ -365,7 +369,16 @@ void ComposePostHandler::ComposePost(
     const std::vector<std::string> &media_types, const PostType::type post_type,
     const std::map<std::string, std::string> &carrier) {
 
-  //zsim_roi_begin();
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+
+  req_serve_count++;
+
   // TextMapReader reader(carrier);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(

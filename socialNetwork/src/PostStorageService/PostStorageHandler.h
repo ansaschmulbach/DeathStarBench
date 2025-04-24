@@ -37,6 +37,8 @@ class PostStorageHandler : public PostStorageServiceIf {
  private:
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
+  int req_serve_count = 0;
+  bool obey_req_serve_max = false;
 };
 
 PostStorageHandler::PostStorageHandler(
@@ -49,7 +51,18 @@ PostStorageHandler::PostStorageHandler(
 void PostStorageHandler::StorePost(
     int64_t req_id, const social_network::Post &post,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+  zsim_roi_begin();
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -167,8 +180,19 @@ void PostStorageHandler::StorePost(
 void PostStorageHandler::ReadPost(
     Post &_return, int64_t req_id, int64_t post_id,
     const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   // Initialize a span
-  //zsim_roi_begin();
+  zsim_roi_begin();
+
   //TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   //TextMapWriter writer(writer_text_map);

@@ -1,5 +1,5 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_CLIENTPOOL_H
-#define SOCIAL_NETWORK_MICROSERVICES_CLIENTPOOL_H
+#ifndef SOCIAL_NETWORK_MICROSERVICES_FILE_CLIENTPOOL_H
+#define SOCIAL_NETWORK_MICROSERVICES_FILE_CLIENTPOOL_H
 
 #include <vector>
 #include <mutex>
@@ -17,8 +17,8 @@ using json = nlohmann::json;
 template<class TClient>
 class FileClientPool {
  public:
-  FileClientPool(const std::string &client_type, const std::string &addr,
-      const std::string &filename, int min_size, int max_size, int timeout_ms, int keepalive_ms,
+  FileClientPool(const std::string &client_type, const std::string &addr, 
+      const std::string &filename, int port, int min_size, int max_size, int timeout_ms, int keepalive_ms,
       const json &config_json);
   ~FileClientPool();
 
@@ -48,7 +48,7 @@ class FileClientPool {
 
 template<class TClient>
 FileClientPool<TClient>::FileClientPool(const std::string &client_type,
-    const std::string &addr, const std::string &filename, int min_pool_size,
+    const std::string &addr, const std::string &filename, int port, int min_pool_size,
     int max_pool_size, int timeout_ms, int keepalive_ms,
     const json &config_json) {
   _addr = addr;
@@ -60,7 +60,7 @@ FileClientPool<TClient>::FileClientPool(const std::string &client_type,
   _keepalive_ms = keepalive_ms;
   _config_json = &config_json;
 
-  _client = new TClient(addr, filename, keepalive_ms, config_json);
+  _client = new TClient(addr, filename, port, keepalive_ms, config_json);
 }
 
 template<class TClient>

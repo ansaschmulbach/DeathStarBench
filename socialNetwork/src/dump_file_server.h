@@ -18,6 +18,9 @@
 #include <thrift/transport/TServerTransport.h>
 #include <thrift/transport/TTransport.h>
 
+#include <thread>
+#include <chrono>
+
 #include "logger.h"
 #include "utils_thrift.h"
 
@@ -47,6 +50,7 @@ public:
 		for (;;) {
 				try {
 					processor.get()->process(protocolIn, protocolOut, NULL);
+					std::this_thread::sleep_for(std::chrono::seconds(10));
 					// LOG(info) << "success!" << std::endl;
 				} catch (TTransportException& ttx) {
 					LOG(error) << "breaking: " << ttx.what();

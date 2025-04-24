@@ -1,5 +1,5 @@
-#ifndef SOCIAL_NETWORK_MICROSERVICES_THRIFTCLIENT_H
-#define SOCIAL_NETWORK_MICROSERVICES_THRIFTCLIENT_H
+#ifndef SOCIAL_NETWORK_MICROSERVICES_THRIFTFILECLIENT_H
+#define SOCIAL_NETWORK_MICROSERVICES_THRIFTFILECLIENT_H
 
 #include <string>
 #include <thread>
@@ -32,8 +32,8 @@ using json = nlohmann::json;
 template<class TThriftClient>
 class FileClient : public GenericClient {
  public:
-  FileClient(const std::string &addr, const std::string &filename);
-  FileClient(const std::string &addr, const std::string &filename, int keepalive_ms, const json &config_json);
+  FileClient(const std::string &addr, const std::string &filename, int port);
+  FileClient(const std::string &addr, const std::string &filename, int port, int keepalive_ms, const json &config_json);
 
   FileClient(const FileClient &) = delete;
   FileClient &operator=(const FileClient &) = delete;
@@ -59,7 +59,7 @@ class FileClient : public GenericClient {
 
 template<class TThriftClient>
 FileClient<TThriftClient>::FileClient(
-    const std::string &addr, const std::string &filename) {
+    const std::string &addr, const std::string &filename, int port) {
   _addr = addr;
 
 	_transportIn = openFileTransport(filename.c_str(), false);
@@ -67,7 +67,7 @@ FileClient<TThriftClient>::FileClient(
 		LOG(error) << "could not open input trace file";
 	}
   _protocolIn = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transportIn));
-	_transportOut = openFileTransport("out", true);
+	_transportOut = openFileTransport(("out_" + std::to_string(port)).c_str(), true);
 	if (!_transportOut) {
 		LOG(error) << "could not open output trace file";
 	}
@@ -79,14 +79,14 @@ FileClient<TThriftClient>::FileClient(
 
 template <class TThriftClient>
 FileClient<TThriftClient>::FileClient(
-    const std::string &addr, const std::string &filename, int keepalive_ms, const json &config_json) {
+    const std::string &addr, const std::string &filename, int port, int keepalive_ms, const json &config_json) {
   _addr = addr;
 	_transportIn = openFileTransport(filename.c_str(), false);
 	if (!_transportIn) {
 		LOG(error) << "could not open input trace file";
 	}
   _protocolIn = std::shared_ptr<TProtocol>(new TBinaryProtocol(_transportIn));
-	_transportOut = openFileTransport("out", true);
+	_transportOut = openFileTransport(("out_" + std::to_string(port)).c_str(), true);
 	if (!_transportOut) {
 		LOG(error) << "could not open output trace file";
 	}

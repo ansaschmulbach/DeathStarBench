@@ -61,6 +61,9 @@ class SocialGraphHandler : public SocialGraphServiceIf {
   Redis *_redis_primary_client_pool;
   RedisCluster *_redis_cluster_client_pool;
   ClientPool<ThriftClient<UserServiceClient>> *_user_service_client_pool;
+  int req_serve_count = 0;
+  bool obey_req_serve_max = false;
+
 };
 
 SocialGraphHandler::SocialGraphHandler(
@@ -104,7 +107,19 @@ bool SocialGraphHandler::IsRedisReplicationEnabled() {
 void SocialGraphHandler::Follow(
     int64_t req_id, int64_t user_id, int64_t followee_id,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   //TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -306,7 +321,24 @@ void SocialGraphHandler::Follow(
 void SocialGraphHandler::Unfollow(
     int64_t req_id, int64_t user_id, int64_t followee_id,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   //TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -490,7 +522,24 @@ void SocialGraphHandler::Unfollow(
 void SocialGraphHandler::GetFollowers(
     std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -630,7 +679,25 @@ void SocialGraphHandler::GetFollowers(
 void SocialGraphHandler::GetFollowees(
     std::vector<int64_t> &_return, const int64_t req_id, const int64_t user_id,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -777,7 +844,25 @@ void SocialGraphHandler::GetFollowees(
 void SocialGraphHandler::InsertUser(
     int64_t req_id, int64_t user_id,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -836,7 +921,25 @@ void SocialGraphHandler::FollowWithUsername(
     int64_t req_id, const std::string &user_name,
     const std::string &followee_name,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -912,7 +1015,25 @@ void SocialGraphHandler::UnfollowWithUsername(
     int64_t req_id, const std::string &user_name,
     const std::string &followee_name,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+  // if (req_serve_count == MAX_REQS_TO_SERVE) {
+  //   exit(0);
+  // }
+  // // LOG(info) << "requests served: " << req_serve_count;
+  // req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

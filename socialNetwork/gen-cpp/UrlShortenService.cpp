@@ -5,6 +5,8 @@
  *  @generated
  */
 #include "UrlShortenService.h"
+#include <thread>
+#include <chrono>
 
 namespace social_network {
 
@@ -675,6 +677,7 @@ uint32_t UrlShortenService_GetExtendedUrls_presult::read(::apache::thrift::proto
 void UrlShortenServiceClient::ComposeUrls(std::vector<Url> & _return, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
 {
   send_ComposeUrls(req_id, urls, carrier);
+  // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   recv_ComposeUrls(_return);
 }
 
