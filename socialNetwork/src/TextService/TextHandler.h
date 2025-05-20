@@ -59,6 +59,8 @@ void TextHandler::ComposeText(
     zsim_roi_begin();
   }
   req_serve_count++;
+  // zsim_cache_reset();
+  // zsim_br_pred_reset();
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -78,6 +80,7 @@ void TextHandler::ComposeText(
     user_mention = user_mention.substr(1, user_mention.length());
     mention_usernames.emplace_back(user_mention);
     s = m.suffix().str();
+  	// zsim_cache_reset();
   }
 
   std::vector<std::string> urls;
@@ -87,6 +90,7 @@ void TextHandler::ComposeText(
     auto url = m.str();
     urls.emplace_back(url);
     s = m.suffix().str();
+  	// zsim_cache_reset();
   }
 
   // auto shortened_urls_future = std::async(std::launch::async, [&]() {

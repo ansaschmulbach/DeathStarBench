@@ -9,6 +9,7 @@
 #include <thrift/transport/TFileTransport.h>
 #include <thrift/transport/TTransportException.h>
 #include "ServerTransportUtils.h"
+#include "zsim_hooks.h"
 
 namespace social_network{
 
@@ -35,6 +36,9 @@ public:
 
 protected:
     std::shared_ptr<TTransport> acceptImpl() override {
+	// zsim_cache_reset_ctr();
+	 // zsim_cache_reset();
+	 // zsim_br_pred_reset();
 	 if (isEOF(this->inFd)) {	
             exit(0);
             // throw TTransportException(TTransportException::UNKNOWN, "reached EOF");

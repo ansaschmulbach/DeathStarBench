@@ -11,6 +11,7 @@
 #include <thrift/transport/TServerTransport.h>
 #include <thrift/transport/TFileTransport.h>
 #include <thrift/transport/TTransportException.h>
+#include "zsim_hooks.h"
 
 namespace social_network{
 
@@ -66,10 +67,16 @@ public:
     }
 
     uint32_t read_virt(uint8_t* buf, uint32_t len) override {
+	 	// zsim_cache_reset_ctr();
+	 	zsim_cache_reset();
+	 	zsim_br_pred_reset();
         return readTransport->read(buf, len);
     }
 
     void write_virt(const uint8_t* buf, uint32_t len) override {
+	 	// zsim_cache_reset_ctr();
+	 	zsim_cache_reset();
+	 	zsim_br_pred_reset();
         writeTransport->write(buf, len);
     }
 

@@ -13,7 +13,7 @@ services=(
     "MediaService"
     "PostStorageService"
     "SocialGraphService"
-#    "TextService"
+    "TextService"
     "UniqueIdService"
     "UrlShortenService"
     "UserMentionService"
