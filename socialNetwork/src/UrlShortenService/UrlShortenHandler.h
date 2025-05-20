@@ -34,6 +34,8 @@ class UrlShortenHandler : public UrlShortenServiceIf {
                        const std::map<std::string, std::string> &) override ;
 
  private:
+  uint64_t req_serve_count = 0;
+  bool obey_req_serve_max = false;
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
   static std::mt19937 _generator;
@@ -72,7 +74,18 @@ void UrlShortenHandler::ComposeUrls(
     const std::vector<std::string> &urls,
     const std::map<std::string, std::string> &carrier) {
 
-  //zsim_roi_begin();
+  
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

@@ -45,6 +45,8 @@ class HomeTimelineHandler : public HomeTimelineServiceIf {
                          const std::map<std::string, std::string> &) override;
 
  private:
+     uint64_t req_serve_count = 0;
+     bool obey_req_serve_max = false;
      Redis *_redis_replica_pool;
      Redis *_redis_primary_pool;
      Redis *_redis_client_pool;
@@ -102,7 +104,18 @@ void HomeTimelineHandler::WriteHomeTimeline(
     const std::vector<int64_t> &user_mentions_id,
     const std::map<std::string, std::string> &carrier) {
 
-  //zsim_roi_begin();
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    // zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -218,7 +231,19 @@ void HomeTimelineHandler::WriteHomeTimeline(
 void HomeTimelineHandler::ReadHomeTimeline(
     std::vector<Post> &_return, int64_t req_id, int64_t user_id, int start_idx,
     int stop_idx, const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

@@ -55,6 +55,8 @@ def gen_request():
 
     return path, headers, body
 
+random.seed(42)
+
 if len(sys.argv) != 2:
     print("error: must supply number of requests")
     exit()

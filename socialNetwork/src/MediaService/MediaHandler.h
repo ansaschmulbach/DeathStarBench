@@ -25,6 +25,8 @@ class MediaHandler : public MediaServiceIf {
                     const std::vector<int64_t> &,
                     const std::map<std::string, std::string> &) override;
 
+  int req_serve_count = 0;
+  bool obey_req_serve_max = false;
  private:
 };
 
@@ -33,7 +35,19 @@ void MediaHandler::ComposeMedia(
     const std::vector<std::string> &media_types,
     const std::vector<int64_t> &media_ids,
     const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+
+  //
+  // LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
 
   // Initialize a span
   // TextMapReader reader(carrier);

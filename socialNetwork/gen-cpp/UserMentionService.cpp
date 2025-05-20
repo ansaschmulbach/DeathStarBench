@@ -5,6 +5,8 @@
  *  @generated
  */
 #include "UserMentionService.h"
+#include <thread>
+#include <chrono>
 
 namespace social_network {
 
@@ -343,6 +345,7 @@ uint32_t UserMentionService_ComposeUserMentions_presult::read(::apache::thrift::
 void UserMentionServiceClient::ComposeUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier)
 {
   send_ComposeUserMentions(req_id, usernames, carrier);
+  // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   recv_ComposeUserMentions(_return);
 }
 

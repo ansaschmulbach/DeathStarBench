@@ -99,6 +99,9 @@ class UserHandler : public UserServiceIf {
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
   ClientPool<ThriftClient<SocialGraphServiceClient>> *_social_graph_client_pool;
+
+  int req_serve_count = 0;
+  bool obey_req_serve_max = false;
 };
 
 UserHandler::UserHandler(std::mutex *thread_lock, const std::string &machine_id,
@@ -121,6 +124,16 @@ void UserHandler::RegisterUserWithId(
     const std::string &password, const int64_t user_id,
     const std::map<std::string, std::string> &carrier) {
   // Initialize a span
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
 
   //zsim_roi_begin();
   // TextMapReader reader(carrier);
@@ -238,6 +251,17 @@ void UserHandler::RegisterUser(
     const std::string &last_name, const std::string &username,
     const std::string &password,
     const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   //zsim_roi_begin();
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -386,6 +410,17 @@ void UserHandler::RegisterUser(
 void UserHandler::ComposeCreatorWithUsername(
     Creator &_return, const int64_t req_id, const std::string &username,
     const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   //zsim_roi_begin();
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -547,6 +582,17 @@ void UserHandler::ComposeCreatorWithUserId(
     Creator &_return, int64_t req_id, int64_t user_id,
     const std::string &username,
     const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   //zsim_roi_begin();
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -570,6 +616,17 @@ void UserHandler::Login(std::string &_return, int64_t req_id,
                         const std::string &username,
                         const std::string &password,
                         const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   //zsim_roi_begin();
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -761,6 +818,17 @@ void UserHandler::Login(std::string &_return, int64_t req_id,
 int64_t UserHandler::GetUserId(
     int64_t req_id, const std::string &username,
     const std::map<std::string, std::string> &carrier) {
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+  	zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
   //zsim_roi_begin();
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

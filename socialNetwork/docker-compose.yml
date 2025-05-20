@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   social-graph-mongodb:
-    image: mongo:4.4.6
+    image: mongo:8.0.8
     hostname: social-graph-mongodb
     # ports:
     #   - 27018:27017
@@ -29,7 +29,7 @@ services:
     restart: always
 
   post-storage-mongodb:
-    image: mongo:4.4.6
+    image: mongo:latest
     hostname: post-storage-mongodb
     #    ports:
     #      - 27019:27017
@@ -43,7 +43,7 @@ services:
     restart: always
 
   user-timeline-mongodb:
-    image: mongo:4.4.6
+    image: mongo:latest
     hostname: user-timeline-mongodb
     #    ports:
     #      - 27020:27017
@@ -57,7 +57,7 @@ services:
     restart: always
 
   url-shorten-mongodb:
-    image: mongo:4.4.6
+    image: mongo:latest
     hostname: url-shorten-mongodb
     #    ports:
     #      - 27021:27017
@@ -71,7 +71,7 @@ services:
     restart: always
 
   user-mongodb:
-    image: mongo:4.4.6
+    image: mongo:latest
     hostname: user-mongodb
     # ports:
     #   - 27023:27017

@@ -11,29 +11,37 @@
 #include "../../gen-cpp/UserMentionService.h"
 #include "../ClientPool.h"
 #include "../ThriftClient.h"
+#include "../FileClientPool.h"
+#include "../ThriftFileClient.h"
 #include "../logger.h"
 // #include "../tracing.h"
 #include "../zsim_hooks.h"
+
+#include <thread>
+#include <chrono>
 
 namespace social_network {
 
 class TextHandler : public TextServiceIf {
  public:
-  TextHandler(ClientPool<ThriftClient<UrlShortenServiceClient>> *,
-              ClientPool<ThriftClient<UserMentionServiceClient>> *);
+  TextHandler(FileClientPool<FileClient<UrlShortenServiceClient>> *,
+              FileClientPool<FileClient<UserMentionServiceClient>> *);
   ~TextHandler() override = default;
 
   void ComposeText(TextServiceReturn &_return, int64_t, const std::string &,
                    const std::map<std::string, std::string> &) override;
 
  private:
-  ClientPool<ThriftClient<UrlShortenServiceClient>> *_url_client_pool;
-  ClientPool<ThriftClient<UserMentionServiceClient>> *_user_mention_client_pool;
+  FileClientPool<FileClient<UrlShortenServiceClient>> *_url_client_pool;
+  FileClientPool<FileClient<UserMentionServiceClient>> *_user_mention_client_pool;
+  int req_serve_count = 0;
+  bool obey_req_serve_max = true;
+  // const int req_serve_max = 99;
 };
 
 TextHandler::TextHandler(
-    ClientPool<ThriftClient<UrlShortenServiceClient>> *url_client_pool,
-    ClientPool<ThriftClient<UserMentionServiceClient>>
+    FileClientPool<FileClient<UrlShortenServiceClient>> *url_client_pool,
+    FileClientPool<FileClient<UserMentionServiceClient>>
         *user_mention_client_pool) {
   _url_client_pool = url_client_pool;
   _user_mention_client_pool = user_mention_client_pool;
@@ -43,7 +51,17 @@ void TextHandler::ComposeText(
     TextServiceReturn &_return, int64_t req_id, const std::string &text,
     const std::map<std::string, std::string> &carrier) {
 
-  zsim_roi_begin();
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else if (req_serve_count == 0) {
+    zsim_roi_begin();
+  }
+  req_serve_count++;
+  // zsim_cache_reset();
+  // zsim_br_pred_reset();
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -62,6 +80,7 @@ void TextHandler::ComposeText(
     user_mention = user_mention.substr(1, user_mention.length());
     mention_usernames.emplace_back(user_mention);
     s = m.suffix().str();
+  	// zsim_cache_reset();
   }
 
   std::vector<std::string> urls;
@@ -71,6 +90,7 @@ void TextHandler::ComposeText(
     auto url = m.str();
     urls.emplace_back(url);
     s = m.suffix().str();
+  	// zsim_cache_reset();
   }
 
   // auto shortened_urls_future = std::async(std::launch::async, [&]() {

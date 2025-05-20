@@ -51,6 +51,8 @@ class UniqueIdHandler : public UniqueIdServiceIf {
  private:
   std::mutex *_thread_lock;
   std::string _machine_id;
+  uint64_t req_serve_count;
+  bool obey_req_serve_max = false;
 };
 
 UniqueIdHandler::UniqueIdHandler(std::mutex *thread_lock,
@@ -63,7 +65,15 @@ int64_t UniqueIdHandler::ComposeUniqueId(
     int64_t req_id, PostType::type post_type,
     const std::map<std::string, std::string> &carrier) {
 
-  // zsim_roi_begin();
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  req_serve_count++;
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

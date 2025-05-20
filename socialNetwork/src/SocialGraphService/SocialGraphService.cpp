@@ -1,4 +1,4 @@
-#include <signal.h>
+#include <signal.h> 
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -74,6 +74,8 @@ int main(int argc, char *argv[]) {
 
   if (mongodb_client_pool == nullptr) {
     return EXIT_FAILURE;
+  } else {
+    LOG(info) << "successfully created client pool";
   }
 
   if (redis_replica_config_flag && (redis_cluster_config_flag || redis_cluster_flag)) {
@@ -88,8 +90,11 @@ int main(int argc, char *argv[]) {
   mongoc_client_t *mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
   if (!mongodb_client) {
     LOG(fatal) << "Failed to pop mongoc client";
+    LOG(error) << "Failed to pop mongoc client";
     return EXIT_FAILURE;
   }
+  
+  LOG(info) << "successfully popped mongoc client";
   bool r = false;
   while (!r) {
     r = CreateIndex(mongodb_client, "social-graph", "user_id", true);
@@ -99,6 +104,7 @@ int main(int argc, char *argv[]) {
     }
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
+  LOG(info) << "successfully pushed mongoc client";
 
   std::shared_ptr<TServerSocket> server_socket =
       get_server_socket(config_json, "localhost", port);

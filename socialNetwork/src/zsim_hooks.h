@@ -14,6 +14,9 @@
 #define ZSIM_MAGIC_OP_HEARTBEAT         (1028)
 #define ZSIM_MAGIC_OP_WORK_BEGIN        (1029) //ubik
 #define ZSIM_MAGIC_OP_WORK_END          (1030) //ubik
+#define ZSIM_MAGIC_OP_CACHE_RESET       (2073)
+#define ZSIM_MAGIC_OP_BR_PRED_RESET     (2074)
+#define ZSIM_MAGIC_OP_CACHE_RESET_CTR   (2075)
 
 #ifdef __x86_64__
 #define HOOKS_STR  "HOOKS"
@@ -28,6 +31,21 @@ static inline void zsim_magic_op(uint64_t op) {
     //NOP
 }
 #endif
+
+static inline void zsim_cache_reset_ctr() {
+	// printf("cache reset counter\n");
+    zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET_CTR);
+}
+
+static inline void zsim_br_pred_reset() {
+	// printf("br pred reset\n");
+    zsim_magic_op(ZSIM_MAGIC_OP_BR_PRED_RESET);
+}
+
+static inline void zsim_cache_reset() {
+	// printf("cache reset\n");
+    zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET);
+}
 
 static inline void zsim_roi_begin() {
     printf("[" HOOKS_STR "] ROI begin\n");

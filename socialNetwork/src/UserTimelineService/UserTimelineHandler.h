@@ -49,6 +49,9 @@ class UserTimelineHandler : public UserTimelineServiceIf {
   RedisCluster *_redis_cluster_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
   ClientPool<ThriftClient<PostStorageServiceClient>> *_post_client_pool;
+
+  int req_serve_count = 0;
+  bool obey_req_serve_max = false;
 };
 
 UserTimelineHandler::UserTimelineHandler(
@@ -92,7 +95,17 @@ void UserTimelineHandler::WriteUserTimeline(
     int64_t req_id, int64_t post_id, int64_t user_id, int64_t timestamp,
     const std::map<std::string, std::string> &carrier) {
 
-  //zsim_roi_begin();
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
@@ -190,7 +203,18 @@ void UserTimelineHandler::WriteUserTimeline(
 void UserTimelineHandler::ReadUserTimeline(
     std::vector<Post> &_return, int64_t req_id, int64_t user_id, int start,
     int stop, const std::map<std::string, std::string> &carrier) {
-  //zsim_roi_begin();
+
+  if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
+    exit(0);
+  } else if (req_serve_count == MAX_REQS_TO_SERVE) {
+    zsim_roi_end();
+  } else {
+    zsim_roi_begin();
+  }
+  LOG(info) << "requests served: " << req_serve_count;
+  req_serve_count++;
+
+
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
