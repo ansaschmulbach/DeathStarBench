@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
   init_logger();
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "url-shorten-service");
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
     LOG(fatal) << "Failed to open cfg";
     exit(EXIT_FAILURE);
   }

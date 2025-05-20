@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "text-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) == 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) == 0) {
     int port = config_json["text-service"]["port"];
 
     std::string url_addr = config_json["url-shorten-service"]["addr"];

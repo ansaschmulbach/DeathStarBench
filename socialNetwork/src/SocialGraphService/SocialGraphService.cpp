@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "social-graph-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
