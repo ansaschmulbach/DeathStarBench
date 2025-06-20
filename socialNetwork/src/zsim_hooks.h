@@ -4,64 +4,67 @@
 #include <stdint.h>
 #include <stdio.h>
 
-//Avoid optimizing compilers moving code around this barrier
-#define COMPILER_BARRIER() { __asm__ __volatile__("" ::: "memory");}
+// Avoid optimizing compilers moving code around this barrier
+#define COMPILER_BARRIER()                                                     \
+  { __asm__ __volatile__("" ::: "memory"); }
 
-//These need to be in sync with the simulator
-#define ZSIM_MAGIC_OP_ROI_BEGIN         (1025)
-#define ZSIM_MAGIC_OP_ROI_END           (1026)
-#define ZSIM_MAGIC_OP_REGISTER_THREAD   (1027)
-#define ZSIM_MAGIC_OP_HEARTBEAT         (1028)
-#define ZSIM_MAGIC_OP_WORK_BEGIN        (1029) //ubik
-#define ZSIM_MAGIC_OP_WORK_END          (1030) //ubik
-#define ZSIM_MAGIC_OP_CACHE_RESET       (2073)
-#define ZSIM_MAGIC_OP_BR_PRED_RESET     (2074)
-#define ZSIM_MAGIC_OP_CACHE_RESET_CTR   (2075)
+// These need to be in sync with the simulator
+#define ZSIM_MAGIC_OP_ROI_BEGIN (1025)
+#define ZSIM_MAGIC_OP_ROI_END (1026)
+#define ZSIM_MAGIC_OP_REGISTER_THREAD (1027)
+#define ZSIM_MAGIC_OP_HEARTBEAT (1028)
+#define ZSIM_MAGIC_OP_WORK_BEGIN (1029) // ubik
+#define ZSIM_MAGIC_OP_WORK_END (1030)   // ubik
+#define ZSIM_MAGIC_OP_CACHE_RESET (2091)
+#define ZSIM_MAGIC_OP_BR_PRED_RESET (2092)
+#define ZSIM_MAGIC_OP_CACHE_RESET_CTR (2093)
+#define ZSIM_MAGIC_OP_CACHE_RESET_ALL (2094)
 
 #ifdef __x86_64__
-#define HOOKS_STR  "HOOKS"
+#define HOOKS_STR "HOOKS"
 static inline void zsim_magic_op(uint64_t op) {
-    COMPILER_BARRIER();
-    __asm__ __volatile__("xchg %%rcx, %%rcx;" : : "c"(op));
-    COMPILER_BARRIER();
+  COMPILER_BARRIER();
+  __asm__ __volatile__("xchg %%rcx, %%rcx;" : : "c"(op));
+  COMPILER_BARRIER();
 }
 #else
-#define HOOKS_STR  "NOP-HOOKS"
+#define HOOKS_STR "NOP-HOOKS"
 static inline void zsim_magic_op(uint64_t op) {
-    //NOP
+  // NOP
 }
 #endif
 
 static inline void zsim_cache_reset_ctr() {
-	// printf("cache reset counter\n");
-    zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET_CTR);
+  // printf("cache reset counter\n");
+  zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET_CTR);
 }
 
 static inline void zsim_br_pred_reset() {
-	// printf("br pred reset\n");
-    zsim_magic_op(ZSIM_MAGIC_OP_BR_PRED_RESET);
+  // printf("br pred reset\n");
+  //    zsim_magic_op(ZSIM_MAGIC_OP_BR_PRED_RESET);
 }
 
 static inline void zsim_cache_reset() {
-	// printf("cache reset\n");
-    zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET);
+  // printf("cache reset\n");
+  // zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET);
+  // zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET_ALL);
 }
 
 static inline void zsim_roi_begin() {
-    printf("[" HOOKS_STR "] ROI begin\n");
-    zsim_magic_op(ZSIM_MAGIC_OP_ROI_BEGIN);
+  printf("[" HOOKS_STR "] ROI begin\n");
+  zsim_magic_op(ZSIM_MAGIC_OP_ROI_BEGIN);
 }
 
 static inline void zsim_roi_end() {
-    zsim_magic_op(ZSIM_MAGIC_OP_ROI_END);
-    printf("[" HOOKS_STR  "] ROI end\n");
+  zsim_magic_op(ZSIM_MAGIC_OP_ROI_END);
+  printf("[" HOOKS_STR "] ROI end\n");
 }
 
-static inline void zsim_heartbeat() {
-    zsim_magic_op(ZSIM_MAGIC_OP_HEARTBEAT);
-}
+static inline void zsim_heartbeat() { zsim_magic_op(ZSIM_MAGIC_OP_HEARTBEAT); }
 
-static inline void zsim_work_begin() { zsim_magic_op(ZSIM_MAGIC_OP_WORK_BEGIN); }
+static inline void zsim_work_begin() {
+  zsim_magic_op(ZSIM_MAGIC_OP_WORK_BEGIN);
+}
 static inline void zsim_work_end() { zsim_magic_op(ZSIM_MAGIC_OP_WORK_END); }
 
 #endif /*__ZSIM_HOOKS_H__*/

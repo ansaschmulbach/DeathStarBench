@@ -117,6 +117,8 @@ void SocialGraphHandler::Follow(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
 
@@ -331,6 +333,8 @@ void SocialGraphHandler::Unfollow(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
   // if (req_serve_count == MAX_REQS_TO_SERVE) {
   //   exit(0);
@@ -533,6 +537,8 @@ void SocialGraphHandler::GetFollowers(
   }
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   // if (req_serve_count == MAX_REQS_TO_SERVE) {
   //   exit(0);
   // }
@@ -689,6 +695,8 @@ void SocialGraphHandler::GetFollowees(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
   // if (req_serve_count == MAX_REQS_TO_SERVE) {
@@ -854,6 +862,8 @@ void SocialGraphHandler::InsertUser(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
   // if (req_serve_count == MAX_REQS_TO_SERVE) {
@@ -931,6 +941,8 @@ void SocialGraphHandler::FollowWithUsername(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
   // if (req_serve_count == MAX_REQS_TO_SERVE) {
@@ -1025,6 +1037,8 @@ void SocialGraphHandler::UnfollowWithUsername(
     zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
   // if (req_serve_count == MAX_REQS_TO_SERVE) {

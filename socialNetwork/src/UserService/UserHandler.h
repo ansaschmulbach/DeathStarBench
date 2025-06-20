@@ -132,6 +132,8 @@ void UserHandler::RegisterUserWithId(
   } else {
   	zsim_roi_begin();
   }
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
@@ -259,6 +261,8 @@ void UserHandler::RegisterUser(
   } else {
   	zsim_roi_begin();
   }
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
@@ -418,6 +422,8 @@ void UserHandler::ComposeCreatorWithUsername(
   } else {
   	zsim_roi_begin();
   }
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
@@ -590,6 +596,8 @@ void UserHandler::ComposeCreatorWithUserId(
   } else {
   	zsim_roi_begin();
   }
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 

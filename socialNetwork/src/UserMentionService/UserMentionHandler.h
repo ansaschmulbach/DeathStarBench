@@ -51,6 +51,8 @@ void UserMentionHandler::ComposeUserMentions(
   } else {
     zsim_roi_begin();
   }
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
 

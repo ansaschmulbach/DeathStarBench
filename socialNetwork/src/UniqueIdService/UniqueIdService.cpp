@@ -17,8 +17,11 @@
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
+#include "../dump_file_server.h"
 #include "../utils.h"
 #include "../utils_thrift.h"
+#include "../FileServerTransport.h"
+#include "../SocketServerTransport.h"
 #include "UniqueIdHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
@@ -49,11 +52,12 @@ int main(int argc, char *argv[]) {
   LOG(info) << "machine_id = " << machine_id;
 
   std::mutex thread_lock;
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+  auto server_transport = std::make_shared<SocketServerTransport>(TCP_SOCKET, "localhost", port);
+  // std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
   TSimpleServer server(
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-      server_socket,
+      server_transport,
       std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
 

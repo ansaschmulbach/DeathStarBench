@@ -112,6 +112,9 @@ void HomeTimelineHandler::WriteHomeTimeline(
   } else {
   	zsim_roi_begin();
   }
+
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
@@ -240,6 +243,9 @@ void HomeTimelineHandler::ReadHomeTimeline(
   } else {
     zsim_roi_begin();
   }
+
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 

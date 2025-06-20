@@ -57,11 +57,15 @@ void PostStorageHandler::StorePost(
     exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
+  } else {
+    zsim_roi_begin();
   }
+
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  zsim_roi_begin();
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -186,12 +190,15 @@ void PostStorageHandler::ReadPost(
     exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
+  } else {
+    zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
   // Initialize a span
-  zsim_roi_begin();
+  zsim_cache_reset();
+  zsim_br_pred_reset();
 
   //TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;

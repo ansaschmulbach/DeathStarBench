@@ -47,8 +47,8 @@ std::shared_ptr<TServerSocket> get_server_socket(const json &config_json, const 
     // }
     return std::make_shared<TSSLServerSocket>(address, port, ssl_socket_factory);
   }
-  return std::make_shared<TServerSocket>("/data/sanchez/users/ansa/uds/dsb-sock-" + std::to_string(port));
-  // return std::make_shared<TServerSocket>(address, port);
+  // return std::make_shared<TServerSocket>("/data/sanchez/users/ansa/uds/dsb-sock-" + std::to_string(port));
+  return std::make_shared<TServerSocket>(address, port);
 };
 
 std::shared_ptr<TFramedTransport>  openFileTransport(const char* name, bool out) {

@@ -1,6 +1,7 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H
 #define SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H
 
+#include <boost/log/trivial.hpp>
 #include <future>
 #include <iostream>
 #include <regex>
@@ -24,24 +25,24 @@ namespace social_network {
 
 class TextHandler : public TextServiceIf {
  public:
-  TextHandler(FileClientPool<FileClient<UrlShortenServiceClient>> *,
-              FileClientPool<FileClient<UserMentionServiceClient>> *);
+  TextHandler(ClientPool<ThriftClient<UrlShortenServiceClient>> *,
+              ClientPool<ThriftClient<UserMentionServiceClient>> *);
   ~TextHandler() override = default;
 
   void ComposeText(TextServiceReturn &_return, int64_t, const std::string &,
                    const std::map<std::string, std::string> &) override;
 
  private:
-  FileClientPool<FileClient<UrlShortenServiceClient>> *_url_client_pool;
-  FileClientPool<FileClient<UserMentionServiceClient>> *_user_mention_client_pool;
+  ClientPool<ThriftClient<UrlShortenServiceClient>> *_url_client_pool;
+  ClientPool<ThriftClient<UserMentionServiceClient>> *_user_mention_client_pool;
   int req_serve_count = 0;
   bool obey_req_serve_max = true;
   // const int req_serve_max = 99;
 };
 
 TextHandler::TextHandler(
-    FileClientPool<FileClient<UrlShortenServiceClient>> *url_client_pool,
-    FileClientPool<FileClient<UserMentionServiceClient>>
+    ClientPool<ThriftClient<UrlShortenServiceClient>> *url_client_pool,
+    ClientPool<ThriftClient<UserMentionServiceClient>>
         *user_mention_client_pool) {
   _url_client_pool = url_client_pool;
   _user_mention_client_pool = user_mention_client_pool;
@@ -58,7 +59,11 @@ void TextHandler::ComposeText(
   } else if (req_serve_count == 0) {
     zsim_roi_begin();
   }
+
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
+  // LOG(info) << "received compose text request";
   // zsim_cache_reset();
   // zsim_br_pred_reset();
 
@@ -117,6 +122,7 @@ void TextHandler::ComposeText(
       _url_client_pool->Remove(url_client_wrapper);
       throw;
     }
+    // LOG(info) << "finished url upload";
     _url_client_pool->Keepalive(url_client_wrapper);
     // return _return_urls;
   // });
@@ -149,6 +155,7 @@ void TextHandler::ComposeText(
       _user_mention_client_pool->Remove(user_mention_client_wrapper);
       throw;
     }
+    // LOG(info) << "finished user mentions";
 
     _user_mention_client_pool->Keepalive(user_mention_client_wrapper);
     //return _return_user_mentions;
@@ -192,6 +199,7 @@ void TextHandler::ComposeText(
   _return.urls = target_urls;
   // span->Finish();
   zsim_heartbeat();
+  // LOG(info) << "returning";
 }
 
 }  // namespace social_network

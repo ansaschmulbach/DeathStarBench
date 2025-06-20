@@ -377,6 +377,8 @@ void ComposePostHandler::ComposePost(
     zsim_roi_begin();
   }
 
+  zsim_cache_reset();
+  zsim_br_pred_reset();
   req_serve_count++;
 
   // TextMapReader reader(carrier);
