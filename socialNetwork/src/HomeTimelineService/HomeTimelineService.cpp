@@ -50,17 +50,20 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "home-timeline-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml",
+  // "home-timeline-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
   int port = config_json["home-timeline-service"]["port"];
-  int redis_cluster_config_flag = config_json["home-timeline-redis"]["use_cluster"];
+  int redis_cluster_config_flag =
+      config_json["home-timeline-redis"]["use_cluster"];
 
-  int redis_replica_config_flag = config_json["home-timeline-redis"]["use_replica"];
+  int redis_replica_config_flag =
+      config_json["home-timeline-redis"]["use_replica"];
 
   int post_storage_port = config_json["post-storage-service"]["port"];
   std::string post_storage_addr = config_json["post-storage-service"]["addr"];
@@ -76,9 +79,11 @@ int main(int argc, char *argv[]) {
   int social_graph_keepalive =
       config_json["social-graph-service"]["keepalive_ms"];
 
-  if (redis_replica_config_flag && (redis_cluster_config_flag || redis_cluster_flag)) {
-      LOG(error) << "Can't start service when Redis Cluster and Redis Replica are enabled at the same time";
-      exit(EXIT_FAILURE);
+  if (redis_replica_config_flag &&
+      (redis_cluster_config_flag || redis_cluster_flag)) {
+    LOG(error) << "Can't start service when Redis Cluster and Redis Replica "
+                  "are enabled at the same time";
+    exit(EXIT_FAILURE);
   }
 
   ClientPool<ThriftClient<PostStorageServiceClient>> post_storage_client_pool(
@@ -94,24 +99,24 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<TServerSocket> server_socket =
       get_server_socket(config_json, "localhost", port);
 
-
   if (redis_replica_config_flag) {
-          Redis redis_replica_client_pool = init_redis_replica_client_pool(config_json, "redis-replica");
-          Redis redis_primary_client_pool = init_redis_replica_client_pool(config_json, "redis-primary");
+    Redis redis_replica_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-replica");
+    Redis redis_primary_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-primary");
 
-          TSimpleServer server(
-              std::make_shared<HomeTimelineServiceProcessor>(
-                  std::make_shared<HomeTimelineHandler>(&redis_replica_client_pool,
-                      &redis_primary_client_pool,
-                      &post_storage_client_pool,
-                      &social_graph_client_pool)),
-              server_socket, std::make_shared<TFramedTransportFactory>(),
-              std::make_shared<TBinaryProtocolFactory>());
+    TSimpleServer server(
+        std::make_shared<HomeTimelineServiceProcessor>(
+            std::make_shared<HomeTimelineHandler>(
+                &redis_replica_client_pool, &redis_primary_client_pool,
+                &post_storage_client_pool, &social_graph_client_pool)),
+        server_socket, std::make_shared<TFramedTransportFactory>(),
+        std::make_shared<TBinaryProtocolFactory>());
 
-          LOG(info) << "Starting the home-timeline-service server with replicated Redis support...";
-          server.serve();
+    LOG(info) << "Starting the home-timeline-service server with replicated "
+                 "Redis support...";
+    server.serve();
 
-      
   }
 
   else if (redis_cluster_flag || redis_cluster_config_flag) {
@@ -125,18 +130,19 @@ int main(int argc, char *argv[]) {
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
 
-    LOG(info) << "Starting the home-timeline-service server with Redis Cluster support...";
+    LOG(info) << "Starting the home-timeline-service server with Redis Cluster "
+                 "support...";
     server.serve();
   } else {
     Redis redis_client_pool =
         init_redis_client_pool(config_json, "home-timeline");
-    TSimpleServer server(
-        std::make_shared<HomeTimelineServiceProcessor>(
-            std::make_shared<HomeTimelineHandler>(&redis_client_pool,
-                                                  &post_storage_client_pool,
-                                                  &social_graph_client_pool)),
-        server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+    TSimpleServer server(std::make_shared<HomeTimelineServiceProcessor>(
+                             std::make_shared<HomeTimelineHandler>(
+                                 &redis_client_pool, &post_storage_client_pool,
+                                 &social_graph_client_pool)),
+                         server_socket,
+                         std::make_shared<TFramedTransportFactory>(),
+                         std::make_shared<TBinaryProtocolFactory>());
 
     LOG(info) << "Starting the home-timeline-service server...";
     server.serve();

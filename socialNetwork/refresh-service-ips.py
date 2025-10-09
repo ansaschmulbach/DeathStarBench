@@ -17,6 +17,7 @@ def get_ip_mapping():
     return ip_mapping
 
 # Read the config and bottom text input from a file
+# with open('config-zsim/service-config.json', 'r') as f:
 with open('config/service-config.json', 'r') as f:
     data = f.read()
 

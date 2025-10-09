@@ -16,7 +16,7 @@
 namespace social_network {
 
 class MediaHandler : public MediaServiceIf {
- public:
+public:
   MediaHandler() = default;
   ~MediaHandler() override = default;
 
@@ -27,7 +27,8 @@ class MediaHandler : public MediaServiceIf {
 
   int req_serve_count = 0;
   bool obey_req_serve_max = false;
- private:
+
+private:
 };
 
 void MediaHandler::ComposeMedia(
@@ -45,6 +46,8 @@ void MediaHandler::ComposeMedia(
     zsim_roi_begin();
   }
 
+  zsim_request_begin();
+  zsim_heartbeat();
   zsim_cache_reset();
   zsim_br_pred_reset();
 
@@ -77,9 +80,10 @@ void MediaHandler::ComposeMedia(
   }
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
-}  // namespace social_network
+} // namespace social_network
 
-#endif  // SOCIAL_NETWORK_MICROSERVICES_SRC_MEDIASERVICE_MEDIAHANDLER_H_
+#endif // SOCIAL_NETWORK_MICROSERVICES_SRC_MEDIASERVICE_MEDIAHANDLER_H_

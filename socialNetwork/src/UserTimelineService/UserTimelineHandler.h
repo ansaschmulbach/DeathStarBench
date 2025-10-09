@@ -22,12 +22,12 @@ using namespace sw::redis;
 namespace social_network {
 
 class UserTimelineHandler : public UserTimelineServiceIf {
- public:
+public:
   UserTimelineHandler(Redis *, mongoc_client_pool_t *,
                       ClientPool<ThriftClient<PostStorageServiceClient>> *);
 
   UserTimelineHandler(Redis *, Redis *, mongoc_client_pool_t *,
-      ClientPool<ThriftClient<PostStorageServiceClient>> *);
+                      ClientPool<ThriftClient<PostStorageServiceClient>> *);
 
   UserTimelineHandler(RedisCluster *, mongoc_client_pool_t *,
                       ClientPool<ThriftClient<PostStorageServiceClient>> *);
@@ -35,14 +35,15 @@ class UserTimelineHandler : public UserTimelineServiceIf {
 
   bool IsRedisReplicationEnabled();
 
-  void WriteUserTimeline(
-      int64_t req_id, int64_t post_id, int64_t user_id, int64_t timestamp,
-      const std::map<std::string, std::string> &carrier) override;
+  void
+  WriteUserTimeline(int64_t req_id, int64_t post_id, int64_t user_id,
+                    int64_t timestamp,
+                    const std::map<std::string, std::string> &carrier) override;
 
   void ReadUserTimeline(std::vector<Post> &, int64_t, int64_t, int, int,
                         const std::map<std::string, std::string> &) override;
 
- private:
+private:
   Redis *_redis_client_pool;
   Redis *_redis_replica_pool;
   Redis *_redis_primary_pool;
@@ -66,14 +67,15 @@ UserTimelineHandler::UserTimelineHandler(
 }
 
 UserTimelineHandler::UserTimelineHandler(
-    Redis* redis_replica_pool, Redis* redis_primary_pool, mongoc_client_pool_t* mongodb_pool,
-    ClientPool<ThriftClient<PostStorageServiceClient>>* post_client_pool) {
-    _redis_client_pool = nullptr;
-    _redis_replica_pool = redis_replica_pool;
-    _redis_primary_pool = redis_primary_pool;
-    _redis_cluster_client_pool = nullptr;
-    _mongodb_client_pool = mongodb_pool;
-    _post_client_pool = post_client_pool;
+    Redis *redis_replica_pool, Redis *redis_primary_pool,
+    mongoc_client_pool_t *mongodb_pool,
+    ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool) {
+  _redis_client_pool = nullptr;
+  _redis_replica_pool = redis_replica_pool;
+  _redis_primary_pool = redis_primary_pool;
+  _redis_cluster_client_pool = nullptr;
+  _mongodb_client_pool = mongodb_pool;
+  _post_client_pool = post_client_pool;
 }
 
 UserTimelineHandler::UserTimelineHandler(
@@ -88,7 +90,7 @@ UserTimelineHandler::UserTimelineHandler(
 }
 
 bool UserTimelineHandler::IsRedisReplicationEnabled() {
-    return (_redis_primary_pool || _redis_replica_pool);
+  return (_redis_primary_pool || _redis_replica_pool);
 }
 
 void UserTimelineHandler::WriteUserTimeline(
@@ -104,9 +106,10 @@ void UserTimelineHandler::WriteUserTimeline(
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
-
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -114,7 +117,8 @@ void UserTimelineHandler::WriteUserTimeline(
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "write_user_timeline_server", {opentracing::ChildOf(parent_span->get())});
+  //     "write_user_timeline_server",
+  //     {opentracing::ChildOf(parent_span->get())});
   // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   mongoc_client_t *mongodb_client =
@@ -184,14 +188,15 @@ void UserTimelineHandler::WriteUserTimeline(
   try {
     if (_redis_client_pool)
       _redis_client_pool->zadd(std::to_string(user_id), std::to_string(post_id),
-                              timestamp, UpdateType::NOT_EXIST);
+                               timestamp, UpdateType::NOT_EXIST);
     else if (IsRedisReplicationEnabled()) {
-        _redis_primary_pool->zadd(std::to_string(user_id), std::to_string(post_id),
-                              timestamp, UpdateType::NOT_EXIST);
-    }
-    else
-      _redis_cluster_client_pool->zadd(std::to_string(user_id), std::to_string(post_id),
-                              timestamp, UpdateType::NOT_EXIST);
+      _redis_primary_pool->zadd(std::to_string(user_id),
+                                std::to_string(post_id), timestamp,
+                                UpdateType::NOT_EXIST);
+    } else
+      _redis_cluster_client_pool->zadd(std::to_string(user_id),
+                                       std::to_string(post_id), timestamp,
+                                       UpdateType::NOT_EXIST);
 
   } catch (const Error &err) {
     LOG(error) << err.what();
@@ -199,7 +204,8 @@ void UserTimelineHandler::WriteUserTimeline(
   }
   // redis_span->Finish();
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
 void UserTimelineHandler::ReadUserTimeline(
@@ -215,9 +221,10 @@ void UserTimelineHandler::ReadUserTimeline(
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
-
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -225,7 +232,8 @@ void UserTimelineHandler::ReadUserTimeline(
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
   // auto span = opentracing::Tracer::Global()->StartSpan(
-  //     "read_user_timeline_server", {opentracing::ChildOf(parent_span->get())});
+  //     "read_user_timeline_server",
+  //     {opentracing::ChildOf(parent_span->get())});
   // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   if (stop <= start || start < 0) {
@@ -240,14 +248,14 @@ void UserTimelineHandler::ReadUserTimeline(
   try {
     if (_redis_client_pool)
       _redis_client_pool->zrevrange(std::to_string(user_id), start, stop - 1,
-                                  std::back_inserter(post_ids_str));
+                                    std::back_inserter(post_ids_str));
     else if (IsRedisReplicationEnabled()) {
-        _redis_replica_pool->zrevrange(std::to_string(user_id), start, stop - 1,
-            std::back_inserter(post_ids_str));
-    }
-    else
-      _redis_cluster_client_pool->zrevrange(std::to_string(user_id), start, stop - 1,
-                                  std::back_inserter(post_ids_str));
+      _redis_replica_pool->zrevrange(std::to_string(user_id), start, stop - 1,
+                                     std::back_inserter(post_ids_str));
+    } else
+      _redis_cluster_client_pool->zrevrange(std::to_string(user_id), start,
+                                            stop - 1,
+                                            std::back_inserter(post_ids_str));
   } catch (const Error &err) {
     LOG(error) << err.what();
     throw err;
@@ -313,9 +321,10 @@ void UserTimelineHandler::ReadUserTimeline(
         auto curr_post_id = bson_iter_int64(&post_id_child);
         auto curr_timestamp = bson_iter_int64(&timestamp_child);
         if (idx >= mongo_start) {
-          //In mixed workload condition, post may composed between redis and mongo read
-          //mongodb index will shift and duplicate post_id occurs
-          if ( std::find(post_ids.begin(), post_ids.end(), curr_post_id) == post_ids.end() ) {
+          // In mixed workload condition, post may composed between redis and
+          // mongo read mongodb index will shift and duplicate post_id occurs
+          if (std::find(post_ids.begin(), post_ids.end(), curr_post_id) ==
+              post_ids.end()) {
             post_ids.emplace_back(curr_post_id);
           }
         }
@@ -363,17 +372,16 @@ void UserTimelineHandler::ReadUserTimeline(
     try {
       if (_redis_client_pool)
         _redis_client_pool->zadd(std::to_string(user_id),
-                               redis_update_map.begin(),
-                               redis_update_map.end());
+                                 redis_update_map.begin(),
+                                 redis_update_map.end());
       else if (IsRedisReplicationEnabled()) {
-          _redis_primary_pool->zadd(std::to_string(user_id),
-              redis_update_map.begin(),
-              redis_update_map.end());
-      }
-      else
+        _redis_primary_pool->zadd(std::to_string(user_id),
+                                  redis_update_map.begin(),
+                                  redis_update_map.end());
+      } else
         _redis_cluster_client_pool->zadd(std::to_string(user_id),
-                               redis_update_map.begin(),
-                               redis_update_map.end());
+                                         redis_update_map.begin(),
+                                         redis_update_map.end());
 
     } catch (const Error &err) {
       LOG(error) << err.what();
@@ -389,9 +397,10 @@ void UserTimelineHandler::ReadUserTimeline(
     throw;
   }
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
-}  // namespace social_network
+} // namespace social_network
 
-#endif  // SOCIAL_NETWORK_MICROSERVICES_SRC_USERTIMELINESERVICE_USERTIMELINEHANDLER_H_
+#endif // SOCIAL_NETWORK_MICROSERVICES_SRC_USERTIMELINESERVICE_USERTIMELINEHANDLER_H_

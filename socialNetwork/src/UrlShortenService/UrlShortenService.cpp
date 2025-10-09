@@ -17,8 +17,8 @@ using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
 
-static memcached_pool_st* memcached_client_pool;
-static mongoc_client_pool_t* mongodb_client_pool;
+static memcached_pool_st *memcached_client_pool;
+static mongoc_client_pool_t *mongodb_client_pool;
 
 void sigintHandler(int sig) {
   if (memcached_client_pool != nullptr) {
@@ -29,12 +29,13 @@ void sigintHandler(int sig) {
   }
   exit(EXIT_SUCCESS);
 }
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
-  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "url-shorten-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml",
+  // "url-shorten-service");
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("config/service-config.json", &config_json) != 0) {
     LOG(fatal) << "Failed to open cfg";
     exit(EXIT_FAILURE);
   }
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]) {
     return EXIT_FAILURE;
   }
 
-  mongoc_client_t* mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
+  mongoc_client_t *mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
   if (!mongodb_client) {
     LOG(fatal) << "Failed to pop mongoc client";
     return EXIT_FAILURE;
@@ -71,13 +72,13 @@ int main(int argc, char* argv[]) {
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
 
   std::mutex thread_lock;
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+  std::shared_ptr<TServerSocket> server_socket =
+      get_server_socket(config_json, "localhost", port);
   TSimpleServer server(
       std::make_shared<UrlShortenServiceProcessor>(
           std::make_shared<UrlShortenHandler>(
               memcached_client_pool, mongodb_client_pool, &thread_lock)),
-      server_socket,
-      std::make_shared<TFramedTransportFactory>(),
+      server_socket, std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
 
   LOG(info) << "Starting the url-shorten-service server...";

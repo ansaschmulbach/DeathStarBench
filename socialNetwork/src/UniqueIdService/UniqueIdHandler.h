@@ -41,14 +41,14 @@ static int GetCounter(int64_t timestamp) {
 }
 
 class UniqueIdHandler : public UniqueIdServiceIf {
- public:
+public:
   ~UniqueIdHandler() override = default;
   UniqueIdHandler(std::mutex *, const std::string &);
 
   int64_t ComposeUniqueId(int64_t, PostType::type,
                           const std::map<std::string, std::string> &) override;
 
- private:
+private:
   std::mutex *_thread_lock;
   std::string _machine_id;
   uint64_t req_serve_count;
@@ -74,16 +74,19 @@ int64_t UniqueIdHandler::ComposeUniqueId(
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   req_serve_count++;
 
   // Initialize a span
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
-  //TextMapWriter writer(writer_text_map);
-  //auto parent_span = opentracing::Tracer::Global()->Extract(reader);
-  //auto span = opentracing::Tracer::Global()->StartSpan(
-  //    "compose_unique_id_server", {opentracing::ChildOf(parent_span->get())});
-  //opentracing::Tracer::Global()->Inject(span->context(), writer);
+  // TextMapWriter writer(writer_text_map);
+  // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
+  // auto span = opentracing::Tracer::Global()->StartSpan(
+  //     "compose_unique_id_server",
+  //     {opentracing::ChildOf(parent_span->get())});
+  // opentracing::Tracer::Global()->Inject(span->context(), writer);
 
   _thread_lock->lock();
   int64_t timestamp =
@@ -120,7 +123,8 @@ int64_t UniqueIdHandler::ComposeUniqueId(
   LOG(debug) << "The post_id of the request " << req_id << " is " << post_id;
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
   return post_id;
 }
 
@@ -171,6 +175,6 @@ std::string GetMachineId(std::string &netif) {
   return mac_hash;
 }
 
-}  // namespace social_network
+} // namespace social_network
 
-#endif  // SOCIAL_NETWORK_MICROSERVICES_UNIQUEIDHANDLER_H
+#endif // SOCIAL_NETWORK_MICROSERVICES_UNIQUEIDHANDLER_H

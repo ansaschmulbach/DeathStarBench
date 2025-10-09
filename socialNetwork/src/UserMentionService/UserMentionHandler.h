@@ -17,7 +17,7 @@
 namespace social_network {
 
 class UserMentionHandler : public UserMentionServiceIf {
- public:
+public:
   UserMentionHandler(memcached_pool_st *, mongoc_client_pool_t *);
   ~UserMentionHandler() override = default;
 
@@ -25,7 +25,7 @@ class UserMentionHandler : public UserMentionServiceIf {
                            const std::vector<std::string> &,
                            const std::map<std::string, std::string> &) override;
 
- private:
+private:
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
   uint64_t req_serve_count;
@@ -53,8 +53,9 @@ void UserMentionHandler::ComposeUserMentions(
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   req_serve_count++;
-
 
   // Initialize a span
   // TextMapReader reader(carrier);
@@ -97,9 +98,9 @@ void UserMentionHandler::ComposeUserMentions(
       idx++;
     }
 
-    //auto get_span = opentracing::Tracer::Global()->StartSpan(
-    //    "compose_user_mentions_memcached_get_client",
-    //    {opentracing::ChildOf(&span->context())});
+    // auto get_span = opentracing::Tracer::Global()->StartSpan(
+    //     "compose_user_mentions_memcached_get_client",
+    //     {opentracing::ChildOf(&span->context())});
     rc = memcached_mget(client, keys, key_sizes, usernames.size());
     if (rc != MEMCACHED_SUCCESS) {
       LOG(error) << "Cannot get usernames of request " << req_id << ": "
@@ -196,9 +197,9 @@ void UserMentionHandler::ComposeUserMentions(
       bson_append_array_end(&query_child_0, &query_username_list);
       bson_append_document_end(query, &query_child_0);
 
-      //auto find_span = opentracing::Tracer::Global()->StartSpan(
-      //    "compose_user_mentions_mongo_find_client",
-      //    {opentracing::ChildOf(&span->context())});
+      // auto find_span = opentracing::Tracer::Global()->StartSpan(
+      //     "compose_user_mentions_mongo_find_client",
+      //     {opentracing::ChildOf(&span->context())});
       mongoc_cursor_t *cursor =
           mongoc_collection_find_with_opts(collection, query, nullptr, nullptr);
       const bson_t *doc;
@@ -244,9 +245,10 @@ void UserMentionHandler::ComposeUserMentions(
 
   _return = user_mentions;
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
-}  // namespace social_network
+} // namespace social_network
 
-#endif  // SOCIAL_NETWORK_MICROSERVICES_SRC_USERMENTIONSERVICE_USERMENTIONHANDLER_H_
+#endif // SOCIAL_NETWORK_MICROSERVICES_SRC_USERMENTIONSERVICE_USERMENTIONHANDLER_H_

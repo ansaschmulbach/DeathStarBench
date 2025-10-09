@@ -1,0 +1,10 @@
+logs_*
+cmake-build
+organized/
+run_logs/
+logFiles/
+full_load_logs/
+full_load_logs_no_core_pin/
+known_good_run_logs/
+logWithPref/
+log_no_pref/

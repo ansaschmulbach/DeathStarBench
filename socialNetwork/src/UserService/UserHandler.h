@@ -53,10 +53,9 @@ static int GetCounter(int64_t timestamp) {
 }
 
 std::string GenRandomString(const int len) {
-  static const std::string alphanum =
-      "0123456789"
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      "abcdefghijklmnopqrstuvwxyz";
+  static const std::string alphanum = "0123456789"
+                                      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                      "abcdefghijklmnopqrstuvwxyz";
   std::random_device rd;
   std::mt19937 gen(rd());
   std::uniform_int_distribution<int> dist(
@@ -69,7 +68,7 @@ std::string GenRandomString(const int len) {
 }
 
 class UserHandler : public UserServiceIf {
- public:
+public:
   UserHandler(std::mutex *, const std::string &, const std::string &,
               memcached_pool_st *, mongoc_client_pool_t *,
               ClientPool<ThriftClient<SocialGraphServiceClient>> *);
@@ -81,9 +80,9 @@ class UserHandler : public UserServiceIf {
                           const std::string &, const std::string &, int64_t,
                           const std::map<std::string, std::string> &) override;
 
-  void ComposeCreatorWithUserId(
-      Creator &, int64_t, int64_t, const std::string &,
-      const std::map<std::string, std::string> &) override;
+  void
+  ComposeCreatorWithUserId(Creator &, int64_t, int64_t, const std::string &,
+                           const std::map<std::string, std::string> &) override;
   void ComposeCreatorWithUsername(
       Creator &, int64_t, const std::string &,
       const std::map<std::string, std::string> &) override;
@@ -92,7 +91,7 @@ class UserHandler : public UserServiceIf {
   int64_t GetUserId(int64_t, const std::string &,
                     const std::map<std::string, std::string> &) override;
 
- private:
+private:
   std::string _machine_id;
   std::string _secret;
   std::mutex *_thread_lock;
@@ -130,15 +129,17 @@ void UserHandler::RegisterUserWithId(
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
-  	zsim_roi_begin();
+    zsim_roi_begin();
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  //zsim_roi_begin();
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -200,7 +201,8 @@ void UserHandler::RegisterUserWithId(
 
     bson_error_t error;
     // auto user_insert_span = opentracing::Tracer::Global()->StartSpan(
-    //     "user_mongo_insert_cilent", {opentracing::ChildOf(&span->context())});
+    //     "user_mongo_insert_cilent",
+    //     {opentracing::ChildOf(&span->context())});
     if (!mongoc_collection_insert_one(collection, new_doc, nullptr, nullptr,
                                       &error)) {
       LOG(error) << "Failed to insert user " << username
@@ -245,7 +247,8 @@ void UserHandler::RegisterUserWithId(
   }
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
 void UserHandler::RegisterUser(
@@ -259,16 +262,18 @@ void UserHandler::RegisterUser(
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
-  	zsim_roi_begin();
+    zsim_roi_begin();
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  //zsim_roi_begin();
-  // Initialize a span
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  Initialize a span
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -362,7 +367,8 @@ void UserHandler::RegisterUser(
     BSON_APPEND_UTF8(new_doc, "password", password_hashed.c_str());
 
     // auto user_insert_span = opentracing::Tracer::Global()->StartSpan(
-    //     "user_mongo_insert_client", {opentracing::ChildOf(&span->context())});
+    //     "user_mongo_insert_client",
+    //     {opentracing::ChildOf(&span->context())});
     if (!mongoc_collection_insert_one(collection, new_doc, nullptr, nullptr,
                                       &error)) {
       LOG(error) << "Failed to insert user " << username
@@ -408,7 +414,8 @@ void UserHandler::RegisterUser(
   }
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
 void UserHandler::ComposeCreatorWithUsername(
@@ -420,15 +427,17 @@ void UserHandler::ComposeCreatorWithUsername(
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
-  	zsim_roi_begin();
+    zsim_roi_begin();
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  //zsim_roi_begin();
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -500,7 +509,7 @@ void UserHandler::ComposeCreatorWithUsername(
         mongoc_collection_find_with_opts(collection, query, nullptr, nullptr);
     const bson_t *doc;
     bool found = mongoc_cursor_next(cursor, &doc);
-    //find_span->Finish();
+    // find_span->Finish();
     if (!found) {
       bson_error_t error;
       if (mongoc_cursor_error(cursor, &error)) {
@@ -581,7 +590,8 @@ void UserHandler::ComposeCreatorWithUsername(
     LOG(warning) << "Failed to pop a client from memcached pool";
   }
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
 void UserHandler::ComposeCreatorWithUserId(
@@ -594,15 +604,17 @@ void UserHandler::ComposeCreatorWithUserId(
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
-  	zsim_roi_begin();
+    zsim_roi_begin();
   }
   zsim_cache_reset();
   zsim_br_pred_reset();
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  //zsim_roi_begin();
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -617,7 +629,8 @@ void UserHandler::ComposeCreatorWithUserId(
   _return = creator;
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
 
 void UserHandler::Login(std::string &_return, int64_t req_id,
@@ -632,11 +645,13 @@ void UserHandler::Login(std::string &_return, int64_t req_id,
   } else {
     zsim_roi_begin();
   }
+  zsim_request_begin();
+  zsim_heartbeat();
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
-  //zsim_roi_begin();
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -821,24 +836,27 @@ void UserHandler::Login(std::string &_return, int64_t req_id,
     }
   }
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
 }
-int64_t UserHandler::GetUserId(
-    int64_t req_id, const std::string &username,
-    const std::map<std::string, std::string> &carrier) {
+int64_t
+UserHandler::GetUserId(int64_t req_id, const std::string &username,
+                       const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
-  	zsim_roi_begin();
+    zsim_roi_begin();
   }
   LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
+  zsim_request_begin();
+  zsim_heartbeat();
 
-  //zsim_roi_begin();
-  // TextMapReader reader(carrier);
+  // zsim_roi_begin();
+  //  TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
   // auto parent_span = opentracing::Tracer::Global()->Extract(reader);
@@ -982,7 +1000,8 @@ int64_t UserHandler::GetUserId(
   }
 
   // span->Finish();
-  //zsim_roi_end();
+  // zsim_roi_end();
+  zsim_request_end();
   return user_id;
 }
 
@@ -1032,6 +1051,6 @@ std::string GetMachineId(std::string &netif) {
   }
   return mac_hash;
 }
-}  // namespace social_network
+} // namespace social_network
 
-#endif  // SOCIAL_NETWORK_MICROSERVICES_USERHANDLER_H
+#endif // SOCIAL_NETWORK_MICROSERVICES_USERHANDLER_H

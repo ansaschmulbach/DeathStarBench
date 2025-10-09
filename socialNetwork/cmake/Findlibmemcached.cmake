@@ -25,6 +25,8 @@
 #  Libraries.
 
 option(MEMCACHED_USE_EXTERNAL_LIBRARY "Pull and build source from external location if local is not found" ON)
+# set(CMAKE_FIND_LIBRARY_SUFFIXES .a .so)
+# set(BUILD_SHARED_LIBS OFF)
 
 # Search for native library to build against
 if(WIN32)
@@ -38,8 +40,24 @@ endif()
 find_path(LIBMEMCACHED_INCLUDE_DIR libmemcached/memcached.hpp PATHS /usr/include /usr/share/include /usr/local/include PATH_SUFFIXES libmemcached)
 find_library(LIBMEMCACHEDCORE_LIBRARY NAMES ${libmemcached_lib} PATHS /usr/lib usr/lib/libmemcached /usr/share /usr/lib64 /usr/local/lib /usr/local/lib64)
 find_library(LIBMEMCACHEDUTIL_LIBRARY NAMES ${libmemcachedUtil_lib} PATHS /usr/lib /usr/share /usr/lib64 /usr/local/lib /usr/local/lib64)
+set(LIBMEMCACHED_LIBRARIES  ${LIBMEMCACHEDCORE_LIBRARY} ${LIBMEMCACHEDUTIL_LIBRARY})
 
-set(LIBMEMCACHED_LIBRARIES ${LIBMEMCACHEDCORE_LIBRARY} ${LIBMEMCACHEDUTIL_LIBRARY})
+# set(LIBMEMCACHEDCORE_LIBRARY /usr/lib/x86_64-linux-gnu/libmemcached.a)
+# set(LIBMEMCACHEDUTIL_LIBRARY /usr/lib/x86_64-linux-gnu/libmemcachedutil.a)
+# 
+# set(LIBMEMCACHED_LIBRARIES sasl2 
+#   ldap
+#   lber
+#   gnutls
+#   gcrypt
+#   gpg-error
+#   resolv
+#   gmp         # GMP math library
+# nettle      # Crypto primitives
+# hogweed
+# tasn1       # ASN.1 parser
+#   pthread
+#   )
 
 if(LIBMEMCACHED_INCLUDE_DIR)
     if(EXISTS "${LIBMEMCACHED_INCLUDE_DIR}/libmemcached-1.0/configure.h")

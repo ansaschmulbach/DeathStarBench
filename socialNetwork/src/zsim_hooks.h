@@ -19,6 +19,8 @@
 #define ZSIM_MAGIC_OP_BR_PRED_RESET (2092)
 #define ZSIM_MAGIC_OP_CACHE_RESET_CTR (2093)
 #define ZSIM_MAGIC_OP_CACHE_RESET_ALL (2094)
+#define ZSIM_MAGIC_OP_REQUEST_BEGIN (2095)
+#define ZSIM_MAGIC_OP_REQUEST_END (2096)
 
 #ifdef __x86_64__
 #define HOOKS_STR "HOOKS"
@@ -46,8 +48,17 @@ static inline void zsim_br_pred_reset() {
 
 static inline void zsim_cache_reset() {
   // printf("cache reset\n");
-  // zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET);
+  zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET);
   // zsim_magic_op(ZSIM_MAGIC_OP_CACHE_RESET_ALL);
+}
+
+static inline void zsim_request_begin() {
+  zsim_magic_op(ZSIM_MAGIC_OP_REQUEST_BEGIN);
+  // zsim_magic_op(ZSIM_MAGIC_OP_HEARTBEAT);
+}
+
+static inline void zsim_request_end() {
+  zsim_magic_op(ZSIM_MAGIC_OP_REQUEST_END);
 }
 
 static inline void zsim_roi_begin() {

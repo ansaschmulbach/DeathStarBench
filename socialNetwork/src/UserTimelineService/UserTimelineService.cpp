@@ -52,10 +52,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "user-timeline-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml",
+  // "user-timeline-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -70,8 +71,10 @@ int main(int argc, char *argv[]) {
 
   int mongodb_conns = config_json["user-timeline-mongodb"]["connections"];
 
-  int redis_cluster_config_flag = config_json["user-timeline-redis"]["use_cluster"];
-  int redis_replica_config_flag = config_json["user-timeline-redis"]["use_replica"];
+  int redis_cluster_config_flag =
+      config_json["user-timeline-redis"]["use_cluster"];
+  int redis_replica_config_flag =
+      config_json["user-timeline-redis"]["use_replica"];
 
   auto mongodb_client_pool =
       init_mongodb_client_pool(config_json, "user-timeline", mongodb_conns);
@@ -81,9 +84,11 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  if (redis_replica_config_flag && (redis_cluster_config_flag || redis_cluster_flag)) {
-      LOG(error) << "Can't start service when Redis Cluster and Redis Replica are enabled at the same time";
-      exit(EXIT_FAILURE);
+  if (redis_replica_config_flag &&
+      (redis_cluster_config_flag || redis_cluster_flag)) {
+    LOG(error) << "Can't start service when Redis Cluster and Redis Replica "
+                  "are enabled at the same time";
+    exit(EXIT_FAILURE);
   }
 
   ClientPool<ThriftClient<PostStorageServiceClient>> post_storage_client_pool(
@@ -112,39 +117,41 @@ int main(int argc, char *argv[]) {
     RedisCluster redis_client_pool =
         init_redis_cluster_client_pool(config_json, "user-timeline");
     TSimpleServer server(std::make_shared<UserTimelineServiceProcessor>(
-                               std::make_shared<UserTimelineHandler>(
-                                   &redis_client_pool, mongodb_client_pool,
-                                   &post_storage_client_pool)),
-                           server_socket,
-                           std::make_shared<TFramedTransportFactory>(),
-                           std::make_shared<TBinaryProtocolFactory>());
-    LOG(info) << "Starting the user-timeline-service server with Redis Cluster support...";
+                             std::make_shared<UserTimelineHandler>(
+                                 &redis_client_pool, mongodb_client_pool,
+                                 &post_storage_client_pool)),
+                         server_socket,
+                         std::make_shared<TFramedTransportFactory>(),
+                         std::make_shared<TBinaryProtocolFactory>());
+    LOG(info) << "Starting the user-timeline-service server with Redis Cluster "
+                 "support...";
     server.serve();
-  }
-  else if (redis_replica_config_flag) {
-      Redis redis_replica_client_pool = init_redis_replica_client_pool(config_json, "redis-replica");
-      Redis redis_primary_client_pool = init_redis_replica_client_pool(config_json, "redis-primary");
-      TSimpleServer server(std::make_shared<UserTimelineServiceProcessor>(
-          std::make_shared<UserTimelineHandler>(
-              &redis_replica_client_pool, &redis_primary_client_pool, mongodb_client_pool,
-              &post_storage_client_pool)),
-          server_socket,
-          std::make_shared<TFramedTransportFactory>(),
-          std::make_shared<TBinaryProtocolFactory>());
-      LOG(info) << "Starting the user-timeline-service server with replicated Redis support...";
-      server.serve();
+  } else if (redis_replica_config_flag) {
+    Redis redis_replica_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-replica");
+    Redis redis_primary_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-primary");
+    TSimpleServer server(
+        std::make_shared<UserTimelineServiceProcessor>(
+            std::make_shared<UserTimelineHandler>(
+                &redis_replica_client_pool, &redis_primary_client_pool,
+                mongodb_client_pool, &post_storage_client_pool)),
+        server_socket, std::make_shared<TFramedTransportFactory>(),
+        std::make_shared<TBinaryProtocolFactory>());
+    LOG(info) << "Starting the user-timeline-service server with replicated "
+                 "Redis support...";
+    server.serve();
 
-  }
-  else {
+  } else {
     Redis redis_client_pool =
         init_redis_client_pool(config_json, "user-timeline");
     TSimpleServer server(std::make_shared<UserTimelineServiceProcessor>(
-                               std::make_shared<UserTimelineHandler>(
-                                   &redis_client_pool, mongodb_client_pool,
-                                   &post_storage_client_pool)),
-                           server_socket,
-                           std::make_shared<TFramedTransportFactory>(),
-                           std::make_shared<TBinaryProtocolFactory>());
+                             std::make_shared<UserTimelineHandler>(
+                                 &redis_client_pool, mongodb_client_pool,
+                                 &post_storage_client_pool)),
+                         server_socket,
+                         std::make_shared<TFramedTransportFactory>(),
+                         std::make_shared<TBinaryProtocolFactory>());
     LOG(info) << "Starting the user-timeline-service server...";
     server.serve();
   }

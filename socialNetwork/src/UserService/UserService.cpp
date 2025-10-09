@@ -22,10 +22,11 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   init_logger();
 
-  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "user-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml",
+  // "user-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("config/service-config.json", &config_json) != 0) {
     LOG(error) << "Json configuration failure";
     exit(EXIT_FAILURE);
   }
@@ -54,8 +55,10 @@ int main(int argc, char *argv[]) {
 
   if (memcached_client_pool == nullptr || mongodb_client_pool == nullptr) {
     LOG(error) << "Memcached or mongodb client pool failure" << std::endl;
-    if (memcached_client_pool == nullptr) LOG(error) << "memcached failure" << std::endl;
-    if (memcached_client_pool == nullptr) LOG(error) << "mongodb failure" << std::endl;
+    if (memcached_client_pool == nullptr)
+      LOG(error) << "memcached failure" << std::endl;
+    if (memcached_client_pool == nullptr)
+      LOG(error) << "mongodb failure" << std::endl;
     return EXIT_FAILURE;
   }
 
@@ -70,7 +73,8 @@ int main(int argc, char *argv[]) {
 
   ClientPool<ThriftClient<SocialGraphServiceClient>> social_graph_client_pool(
       "social-graph", social_graph_addr, social_graph_port, 0,
-      social_graph_conns, social_graph_timeout, social_graph_keepalive, config_json);
+      social_graph_conns, social_graph_timeout, social_graph_keepalive,
+      config_json);
 
   mongoc_client_t *mongodb_client = mongoc_client_pool_pop(mongodb_client_pool);
   if (!mongodb_client) {
@@ -86,14 +90,14 @@ int main(int argc, char *argv[]) {
     }
   }
   mongoc_client_pool_push(mongodb_client_pool, mongodb_client);
-  std::shared_ptr<TServerSocket> server_socket = get_server_socket(config_json, "localhost", port);
+  std::shared_ptr<TServerSocket> server_socket =
+      get_server_socket(config_json, "localhost", port);
 
   TSimpleServer server(
       std::make_shared<UserServiceProcessor>(std::make_shared<UserHandler>(
           &thread_lock, machine_id, secret, memcached_client_pool,
           mongodb_client_pool, &social_graph_client_pool)),
-      server_socket,
-      std::make_shared<TFramedTransportFactory>(),
+      server_socket, std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
   LOG(info) << "Starting the user-service server ...";
   server.serve();

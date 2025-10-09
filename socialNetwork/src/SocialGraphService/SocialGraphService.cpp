@@ -1,4 +1,4 @@
-#include <signal.h> 
+#include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -49,10 +49,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml", "social-graph-service");
+  // SetUpTracer("/data/sanchez/users/ansa/DSB/socialNetwork/config/jaeger-config.yml",
+  // "social-graph-service");
 
   json config_json;
-  if (load_config_file("/data/sanchez/users/ansa/DSB2/socialNetwork/config/service-config.json", &config_json) != 0) {
+  if (load_config_file("config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
@@ -67,8 +68,10 @@ int main(int argc, char *argv[]) {
   int user_timeout = config_json["user-service"]["timeout_ms"];
   int user_keepalive = config_json["user-service"]["keepalive_ms"];
 
-  int redis_cluster_config_flag = config_json["social-graph-redis"]["use_cluster"];
-  int redis_replica_config_flag = config_json["social-graph-redis"]["use_replica"];
+  int redis_cluster_config_flag =
+      config_json["social-graph-redis"]["use_cluster"];
+  int redis_replica_config_flag =
+      config_json["social-graph-redis"]["use_replica"];
   mongoc_client_pool_t *mongodb_client_pool =
       init_mongodb_client_pool(config_json, "social-graph", mongodb_conns);
 
@@ -78,9 +81,11 @@ int main(int argc, char *argv[]) {
     LOG(info) << "successfully created client pool";
   }
 
-  if (redis_replica_config_flag && (redis_cluster_config_flag || redis_cluster_flag)) {
-      LOG(error) << "Can't start service when Redis Cluster and Redis Replica are enabled at the same time";
-      exit(EXIT_FAILURE);
+  if (redis_replica_config_flag &&
+      (redis_cluster_config_flag || redis_cluster_flag)) {
+    LOG(error) << "Can't start service when Redis Cluster and Redis Replica "
+                  "are enabled at the same time";
+    exit(EXIT_FAILURE);
   }
 
   ClientPool<ThriftClient<UserServiceClient>> user_client_pool(
@@ -93,7 +98,7 @@ int main(int argc, char *argv[]) {
     LOG(error) << "Failed to pop mongoc client";
     return EXIT_FAILURE;
   }
-  
+
   LOG(info) << "successfully popped mongoc client";
   bool r = false;
   while (!r) {
@@ -119,22 +124,27 @@ int main(int argc, char *argv[]) {
                                                  &user_client_pool)),
         server_socket, std::make_shared<TFramedTransportFactory>(),
         std::make_shared<TBinaryProtocolFactory>());
-    LOG(info) << "Starting the social-graph-service server with Redis Cluster support...";
+    LOG(info) << "Starting the social-graph-service server with Redis Cluster "
+                 "support...";
     server.serve();
   }
-  
-  else if (redis_replica_config_flag) {
-      Redis redis_replica_client_pool = init_redis_replica_client_pool(config_json, "redis-replica");
-      Redis redis_primary_client_pool = init_redis_replica_client_pool(config_json, "redis-primary");
 
-      TSimpleServer server(
-          std::make_shared<SocialGraphServiceProcessor>(
-              std::make_shared<SocialGraphHandler>(
-                  mongodb_client_pool, &redis_replica_client_pool, &redis_primary_client_pool, &user_client_pool)),
-          server_socket, std::make_shared<TFramedTransportFactory>(),
-          std::make_shared<TBinaryProtocolFactory>());
-      LOG(info) << "Starting the social-graph-service server with Redis replica support";
-      server.serve();
+  else if (redis_replica_config_flag) {
+    Redis redis_replica_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-replica");
+    Redis redis_primary_client_pool =
+        init_redis_replica_client_pool(config_json, "redis-primary");
+
+    TSimpleServer server(
+        std::make_shared<SocialGraphServiceProcessor>(
+            std::make_shared<SocialGraphHandler>(
+                mongodb_client_pool, &redis_replica_client_pool,
+                &redis_primary_client_pool, &user_client_pool)),
+        server_socket, std::make_shared<TFramedTransportFactory>(),
+        std::make_shared<TBinaryProtocolFactory>());
+    LOG(info) << "Starting the social-graph-service server with Redis replica "
+                 "support";
+    server.serve();
   }
 
   else {
