@@ -7,6 +7,9 @@ add_executable(
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
 )
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-pic -fno-plt")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-pic -fno-plt")
+
 target_include_directories(
     TextService PRIVATE
 	# /usr/local/include/jaegertracing
@@ -27,8 +30,8 @@ target_link_libraries(
 )
 
 # Set the linker flags to ensure static linking
-# set_target_properties(TextService PROPERTIES
-# 	LINK_FLAGS "-static -Wl,--verbose"
-# )
+set_target_properties(TextService PROPERTIES
+	LINK_FLAGS "-static -Wl,--verbose"
+)
 
 install(TARGETS TextService DESTINATION ./)

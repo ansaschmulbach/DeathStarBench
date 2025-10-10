@@ -38,6 +38,8 @@ endif()
 
 
 set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
+# set(MONGOC_LIBRARIES /usr/local/lib/libmongoc-static-1.0.a)
+# set(MONGOC_INCLUDE_DIRS /usr/local/include/libmongoc-1.0 /usr/local/include/libbson-1.0)
 
 add_subdirectory(TextService)
 add_subdirectory(UniqueIdService)
