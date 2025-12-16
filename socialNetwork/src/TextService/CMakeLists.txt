@@ -17,12 +17,14 @@ set(OPENSSL_LIBRARIES /usr/lib/x86_64-linux-gnu/libssl.a /usr/lib/x86_64-linux-g
 target_link_libraries(
     TextService
     nlohmann_json::nlohmann_json
-	${THRIFT_STATIC_LIB}
-	${OPENSSL_LIBRARIES}
+    ${THRIFT_LIB}
+    # ${THRIFT_STATIC_LIB}
+    # ${OPENSSL_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     Boost::log
     Boost::log_setup
+    OpenSSL::SSL
 	# jaegertracing
 )
 
