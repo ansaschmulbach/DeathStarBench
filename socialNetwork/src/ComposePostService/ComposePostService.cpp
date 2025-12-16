@@ -2,6 +2,7 @@
 #include <thrift/protocol/TBinaryProtocol.h>
 // #include <thrift/server/TSimpleServer.h>
 #include <thrift/server/TSimpleServer.h>
+#include <thrift/server/TThreadedServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -14,6 +15,7 @@
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::server::TSimpleServer;
+using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -111,7 +113,7 @@ int main(int argc, char *argv[]) {
   // std::make_shared<TServerSocket>("0.0.0.0", port);
   //  auto server_transport =
   //  std::make_shared<SocketServerTransport>(TCP_SOCKET, "localhost", port);
-  TSimpleServer server(
+  TThreadedServer server(
       std::make_shared<ComposePostServiceProcessor>(
           std::make_shared<ComposePostHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
@@ -119,6 +121,15 @@ int main(int argc, char *argv[]) {
               &text_client_pool, &home_timeline_client_pool)),
       server_socket, std::make_shared<TFramedTransportFactory>(),
       std::make_shared<TBinaryProtocolFactory>());
+
+  // TSimpleServer server(
+  //     std::make_shared<ComposePostServiceProcessor>(
+  //         std::make_shared<ComposePostHandler>(
+  //             &post_storage_client_pool, &user_timeline_client_pool,
+  //             &user_client_pool, &unique_id_client_pool, &media_client_pool,
+  //             &text_client_pool, &home_timeline_client_pool)),
+  //     server_socket, std::make_shared<TFramedTransportFactory>(),
+  //     std::make_shared<TBinaryProtocolFactory>());
   LOG(info) << "Starting the compose-post-service server ...";
   server.serve();
 }

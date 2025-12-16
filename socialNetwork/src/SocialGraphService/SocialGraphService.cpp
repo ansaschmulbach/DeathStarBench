@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
+#include <thrift/server/TThreadedServer.h>
 #include <thrift/transport/TBufferTransports.h>
 #include <thrift/transport/TServerSocket.h>
 
@@ -15,6 +16,7 @@
 using json = nlohmann::json;
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::server::TSimpleServer;
+using apache::thrift::server::TThreadedServer;
 using apache::thrift::transport::TFramedTransportFactory;
 using apache::thrift::transport::TServerSocket;
 using namespace social_network;
@@ -117,7 +119,7 @@ int main(int argc, char *argv[]) {
   if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_cluster_client_pool =
         init_redis_cluster_client_pool(config_json, "social-graph");
-    TSimpleServer server(
+    TThreadedServer server(
         std::make_shared<SocialGraphServiceProcessor>(
             std::make_shared<SocialGraphHandler>(mongodb_client_pool,
                                                  &redis_cluster_client_pool,
@@ -135,7 +137,7 @@ int main(int argc, char *argv[]) {
     Redis redis_primary_client_pool =
         init_redis_replica_client_pool(config_json, "redis-primary");
 
-    TSimpleServer server(
+    TThreadedServer server(
         std::make_shared<SocialGraphServiceProcessor>(
             std::make_shared<SocialGraphHandler>(
                 mongodb_client_pool, &redis_replica_client_pool,
@@ -150,7 +152,7 @@ int main(int argc, char *argv[]) {
   else {
     Redis redis_client_pool =
         init_redis_client_pool(config_json, "social-graph");
-    TSimpleServer server(
+    TThreadedServer server(
         std::make_shared<SocialGraphServiceProcessor>(
             std::make_shared<SocialGraphHandler>(
                 mongodb_client_pool, &redis_client_pool, &user_client_pool)),
