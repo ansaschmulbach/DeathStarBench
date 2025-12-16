@@ -398,6 +398,64 @@ uint32_t ComposePostService_ComposePost_presult::read(::apache::thrift::protocol
   return xfer;
 }
 
+
+ComposePostService_Exit_args::~ComposePostService_Exit_args() throw() {
+}
+
+
+uint32_t ComposePostService_Exit_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ComposePostService_Exit_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("ComposePostService_Exit_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+ComposePostService_Exit_pargs::~ComposePostService_Exit_pargs() throw() {
+}
+
+
+uint32_t ComposePostService_Exit_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("ComposePostService_Exit_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 void ComposePostServiceClient::ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
 {
   send_ComposePost(req_id, username, user_id, text, media_ids, media_types, post_type, carrier);
@@ -459,6 +517,24 @@ void ComposePostServiceClient::recv_ComposePost()
     throw result.se;
   }
   return;
+}
+
+void ComposePostServiceClient::Exit()
+{
+  send_Exit();
+}
+
+void ComposePostServiceClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  ComposePostService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 bool ComposePostServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -534,6 +610,43 @@ void ComposePostServiceProcessor::process_ComposePost(int32_t seqid, ::apache::t
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "ComposePostService.ComposePost", bytes);
   }
+}
+
+void ComposePostServiceProcessor::process_Exit(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("ComposePostService.Exit", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "ComposePostService.Exit");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "ComposePostService.Exit");
+  }
+
+  ComposePostService_Exit_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "ComposePostService.Exit", bytes);
+  }
+
+  try {
+    iface_->Exit();
+  } catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "ComposePostService.Exit");
+    }
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "ComposePostService.Exit");
+  }
+
+  return;
 }
 
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > ComposePostServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
@@ -630,6 +743,27 @@ void ComposePostServiceConcurrentClient::recv_ComposePost(const int32_t seqid)
     // this will temporarily unlock the readMutex, and let other clients get work done
     this->sync_.waitForWork(seqid);
   } // end while(true)
+}
+
+void ComposePostServiceConcurrentClient::Exit()
+{
+  send_Exit();
+}
+
+void ComposePostServiceConcurrentClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  ComposePostService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
 }
 
 } // namespace

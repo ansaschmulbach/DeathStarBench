@@ -22,6 +22,7 @@ class UserMentionServiceIf {
  public:
   virtual ~UserMentionServiceIf() {}
   virtual void ComposeUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class UserMentionServiceIfFactory {
@@ -52,6 +53,9 @@ class UserMentionServiceNull : virtual public UserMentionServiceIf {
  public:
   virtual ~UserMentionServiceNull() {}
   void ComposeUserMentions(std::vector<UserMention> & /* _return */, const int64_t /* req_id */, const std::vector<std::string> & /* usernames */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -182,6 +186,43 @@ class UserMentionService_ComposeUserMentions_presult {
 
 };
 
+
+class UserMentionService_Exit_args {
+ public:
+
+  UserMentionService_Exit_args(const UserMentionService_Exit_args&);
+  UserMentionService_Exit_args& operator=(const UserMentionService_Exit_args&);
+  UserMentionService_Exit_args() {
+  }
+
+  virtual ~UserMentionService_Exit_args() throw();
+
+  bool operator == (const UserMentionService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const UserMentionService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UserMentionService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class UserMentionService_Exit_pargs {
+ public:
+
+
+  virtual ~UserMentionService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class UserMentionServiceClient : virtual public UserMentionServiceIf {
  public:
   UserMentionServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -210,6 +251,8 @@ class UserMentionServiceClient : virtual public UserMentionServiceIf {
   void ComposeUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
   void send_ComposeUserMentions(const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
   void recv_ComposeUserMentions(std::vector<UserMention> & _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -226,10 +269,12 @@ class UserMentionServiceProcessor : public ::apache::thrift::TDispatchProcessor 
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeUserMentions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   UserMentionServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserMentionServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposeUserMentions"] = &UserMentionServiceProcessor::process_ComposeUserMentions;
+    processMap_["Exit"] = &UserMentionServiceProcessor::process_Exit;
   }
 
   virtual ~UserMentionServiceProcessor() {}
@@ -268,6 +313,15 @@ class UserMentionServiceMultiface : virtual public UserMentionServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -301,6 +355,8 @@ class UserMentionServiceConcurrentClient : virtual public UserMentionServiceIf {
   void ComposeUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
   int32_t send_ComposeUserMentions(const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
   void recv_ComposeUserMentions(std::vector<UserMention> & _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

@@ -24,6 +24,7 @@ class PostStorageServiceIf {
   virtual void StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier) = 0;
   virtual void ReadPost(Post& _return, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier) = 0;
   virtual void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class PostStorageServiceIfFactory {
@@ -60,6 +61,9 @@ class PostStorageServiceNull : virtual public PostStorageServiceIf {
     return;
   }
   void ReadPosts(std::vector<Post> & /* _return */, const int64_t /* req_id */, const std::vector<int64_t> & /* post_ids */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -434,6 +438,43 @@ class PostStorageService_ReadPosts_presult {
 
 };
 
+
+class PostStorageService_Exit_args {
+ public:
+
+  PostStorageService_Exit_args(const PostStorageService_Exit_args&);
+  PostStorageService_Exit_args& operator=(const PostStorageService_Exit_args&);
+  PostStorageService_Exit_args() {
+  }
+
+  virtual ~PostStorageService_Exit_args() throw();
+
+  bool operator == (const PostStorageService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const PostStorageService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const PostStorageService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class PostStorageService_Exit_pargs {
+ public:
+
+
+  virtual ~PostStorageService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class PostStorageServiceClient : virtual public PostStorageServiceIf {
  public:
   PostStorageServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -468,6 +509,8 @@ class PostStorageServiceClient : virtual public PostStorageServiceIf {
   void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
   void send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
   void recv_ReadPosts(std::vector<Post> & _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -486,12 +529,14 @@ class PostStorageServiceProcessor : public ::apache::thrift::TDispatchProcessor 
   void process_StorePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadPost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadPosts(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   PostStorageServiceProcessor(::apache::thrift::stdcxx::shared_ptr<PostStorageServiceIf> iface) :
     iface_(iface) {
     processMap_["StorePost"] = &PostStorageServiceProcessor::process_StorePost;
     processMap_["ReadPost"] = &PostStorageServiceProcessor::process_ReadPost;
     processMap_["ReadPosts"] = &PostStorageServiceProcessor::process_ReadPosts;
+    processMap_["Exit"] = &PostStorageServiceProcessor::process_Exit;
   }
 
   virtual ~PostStorageServiceProcessor() {}
@@ -549,6 +594,15 @@ class PostStorageServiceMultiface : virtual public PostStorageServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -588,6 +642,8 @@ class PostStorageServiceConcurrentClient : virtual public PostStorageServiceIf {
   void ReadPosts(std::vector<Post> & _return, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
   int32_t send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
   void recv_ReadPosts(std::vector<Post> & _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

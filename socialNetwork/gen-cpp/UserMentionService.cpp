@@ -5,8 +5,6 @@
  *  @generated
  */
 #include "UserMentionService.h"
-#include <thread>
-#include <chrono>
 
 namespace social_network {
 
@@ -342,10 +340,67 @@ uint32_t UserMentionService_ComposeUserMentions_presult::read(::apache::thrift::
   return xfer;
 }
 
+
+UserMentionService_Exit_args::~UserMentionService_Exit_args() throw() {
+}
+
+
+uint32_t UserMentionService_Exit_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t UserMentionService_Exit_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UserMentionService_Exit_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+UserMentionService_Exit_pargs::~UserMentionService_Exit_pargs() throw() {
+}
+
+
+uint32_t UserMentionService_Exit_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UserMentionService_Exit_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 void UserMentionServiceClient::ComposeUserMentions(std::vector<UserMention> & _return, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier)
 {
   send_ComposeUserMentions(req_id, usernames, carrier);
-  // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   recv_ComposeUserMentions(_return);
 }
 
@@ -404,6 +459,24 @@ void UserMentionServiceClient::recv_ComposeUserMentions(std::vector<UserMention>
     throw result.se;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ComposeUserMentions failed: unknown result");
+}
+
+void UserMentionServiceClient::Exit()
+{
+  send_Exit();
+}
+
+void UserMentionServiceClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UserMentionService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 bool UserMentionServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -480,6 +553,43 @@ void UserMentionServiceProcessor::process_ComposeUserMentions(int32_t seqid, ::a
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UserMentionService.ComposeUserMentions", bytes);
   }
+}
+
+void UserMentionServiceProcessor::process_Exit(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserMentionService.Exit", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserMentionService.Exit");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "UserMentionService.Exit");
+  }
+
+  UserMentionService_Exit_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "UserMentionService.Exit", bytes);
+  }
+
+  try {
+    iface_->Exit();
+  } catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserMentionService.Exit");
+    }
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "UserMentionService.Exit");
+  }
+
+  return;
 }
 
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UserMentionServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
@@ -577,6 +687,27 @@ void UserMentionServiceConcurrentClient::recv_ComposeUserMentions(std::vector<Us
     // this will temporarily unlock the readMutex, and let other clients get work done
     this->sync_.waitForWork(seqid);
   } // end while(true)
+}
+
+void UserMentionServiceConcurrentClient::Exit()
+{
+  send_Exit();
+}
+
+void UserMentionServiceConcurrentClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UserMentionService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
 }
 
 } // namespace

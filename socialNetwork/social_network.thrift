@@ -78,6 +78,8 @@ service UniqueIdService {
       2: PostType post_type,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service TextService {
@@ -86,6 +88,8 @@ service TextService {
       2: string text,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service UserService {
@@ -133,6 +137,8 @@ service UserService {
       2: string username,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service ComposePostService {
@@ -146,6 +152,8 @@ service ComposePostService {
     7: PostType post_type,
     8: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service PostStorageService {
@@ -166,6 +174,8 @@ service PostStorageService {
     2: list<i64> post_ids,
     3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service HomeTimelineService {
@@ -185,6 +195,8 @@ service HomeTimelineService {
     5: list<i64> user_mentions_id,
     6: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service UserTimelineService {
@@ -203,6 +215,8 @@ service UserTimelineService {
     4: i32 stop,
     5: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service SocialGraphService{
@@ -251,6 +265,8 @@ service SocialGraphService{
       2: i64 user_id,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service UserMentionService {
@@ -259,6 +275,8 @@ service UserMentionService {
       2: list<string> usernames,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service UrlShortenService {
@@ -273,6 +291,8 @@ service UrlShortenService {
       2: list<string> shortened_urls,
       3: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }
 
 service MediaService {
@@ -282,4 +302,6 @@ service MediaService {
       3: list<i64> media_ids,
       4: map<string, string> carrier
   ) throws (1: ServiceException se)
+
+  oneway void Exit()
 }

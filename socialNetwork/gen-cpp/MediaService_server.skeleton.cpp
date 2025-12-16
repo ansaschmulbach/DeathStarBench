@@ -25,6 +25,11 @@ class MediaServiceHandler : virtual public MediaServiceIf {
     printf("ComposeMedia\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

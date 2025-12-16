@@ -2,6 +2,14 @@ import requests
 import string
 import random
 import sys
+from thrift.transport import TSocket
+from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol
+
+import sys
+sys.path.append('gen-py')
+
+from social_network import ComposePostService
 
 def stringRandom(length):
     characters = string.ascii_letters + string.digits
@@ -55,16 +63,65 @@ def gen_request():
 
     return path, headers, body
 
-random.seed(42)
+import asyncio
+import aiohttp
 
-if len(sys.argv) != 2:
-    print("error: must supply number of requests")
-    exit()
 
-req_num = int(sys.argv[1])
+async def send_post(session, path, headers, body, sem):
+    async with sem:
+        async with session.post(path, data=body, headers=headers) as response:
+            text = await response.text()
+            print(response.status)
+            print(text)
+            return text
 
-for i in range(req_num):
-    path, headers, body = gen_request()
-    response = requests.post(path, data=body, headers=headers)
-    print(response.status_code)
-    print(response.text)
+
+async def main(req_num, req_in_flight):
+    sem = asyncio.Semaphore(req_in_flight)
+    timeout = aiohttp.ClientTimeout(
+        total=None,
+        connect=None,
+        sock_connect=None,
+        sock_read=None
+    )
+    async with aiohttp.ClientSession(timeout=timeout) as session:
+        tasks = []
+        for _ in range(req_num):
+            path, headers, body = gen_request()
+            tasks.append(send_post(session, path, headers, body, sem))
+        await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    random.seed(42)
+    if len(sys.argv) != 2 and len(sys.argv) != 4:
+        print("error: must supply number of requests")
+        exit()
+
+    req_num = int(sys.argv[1])
+    req_in_flight = 0
+    if (len(sys.argv) == 2):
+        async_req = False
+    else:
+        async_req = sys.argv[2] == "async"
+        req_in_flight = int(sys.argv[3])
+
+    if (async_req):
+        asyncio.run(main(req_num, req_in_flight))
+    else:
+        for _ in range(req_num):
+            path,headers,body = gen_request()
+            response = requests.post(path, data=body, headers=headers)
+            print(response.status_code)
+            print(response.text)
+
+    transport = TSocket.TSocket('localhost', 39328)
+    transport = TTransport.TFramedTransport(transport)
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    client = ComposePostService.Client(protocol)
+    transport.open()
+    try:
+        client.Exit()
+    except Exception as e:
+        print(e)
+    finally:
+        transport.close()

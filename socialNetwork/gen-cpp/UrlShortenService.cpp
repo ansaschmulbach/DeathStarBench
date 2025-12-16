@@ -5,8 +5,6 @@
  *  @generated
  */
 #include "UrlShortenService.h"
-#include <thread>
-#include <chrono>
 
 namespace social_network {
 
@@ -674,10 +672,67 @@ uint32_t UrlShortenService_GetExtendedUrls_presult::read(::apache::thrift::proto
   return xfer;
 }
 
+
+UrlShortenService_Exit_args::~UrlShortenService_Exit_args() throw() {
+}
+
+
+uint32_t UrlShortenService_Exit_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t UrlShortenService_Exit_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UrlShortenService_Exit_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+UrlShortenService_Exit_pargs::~UrlShortenService_Exit_pargs() throw() {
+}
+
+
+uint32_t UrlShortenService_Exit_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UrlShortenService_Exit_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 void UrlShortenServiceClient::ComposeUrls(std::vector<Url> & _return, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier)
 {
   send_ComposeUrls(req_id, urls, carrier);
-  // std::this_thread::sleep_for(std::chrono::milliseconds(1));
   recv_ComposeUrls(_return);
 }
 
@@ -799,6 +854,24 @@ void UrlShortenServiceClient::recv_GetExtendedUrls(std::vector<std::string> & _r
     throw result.se;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "GetExtendedUrls failed: unknown result");
+}
+
+void UrlShortenServiceClient::Exit()
+{
+  send_Exit();
+}
+
+void UrlShortenServiceClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UrlShortenService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 bool UrlShortenServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -932,6 +1005,43 @@ void UrlShortenServiceProcessor::process_GetExtendedUrls(int32_t seqid, ::apache
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "UrlShortenService.GetExtendedUrls", bytes);
   }
+}
+
+void UrlShortenServiceProcessor::process_Exit(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UrlShortenService.Exit", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UrlShortenService.Exit");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "UrlShortenService.Exit");
+  }
+
+  UrlShortenService_Exit_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "UrlShortenService.Exit", bytes);
+  }
+
+  try {
+    iface_->Exit();
+  } catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UrlShortenService.Exit");
+    }
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "UrlShortenService.Exit");
+  }
+
+  return;
 }
 
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > UrlShortenServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
@@ -1119,6 +1229,27 @@ void UrlShortenServiceConcurrentClient::recv_GetExtendedUrls(std::vector<std::st
     // this will temporarily unlock the readMutex, and let other clients get work done
     this->sync_.waitForWork(seqid);
   } // end while(true)
+}
+
+void UrlShortenServiceConcurrentClient::Exit()
+{
+  send_Exit();
+}
+
+void UrlShortenServiceConcurrentClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UrlShortenService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
 }
 
 } // namespace

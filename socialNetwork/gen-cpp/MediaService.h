@@ -22,6 +22,7 @@ class MediaServiceIf {
  public:
   virtual ~MediaServiceIf() {}
   virtual void ComposeMedia(std::vector<Media> & _return, const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class MediaServiceIfFactory {
@@ -52,6 +53,9 @@ class MediaServiceNull : virtual public MediaServiceIf {
  public:
   virtual ~MediaServiceNull() {}
   void ComposeMedia(std::vector<Media> & /* _return */, const int64_t /* req_id */, const std::vector<std::string> & /* media_types */, const std::vector<int64_t> & /* media_ids */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -189,6 +193,43 @@ class MediaService_ComposeMedia_presult {
 
 };
 
+
+class MediaService_Exit_args {
+ public:
+
+  MediaService_Exit_args(const MediaService_Exit_args&);
+  MediaService_Exit_args& operator=(const MediaService_Exit_args&);
+  MediaService_Exit_args() {
+  }
+
+  virtual ~MediaService_Exit_args() throw();
+
+  bool operator == (const MediaService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const MediaService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const MediaService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class MediaService_Exit_pargs {
+ public:
+
+
+  virtual ~MediaService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class MediaServiceClient : virtual public MediaServiceIf {
  public:
   MediaServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -217,6 +258,8 @@ class MediaServiceClient : virtual public MediaServiceIf {
   void ComposeMedia(std::vector<Media> & _return, const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
   void send_ComposeMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
   void recv_ComposeMedia(std::vector<Media> & _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -233,10 +276,12 @@ class MediaServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeMedia(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   MediaServiceProcessor(::apache::thrift::stdcxx::shared_ptr<MediaServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposeMedia"] = &MediaServiceProcessor::process_ComposeMedia;
+    processMap_["Exit"] = &MediaServiceProcessor::process_Exit;
   }
 
   virtual ~MediaServiceProcessor() {}
@@ -275,6 +320,15 @@ class MediaServiceMultiface : virtual public MediaServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -308,6 +362,8 @@ class MediaServiceConcurrentClient : virtual public MediaServiceIf {
   void ComposeMedia(std::vector<Media> & _return, const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
   int32_t send_ComposeMedia(const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier);
   void recv_ComposeMedia(std::vector<Media> & _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

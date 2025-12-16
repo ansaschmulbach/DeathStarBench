@@ -28,6 +28,7 @@ class SocialGraphServiceIf {
   virtual void FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
   virtual void UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
   virtual void InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class SocialGraphServiceIfFactory {
@@ -76,6 +77,9 @@ class SocialGraphServiceNull : virtual public SocialGraphServiceIf {
     return;
   }
   void InsertUser(const int64_t /* req_id */, const int64_t /* user_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -950,6 +954,43 @@ class SocialGraphService_InsertUser_presult {
 
 };
 
+
+class SocialGraphService_Exit_args {
+ public:
+
+  SocialGraphService_Exit_args(const SocialGraphService_Exit_args&);
+  SocialGraphService_Exit_args& operator=(const SocialGraphService_Exit_args&);
+  SocialGraphService_Exit_args() {
+  }
+
+  virtual ~SocialGraphService_Exit_args() throw();
+
+  bool operator == (const SocialGraphService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const SocialGraphService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const SocialGraphService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class SocialGraphService_Exit_pargs {
+ public:
+
+
+  virtual ~SocialGraphService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class SocialGraphServiceClient : virtual public SocialGraphServiceIf {
  public:
   SocialGraphServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -996,6 +1037,8 @@ class SocialGraphServiceClient : virtual public SocialGraphServiceIf {
   void InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
   void send_InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
   void recv_InsertUser();
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -1018,6 +1061,7 @@ class SocialGraphServiceProcessor : public ::apache::thrift::TDispatchProcessor 
   void process_FollowWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_UnfollowWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_InsertUser(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   SocialGraphServiceProcessor(::apache::thrift::stdcxx::shared_ptr<SocialGraphServiceIf> iface) :
     iface_(iface) {
@@ -1028,6 +1072,7 @@ class SocialGraphServiceProcessor : public ::apache::thrift::TDispatchProcessor 
     processMap_["FollowWithUsername"] = &SocialGraphServiceProcessor::process_FollowWithUsername;
     processMap_["UnfollowWithUsername"] = &SocialGraphServiceProcessor::process_UnfollowWithUsername;
     processMap_["InsertUser"] = &SocialGraphServiceProcessor::process_InsertUser;
+    processMap_["Exit"] = &SocialGraphServiceProcessor::process_Exit;
   }
 
   virtual ~SocialGraphServiceProcessor() {}
@@ -1121,6 +1166,15 @@ class SocialGraphServiceMultiface : virtual public SocialGraphServiceIf {
     ifaces_[i]->InsertUser(req_id, user_id, carrier);
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -1172,6 +1226,8 @@ class SocialGraphServiceConcurrentClient : virtual public SocialGraphServiceIf {
   void InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
   int32_t send_InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
   void recv_InsertUser(const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

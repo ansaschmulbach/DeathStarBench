@@ -25,6 +25,11 @@ class UserMentionServiceHandler : virtual public UserMentionServiceIf {
     printf("ComposeUserMentions\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

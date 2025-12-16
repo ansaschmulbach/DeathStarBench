@@ -55,6 +55,11 @@ class SocialGraphServiceHandler : virtual public SocialGraphServiceIf {
     printf("InsertUser\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

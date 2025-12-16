@@ -22,6 +22,7 @@ class UniqueIdServiceIf {
  public:
   virtual ~UniqueIdServiceIf() {}
   virtual int64_t ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class UniqueIdServiceIfFactory {
@@ -54,6 +55,9 @@ class UniqueIdServiceNull : virtual public UniqueIdServiceIf {
   int64_t ComposeUniqueId(const int64_t /* req_id */, const PostType::type /* post_type */, const std::map<std::string, std::string> & /* carrier */) {
     int64_t _return = 0;
     return _return;
+  }
+  void Exit() {
+    return;
   }
 };
 
@@ -183,6 +187,43 @@ class UniqueIdService_ComposeUniqueId_presult {
 
 };
 
+
+class UniqueIdService_Exit_args {
+ public:
+
+  UniqueIdService_Exit_args(const UniqueIdService_Exit_args&);
+  UniqueIdService_Exit_args& operator=(const UniqueIdService_Exit_args&);
+  UniqueIdService_Exit_args() {
+  }
+
+  virtual ~UniqueIdService_Exit_args() throw();
+
+  bool operator == (const UniqueIdService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const UniqueIdService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UniqueIdService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class UniqueIdService_Exit_pargs {
+ public:
+
+
+  virtual ~UniqueIdService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
  public:
   UniqueIdServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -211,6 +252,8 @@ class UniqueIdServiceClient : virtual public UniqueIdServiceIf {
   int64_t ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   void send_ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   int64_t recv_ComposeUniqueId();
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -227,10 +270,12 @@ class UniqueIdServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeUniqueId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   UniqueIdServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposeUniqueId"] = &UniqueIdServiceProcessor::process_ComposeUniqueId;
+    processMap_["Exit"] = &UniqueIdServiceProcessor::process_Exit;
   }
 
   virtual ~UniqueIdServiceProcessor() {}
@@ -268,6 +313,15 @@ class UniqueIdServiceMultiface : virtual public UniqueIdServiceIf {
     return ifaces_[i]->ComposeUniqueId(req_id, post_type, carrier);
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -301,6 +355,8 @@ class UniqueIdServiceConcurrentClient : virtual public UniqueIdServiceIf {
   int64_t ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   int32_t send_ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   int64_t recv_ComposeUniqueId(const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

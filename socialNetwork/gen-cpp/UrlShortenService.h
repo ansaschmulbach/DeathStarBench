@@ -23,6 +23,7 @@ class UrlShortenServiceIf {
   virtual ~UrlShortenServiceIf() {}
   virtual void ComposeUrls(std::vector<Url> & _return, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier) = 0;
   virtual void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class UrlShortenServiceIfFactory {
@@ -56,6 +57,9 @@ class UrlShortenServiceNull : virtual public UrlShortenServiceIf {
     return;
   }
   void GetExtendedUrls(std::vector<std::string> & /* _return */, const int64_t /* req_id */, const std::vector<std::string> & /* shortened_urls */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -312,6 +316,43 @@ class UrlShortenService_GetExtendedUrls_presult {
 
 };
 
+
+class UrlShortenService_Exit_args {
+ public:
+
+  UrlShortenService_Exit_args(const UrlShortenService_Exit_args&);
+  UrlShortenService_Exit_args& operator=(const UrlShortenService_Exit_args&);
+  UrlShortenService_Exit_args() {
+  }
+
+  virtual ~UrlShortenService_Exit_args() throw();
+
+  bool operator == (const UrlShortenService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const UrlShortenService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UrlShortenService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class UrlShortenService_Exit_pargs {
+ public:
+
+
+  virtual ~UrlShortenService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class UrlShortenServiceClient : virtual public UrlShortenServiceIf {
  public:
   UrlShortenServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -343,6 +384,8 @@ class UrlShortenServiceClient : virtual public UrlShortenServiceIf {
   void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
   void send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
   void recv_GetExtendedUrls(std::vector<std::string> & _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -360,11 +403,13 @@ class UrlShortenServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   ProcessMap processMap_;
   void process_ComposeUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_GetExtendedUrls(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   UrlShortenServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UrlShortenServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposeUrls"] = &UrlShortenServiceProcessor::process_ComposeUrls;
     processMap_["GetExtendedUrls"] = &UrlShortenServiceProcessor::process_GetExtendedUrls;
+    processMap_["Exit"] = &UrlShortenServiceProcessor::process_Exit;
   }
 
   virtual ~UrlShortenServiceProcessor() {}
@@ -413,6 +458,15 @@ class UrlShortenServiceMultiface : virtual public UrlShortenServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -449,6 +503,8 @@ class UrlShortenServiceConcurrentClient : virtual public UrlShortenServiceIf {
   void GetExtendedUrls(std::vector<std::string> & _return, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
   int32_t send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
   void recv_GetExtendedUrls(std::vector<std::string> & _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

@@ -30,6 +30,11 @@ class UserTimelineServiceHandler : virtual public UserTimelineServiceIf {
     printf("ReadUserTimeline\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

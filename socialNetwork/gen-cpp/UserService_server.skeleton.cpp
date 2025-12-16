@@ -50,6 +50,11 @@ class UserServiceHandler : virtual public UserServiceIf {
     printf("GetUserId\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

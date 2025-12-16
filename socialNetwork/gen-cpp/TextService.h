@@ -22,6 +22,7 @@ class TextServiceIf {
  public:
   virtual ~TextServiceIf() {}
   virtual void ComposeText(TextServiceReturn& _return, const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class TextServiceIfFactory {
@@ -52,6 +53,9 @@ class TextServiceNull : virtual public TextServiceIf {
  public:
   virtual ~TextServiceNull() {}
   void ComposeText(TextServiceReturn& /* _return */, const int64_t /* req_id */, const std::string& /* text */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -182,6 +186,43 @@ class TextService_ComposeText_presult {
 
 };
 
+
+class TextService_Exit_args {
+ public:
+
+  TextService_Exit_args(const TextService_Exit_args&);
+  TextService_Exit_args& operator=(const TextService_Exit_args&);
+  TextService_Exit_args() {
+  }
+
+  virtual ~TextService_Exit_args() throw();
+
+  bool operator == (const TextService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const TextService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const TextService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class TextService_Exit_pargs {
+ public:
+
+
+  virtual ~TextService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class TextServiceClient : virtual public TextServiceIf {
  public:
   TextServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -210,6 +251,8 @@ class TextServiceClient : virtual public TextServiceIf {
   void ComposeText(TextServiceReturn& _return, const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier);
   void send_ComposeText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier);
   void recv_ComposeText(TextServiceReturn& _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -226,10 +269,12 @@ class TextServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposeText(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   TextServiceProcessor(::apache::thrift::stdcxx::shared_ptr<TextServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposeText"] = &TextServiceProcessor::process_ComposeText;
+    processMap_["Exit"] = &TextServiceProcessor::process_Exit;
   }
 
   virtual ~TextServiceProcessor() {}
@@ -268,6 +313,15 @@ class TextServiceMultiface : virtual public TextServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -301,6 +355,8 @@ class TextServiceConcurrentClient : virtual public TextServiceIf {
   void ComposeText(TextServiceReturn& _return, const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier);
   int32_t send_ComposeText(const int64_t req_id, const std::string& text, const std::map<std::string, std::string> & carrier);
   void recv_ComposeText(TextServiceReturn& _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

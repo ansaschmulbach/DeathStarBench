@@ -23,6 +23,7 @@ class UserTimelineServiceIf {
   virtual ~UserTimelineServiceIf() {}
   virtual void WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier) = 0;
   virtual void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class UserTimelineServiceIfFactory {
@@ -56,6 +57,9 @@ class UserTimelineServiceNull : virtual public UserTimelineServiceIf {
     return;
   }
   void ReadUserTimeline(std::vector<Post> & /* _return */, const int64_t /* req_id */, const int64_t /* user_id */, const int32_t /* start */, const int32_t /* stop */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -332,6 +336,43 @@ class UserTimelineService_ReadUserTimeline_presult {
 
 };
 
+
+class UserTimelineService_Exit_args {
+ public:
+
+  UserTimelineService_Exit_args(const UserTimelineService_Exit_args&);
+  UserTimelineService_Exit_args& operator=(const UserTimelineService_Exit_args&);
+  UserTimelineService_Exit_args() {
+  }
+
+  virtual ~UserTimelineService_Exit_args() throw();
+
+  bool operator == (const UserTimelineService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const UserTimelineService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UserTimelineService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class UserTimelineService_Exit_pargs {
+ public:
+
+
+  virtual ~UserTimelineService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
  public:
   UserTimelineServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -363,6 +404,8 @@ class UserTimelineServiceClient : virtual public UserTimelineServiceIf {
   void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
   void send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
   void recv_ReadUserTimeline(std::vector<Post> & _return);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -380,11 +423,13 @@ class UserTimelineServiceProcessor : public ::apache::thrift::TDispatchProcessor
   ProcessMap processMap_;
   void process_WriteUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ReadUserTimeline(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   UserTimelineServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceIf> iface) :
     iface_(iface) {
     processMap_["WriteUserTimeline"] = &UserTimelineServiceProcessor::process_WriteUserTimeline;
     processMap_["ReadUserTimeline"] = &UserTimelineServiceProcessor::process_ReadUserTimeline;
+    processMap_["Exit"] = &UserTimelineServiceProcessor::process_Exit;
   }
 
   virtual ~UserTimelineServiceProcessor() {}
@@ -432,6 +477,15 @@ class UserTimelineServiceMultiface : virtual public UserTimelineServiceIf {
     return;
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -468,6 +522,8 @@ class UserTimelineServiceConcurrentClient : virtual public UserTimelineServiceIf
   void ReadUserTimeline(std::vector<Post> & _return, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
   int32_t send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
   void recv_ReadUserTimeline(std::vector<Post> & _return, const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

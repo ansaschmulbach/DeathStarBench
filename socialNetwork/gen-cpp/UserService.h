@@ -27,6 +27,7 @@ class UserServiceIf {
   virtual void ComposeCreatorWithUserId(Creator& _return, const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
   virtual void ComposeCreatorWithUsername(Creator& _return, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
   virtual int64_t GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class UserServiceIfFactory {
@@ -74,6 +75,9 @@ class UserServiceNull : virtual public UserServiceIf {
   int64_t GetUserId(const int64_t /* req_id */, const std::string& /* username */, const std::map<std::string, std::string> & /* carrier */) {
     int64_t _return = 0;
     return _return;
+  }
+  void Exit() {
+    return;
   }
 };
 
@@ -880,6 +884,43 @@ class UserService_GetUserId_presult {
 
 };
 
+
+class UserService_Exit_args {
+ public:
+
+  UserService_Exit_args(const UserService_Exit_args&);
+  UserService_Exit_args& operator=(const UserService_Exit_args&);
+  UserService_Exit_args() {
+  }
+
+  virtual ~UserService_Exit_args() throw();
+
+  bool operator == (const UserService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const UserService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const UserService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class UserService_Exit_pargs {
+ public:
+
+
+  virtual ~UserService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class UserServiceClient : virtual public UserServiceIf {
  public:
   UserServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -923,6 +964,8 @@ class UserServiceClient : virtual public UserServiceIf {
   int64_t GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
   void send_GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
   int64_t recv_GetUserId();
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -944,6 +987,7 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_ComposeCreatorWithUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ComposeCreatorWithUsername(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_GetUserId(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   UserServiceProcessor(::apache::thrift::stdcxx::shared_ptr<UserServiceIf> iface) :
     iface_(iface) {
@@ -953,6 +997,7 @@ class UserServiceProcessor : public ::apache::thrift::TDispatchProcessor {
     processMap_["ComposeCreatorWithUserId"] = &UserServiceProcessor::process_ComposeCreatorWithUserId;
     processMap_["ComposeCreatorWithUsername"] = &UserServiceProcessor::process_ComposeCreatorWithUsername;
     processMap_["GetUserId"] = &UserServiceProcessor::process_GetUserId;
+    processMap_["Exit"] = &UserServiceProcessor::process_Exit;
   }
 
   virtual ~UserServiceProcessor() {}
@@ -1038,6 +1083,15 @@ class UserServiceMultiface : virtual public UserServiceIf {
     return ifaces_[i]->GetUserId(req_id, username, carrier);
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -1086,6 +1140,8 @@ class UserServiceConcurrentClient : virtual public UserServiceIf {
   int64_t GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
   int32_t send_GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
   int64_t recv_GetUserId(const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

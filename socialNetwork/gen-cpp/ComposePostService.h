@@ -22,6 +22,7 @@ class ComposePostServiceIf {
  public:
   virtual ~ComposePostServiceIf() {}
   virtual void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit() = 0;
 };
 
 class ComposePostServiceIfFactory {
@@ -52,6 +53,9 @@ class ComposePostServiceNull : virtual public ComposePostServiceIf {
  public:
   virtual ~ComposePostServiceNull() {}
   void ComposePost(const int64_t /* req_id */, const std::string& /* username */, const int64_t /* user_id */, const std::string& /* text */, const std::vector<int64_t> & /* media_ids */, const std::vector<std::string> & /* media_types */, const PostType::type /* post_type */, const std::map<std::string, std::string> & /* carrier */) {
+    return;
+  }
+  void Exit() {
     return;
   }
 };
@@ -209,6 +213,43 @@ class ComposePostService_ComposePost_presult {
 
 };
 
+
+class ComposePostService_Exit_args {
+ public:
+
+  ComposePostService_Exit_args(const ComposePostService_Exit_args&);
+  ComposePostService_Exit_args& operator=(const ComposePostService_Exit_args&);
+  ComposePostService_Exit_args() {
+  }
+
+  virtual ~ComposePostService_Exit_args() throw();
+
+  bool operator == (const ComposePostService_Exit_args & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const ComposePostService_Exit_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ComposePostService_Exit_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ComposePostService_Exit_pargs {
+ public:
+
+
+  virtual ~ComposePostService_Exit_pargs() throw();
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 class ComposePostServiceClient : virtual public ComposePostServiceIf {
  public:
   ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -237,6 +278,8 @@ class ComposePostServiceClient : virtual public ComposePostServiceIf {
   void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   void send_ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   void recv_ComposePost();
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -253,10 +296,12 @@ class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor 
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
   void process_ComposePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   ComposePostServiceProcessor(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface) :
     iface_(iface) {
     processMap_["ComposePost"] = &ComposePostServiceProcessor::process_ComposePost;
+    processMap_["Exit"] = &ComposePostServiceProcessor::process_Exit;
   }
 
   virtual ~ComposePostServiceProcessor() {}
@@ -294,6 +339,15 @@ class ComposePostServiceMultiface : virtual public ComposePostServiceIf {
     ifaces_[i]->ComposePost(req_id, username, user_id, text, media_ids, media_types, post_type, carrier);
   }
 
+  void Exit() {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->Exit();
+    }
+    ifaces_[i]->Exit();
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -327,6 +381,8 @@ class ComposePostServiceConcurrentClient : virtual public ComposePostServiceIf {
   void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   int32_t send_ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
   void recv_ComposePost(const int32_t seqid);
+  void Exit();
+  void send_Exit();
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

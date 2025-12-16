@@ -30,6 +30,11 @@ class HomeTimelineServiceHandler : virtual public HomeTimelineServiceIf {
     printf("WriteHomeTimeline\n");
   }
 
+  void Exit() {
+    // Your implementation goes here
+    printf("Exit\n");
+  }
+
 };
 
 int main(int argc, char **argv) {

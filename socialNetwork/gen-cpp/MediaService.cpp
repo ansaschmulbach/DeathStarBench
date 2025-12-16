@@ -384,6 +384,64 @@ uint32_t MediaService_ComposeMedia_presult::read(::apache::thrift::protocol::TPr
   return xfer;
 }
 
+
+MediaService_Exit_args::~MediaService_Exit_args() throw() {
+}
+
+
+uint32_t MediaService_Exit_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t MediaService_Exit_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("MediaService_Exit_args");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+MediaService_Exit_pargs::~MediaService_Exit_pargs() throw() {
+}
+
+
+uint32_t MediaService_Exit_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("MediaService_Exit_pargs");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 void MediaServiceClient::ComposeMedia(std::vector<Media> & _return, const int64_t req_id, const std::vector<std::string> & media_types, const std::vector<int64_t> & media_ids, const std::map<std::string, std::string> & carrier)
 {
   send_ComposeMedia(req_id, media_types, media_ids, carrier);
@@ -446,6 +504,24 @@ void MediaServiceClient::recv_ComposeMedia(std::vector<Media> & _return)
     throw result.se;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ComposeMedia failed: unknown result");
+}
+
+void MediaServiceClient::Exit()
+{
+  send_Exit();
+}
+
+void MediaServiceClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  MediaService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 bool MediaServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext) {
@@ -522,6 +598,43 @@ void MediaServiceProcessor::process_ComposeMedia(int32_t seqid, ::apache::thrift
   if (this->eventHandler_.get() != NULL) {
     this->eventHandler_->postWrite(ctx, "MediaService.ComposeMedia", bytes);
   }
+}
+
+void MediaServiceProcessor::process_Exit(int32_t, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol*, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("MediaService.Exit", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "MediaService.Exit");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "MediaService.Exit");
+  }
+
+  MediaService_Exit_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "MediaService.Exit", bytes);
+  }
+
+  try {
+    iface_->Exit();
+  } catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "MediaService.Exit");
+    }
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "MediaService.Exit");
+  }
+
+  return;
 }
 
 ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > MediaServiceProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
@@ -620,6 +733,27 @@ void MediaServiceConcurrentClient::recv_ComposeMedia(std::vector<Media> & _retur
     // this will temporarily unlock the readMutex, and let other clients get work done
     this->sync_.waitForWork(seqid);
   } // end while(true)
+}
+
+void MediaServiceConcurrentClient::Exit()
+{
+  send_Exit();
+}
+
+void MediaServiceConcurrentClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  MediaService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
 }
 
 } // namespace
