@@ -90,6 +90,7 @@ public:
              const std::map<std::string, std::string> &) override;
   int64_t GetUserId(int64_t, const std::string &,
                     const std::map<std::string, std::string> &) override;
+  void Exit() override;
 
 private:
   std::string _machine_id;
@@ -125,7 +126,7 @@ void UserHandler::RegisterUserWithId(
   // Initialize a span
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -258,7 +259,7 @@ void UserHandler::RegisterUser(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -423,7 +424,7 @@ void UserHandler::ComposeCreatorWithUsername(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -600,7 +601,7 @@ void UserHandler::ComposeCreatorWithUserId(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -639,7 +640,7 @@ void UserHandler::Login(std::string &_return, int64_t req_id,
                         const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -844,7 +845,7 @@ UserHandler::GetUserId(int64_t req_id, const std::string &username,
                        const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -1051,6 +1052,13 @@ std::string GetMachineId(std::string &netif) {
   }
   return mac_hash;
 }
+
+void UserHandler::Exit() {
+  LOG(info) << "Exiting...";
+
+  exit(0);
+}
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_USERHANDLER_H

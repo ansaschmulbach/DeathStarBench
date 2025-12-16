@@ -47,6 +47,7 @@ public:
 
   int64_t ComposeUniqueId(int64_t, PostType::type,
                           const std::map<std::string, std::string> &) override;
+  void Exit() override;
 
 private:
   std::mutex *_thread_lock;
@@ -66,7 +67,7 @@ int64_t UniqueIdHandler::ComposeUniqueId(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -173,6 +174,13 @@ std::string GetMachineId(std::string &netif) {
     mac_hash = std::string(3 - mac_hash.size(), '0') + mac_hash;
   }
   return mac_hash;
+}
+
+void UniqueIdHandler::Exit() {
+
+  LOG(info) << "Exiting...";
+
+  exit(0);
 }
 
 } // namespace social_network

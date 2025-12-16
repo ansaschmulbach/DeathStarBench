@@ -33,6 +33,8 @@ public:
                        const std::vector<std::string> &,
                        const std::map<std::string, std::string> &) override;
 
+  void Exit() override;
+
 private:
   uint64_t req_serve_count = 0;
   bool obey_req_serve_max = false;
@@ -76,7 +78,7 @@ void UrlShortenHandler::ComposeUrls(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -188,6 +190,11 @@ void UrlShortenHandler::GetExtendedUrls(
     const std::map<std::string, std::string> &carrier) {
 
   // TODO: Implement GetExtendedUrls
+}
+
+void UrlShortenHandler::Exit() {
+  LOG(info) << "Exiting...";
+  exit(0);
 }
 
 } // namespace social_network

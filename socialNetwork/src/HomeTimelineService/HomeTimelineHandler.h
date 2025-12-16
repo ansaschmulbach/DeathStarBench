@@ -42,6 +42,8 @@ public:
                          const std::vector<int64_t> &,
                          const std::map<std::string, std::string> &) override;
 
+  void Exit() override;
+
 private:
   uint64_t req_serve_count = 0;
   bool obey_req_serve_max = false;
@@ -103,7 +105,7 @@ void HomeTimelineHandler::WriteHomeTimeline(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     // zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -242,7 +244,7 @@ void HomeTimelineHandler::ReadHomeTimeline(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -320,6 +322,21 @@ void HomeTimelineHandler::ReadHomeTimeline(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void HomeTimelineHandler::Exit() {
+  auto social_graph_client_wrapper = _social_graph_client_pool->Pop();
+  if (!social_graph_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to social-graph-service";
+    throw se;
+  }
+  auto social_graph_client = social_graph_client_wrapper->GetClient();
+  social_graph_client->Exit();
+
+  LOG(info) << "Exiting...";
+  exit(0);
 }
 
 } // namespace social_network

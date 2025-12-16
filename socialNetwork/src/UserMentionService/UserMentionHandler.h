@@ -1,6 +1,5 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_SRC_USERMENTIONSERVICE_USERMENTIONHANDLER_H_
 #define SOCIAL_NETWORK_MICROSERVICES_SRC_USERMENTIONSERVICE_USERMENTIONHANDLER_H_
-
 #include <bson.h>
 #include <libmemcached/memcached.h>
 #include <libmemcached/util.h>
@@ -25,10 +24,12 @@ public:
                            const std::vector<std::string> &,
                            const std::map<std::string, std::string> &) override;
 
+  void Exit() override;
+
 private:
   memcached_pool_st *_memcached_client_pool;
   mongoc_client_pool_t *_mongodb_client_pool;
-  uint64_t req_serve_count;
+  uint64_t req_serve_count = 0;
   bool obey_req_serve_max = false;
 };
 
@@ -45,7 +46,7 @@ void UserMentionHandler::ComposeUserMentions(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -55,6 +56,7 @@ void UserMentionHandler::ComposeUserMentions(
   zsim_br_pred_reset();
   zsim_request_begin();
   zsim_heartbeat();
+  LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
 
   // Initialize a span
@@ -247,6 +249,11 @@ void UserMentionHandler::ComposeUserMentions(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void UserMentionHandler::Exit() {
+  LOG(info) << "Exiting...";
+  exit(0);
 }
 
 } // namespace social_network

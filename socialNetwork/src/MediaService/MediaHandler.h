@@ -25,6 +25,8 @@ public:
                     const std::vector<int64_t> &,
                     const std::map<std::string, std::string> &) override;
 
+  void Exit() override;
+
   int req_serve_count = 0;
   bool obey_req_serve_max = false;
 
@@ -39,7 +41,7 @@ void MediaHandler::ComposeMedia(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -82,6 +84,12 @@ void MediaHandler::ComposeMedia(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void MediaHandler::Exit() {
+  LOG(info) << "Exiting...";
+
+  exit(0);
 }
 
 } // namespace social_network

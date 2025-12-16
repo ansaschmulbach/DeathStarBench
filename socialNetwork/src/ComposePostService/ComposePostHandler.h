@@ -47,6 +47,8 @@ public:
                    PostType::type post_type,
                    const std::map<std::string, std::string> &carrier) override;
 
+  void Exit() override;
+
 private:
   ClientPool<ThriftClient<PostStorageServiceClient>> *_post_storage_client_pool;
   ClientPool<ThriftClient<UserTimelineServiceClient>>
@@ -377,7 +379,7 @@ void ComposePostHandler::ComposePost(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -467,6 +469,96 @@ void ComposePostHandler::ComposePost(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void ComposePostHandler::Exit() {
+
+  auto user_client_wrapper = _user_service_client_pool->Pop();
+  if (!user_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to user-service";
+    LOG(error) << se.message;
+    // span->Finish();
+    throw se;
+  }
+  auto user_client = user_client_wrapper->GetClient();
+  user_client->Exit();
+
+  auto text_client_wrapper = _text_service_client_pool->Pop();
+  if (!text_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to text-service";
+    LOG(error) << se.message;
+    ;
+    // span->Finish();
+    throw se;
+  }
+  auto text_client = text_client_wrapper->GetClient();
+  text_client->Exit();
+
+  auto media_client_wrapper = _media_service_client_pool->Pop();
+  if (!media_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to media-service";
+    LOG(error) << se.message;
+    ;
+    // span->Finish();
+    throw se;
+  }
+  auto media_client = media_client_wrapper->GetClient();
+  media_client->Exit();
+
+  auto unique_id_client_wrapper = _unique_id_service_client_pool->Pop();
+  if (!unique_id_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to unique_id-service";
+    LOG(error) << se.message;
+    throw se;
+  }
+  auto unique_id_client = unique_id_client_wrapper->GetClient();
+  unique_id_client->Exit();
+
+  auto post_storage_client_wrapper = _post_storage_client_pool->Pop();
+  if (!post_storage_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to post-storage-service";
+    LOG(error) << se.message;
+    throw se;
+  }
+  auto post_storage_client = post_storage_client_wrapper->GetClient();
+  post_storage_client->Exit();
+
+  auto user_timeline_client_wrapper = _user_timeline_client_pool->Pop();
+  if (!user_timeline_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to user-timeline-service";
+    LOG(error) << se.message;
+    throw se;
+  }
+  auto user_timeline_client = user_timeline_client_wrapper->GetClient();
+  user_timeline_client->Exit();
+
+  auto home_timeline_client_wrapper = _home_timeline_client_pool->Pop();
+  if (!home_timeline_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to home-timeline-service";
+    LOG(error) << se.message;
+    ;
+    throw se;
+  }
+  auto home_timeline_client = home_timeline_client_wrapper->GetClient();
+  home_timeline_client->Exit();
+
+  LOG(info) << "Exiting...";
+
+  exit(0);
 }
 
 } // namespace social_network

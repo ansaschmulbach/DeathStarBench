@@ -43,6 +43,8 @@ public:
   void ReadUserTimeline(std::vector<Post> &, int64_t, int64_t, int, int,
                         const std::map<std::string, std::string> &) override;
 
+  void Exit() override;
+
 private:
   Redis *_redis_client_pool;
   Redis *_redis_replica_pool;
@@ -98,7 +100,7 @@ void UserTimelineHandler::WriteUserTimeline(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -213,7 +215,7 @@ void UserTimelineHandler::ReadUserTimeline(
     int stop, const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -399,6 +401,11 @@ void UserTimelineHandler::ReadUserTimeline(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void UserTimelineHandler::Exit() {
+  LOG(info) << "Exiting...";
+  exit(0);
 }
 
 } // namespace social_network

@@ -53,6 +53,7 @@ public:
                        const std::map<std::string, std::string> &) override;
   void InsertUser(int64_t, int64_t,
                   const std::map<std::string, std::string> &) override;
+  void Exit() override;
 
 private:
   mongoc_client_pool_t *_mongodb_client_pool;
@@ -110,7 +111,7 @@ void SocialGraphHandler::Follow(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -325,7 +326,7 @@ void SocialGraphHandler::Unfollow(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -527,7 +528,7 @@ void SocialGraphHandler::GetFollowers(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -686,7 +687,7 @@ void SocialGraphHandler::GetFollowees(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -853,7 +854,7 @@ void SocialGraphHandler::InsertUser(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    /// exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -934,7 +935,7 @@ void SocialGraphHandler::FollowWithUsername(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -1032,7 +1033,7 @@ void SocialGraphHandler::UnfollowWithUsername(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -1124,6 +1125,11 @@ void SocialGraphHandler::UnfollowWithUsername(
   // span->Finish();
   // zsim_roi_end();
   zsim_request_end();
+}
+
+void SocialGraphHandler::Exit() {
+  LOG(info) << "Exiting...";
+  exit(0);
 }
 
 } // namespace social_network

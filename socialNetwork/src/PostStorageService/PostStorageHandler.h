@@ -33,6 +33,7 @@ public:
   void ReadPosts(std::vector<Post> &_return, int64_t req_id,
                  const std::vector<int64_t> &post_ids,
                  const std::map<std::string, std::string> &carrier) override;
+  void Exit() override;
 
 private:
   memcached_pool_st *_memcached_client_pool;
@@ -54,7 +55,7 @@ void PostStorageHandler::StorePost(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -189,7 +190,7 @@ void PostStorageHandler::ReadPost(
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else {
@@ -397,7 +398,7 @@ void PostStorageHandler::ReadPosts(
     const std::vector<int64_t> &post_ids,
     const std::map<std::string, std::string> &carrier) {
   // Initialize a span
-  // zsim_roi_begin();
+  zsim_roi_begin();
   // TextMapReader reader(carrier);
   std::map<std::string, std::string> writer_text_map;
   // TextMapWriter writer(writer_text_map);
@@ -673,6 +674,12 @@ void PostStorageHandler::ReadPosts(
     LOG(warning) << "Failed to set posts to memcached";
   }
   // zsim_roi_end();
+}
+
+void PostStorageHandler::Exit() {
+  LOG(info) << "Exiting...";
+
+  exit(0);
 }
 
 } // namespace social_network

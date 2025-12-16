@@ -15,11 +15,18 @@
 #include "../ThriftClient.h"
 #include "../ThriftFileClient.h"
 #include "../logger.h"
+#include <thrift/TApplicationException.h>
+#include <thrift/protocol/TProtocolException.h>
+#include <thrift/transport/TTransportException.h>
 // #include "../tracing.h"
 #include "../zsim_hooks.h"
 
 #include <chrono>
 #include <thread>
+
+using apache::thrift::TApplicationException;
+using apache::thrift::protocol::TProtocolException;
+using apache::thrift::transport::TTransportException;
 
 namespace social_network {
 
@@ -31,6 +38,8 @@ public:
 
   void ComposeText(TextServiceReturn &_return, int64_t, const std::string &,
                    const std::map<std::string, std::string> &) override;
+
+  void Exit() override;
 
 private:
   ClientPool<ThriftClient<UrlShortenServiceClient>> *_url_client_pool;
@@ -53,7 +62,7 @@ void TextHandler::ComposeText(
     const std::map<std::string, std::string> &carrier) {
 
   if (obey_req_serve_max && req_serve_count == MAX_REQS_TO_SERVE) {
-    exit(0);
+    // exit(0);
   } else if (req_serve_count == MAX_REQS_TO_SERVE) {
     zsim_roi_end();
   } else if (req_serve_count == 0) {
@@ -64,6 +73,7 @@ void TextHandler::ComposeText(
   zsim_br_pred_reset();
   zsim_request_begin();
   zsim_heartbeat();
+  LOG(info) << "requests served: " << req_serve_count;
   req_serve_count++;
   // LOG(info) << "received compose text request";
   // zsim_cache_reset();
@@ -119,8 +129,34 @@ void TextHandler::ComposeText(
   auto url_client = url_client_wrapper->GetClient();
   try {
     url_client->ComposeUrls(_return_urls, req_id, urls, url_writer_text_map);
+  } catch (const TTransportException &e) {
+    LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Transport error: " << e.what() << std::endl;
+    _url_client_pool->Remove(url_client_wrapper);
+    throw e;
+  } catch (const TProtocolException &e) {
+    LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Protocol error: " << e.what() << std::endl;
+    _url_client_pool->Remove(url_client_wrapper);
+    throw e;
+  } catch (const TApplicationException &e) {
+    LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Application error: " << e.what() << std::endl;
+    _url_client_pool->Remove(url_client_wrapper);
+    throw e;
+  } catch (const TException &e) {
+    LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Generic Thrift error: " << e.what() << std::endl;
+    _url_client_pool->Remove(url_client_wrapper);
+    throw e;
+  } catch (const std::exception &e) {
+    LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Other std::exception: " << e.what() << std::endl;
+    _url_client_pool->Remove(url_client_wrapper);
+    throw e;
   } catch (...) {
     LOG(error) << "Failed to upload urls to url-shorten-service";
+    std::cerr << "Unknown exception caught during Thrift call" << std::endl;
     _url_client_pool->Remove(url_client_wrapper);
     throw;
   }
@@ -152,11 +188,38 @@ void TextHandler::ComposeText(
     user_mention_client->ComposeUserMentions(_return_user_mentions, req_id,
                                              mention_usernames,
                                              user_mention_writer_text_map);
+  } catch (const TTransportException &e) {
+    LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Transport error: " << e.what() << std::endl;
+    _user_mention_client_pool->Remove(user_mention_client_wrapper);
+    throw e;
+  } catch (const TProtocolException &e) {
+    LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Protocol error: " << e.what() << std::endl;
+    _user_mention_client_pool->Remove(user_mention_client_wrapper);
+    throw e;
+  } catch (const TApplicationException &e) {
+    LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Application error: " << e.what() << std::endl;
+    _user_mention_client_pool->Remove(user_mention_client_wrapper);
+    throw e;
+  } catch (const TException &e) {
+    LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Generic Thrift error: " << e.what() << std::endl;
+    _user_mention_client_pool->Remove(user_mention_client_wrapper);
+    throw e;
+  } catch (const std::exception &e) {
+    LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Other std::exception: " << e.what() << std::endl;
+    _user_mention_client_pool->Remove(user_mention_client_wrapper);
+    throw e;
   } catch (...) {
     LOG(error) << "Failed to upload user_mentions to user-mention-service";
+    std::cerr << "Unknown exception caught during Thrift call" << std::endl;
     _user_mention_client_pool->Remove(user_mention_client_wrapper);
     throw;
   }
+
   // LOG(info) << "finished user mentions";
 
   _user_mention_client_pool->Keepalive(user_mention_client_wrapper);
@@ -203,6 +266,32 @@ void TextHandler::ComposeText(
   // zsim_heartbeat();
   // LOG(info) << "returning";
   zsim_request_end();
+}
+
+void TextHandler::Exit() {
+  auto url_client_wrapper = _url_client_pool->Pop();
+  if (!url_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to url-shorten-service";
+    throw se;
+  }
+  auto url_client = url_client_wrapper->GetClient();
+  url_client->Exit();
+
+  auto user_mention_client_wrapper = _user_mention_client_pool->Pop();
+  if (!user_mention_client_wrapper) {
+    ServiceException se;
+    se.errorCode = ErrorCode::SE_THRIFT_CONN_ERROR;
+    se.message = "Failed to connect to user-mention-service";
+    throw se;
+  }
+  auto user_mention_client = user_mention_client_wrapper->GetClient();
+  user_mention_client->Exit();
+
+  LOG(info) << "Exiting...";
+
+  exit(0);
 }
 
 } // namespace social_network
