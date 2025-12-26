@@ -561,6 +561,52 @@ void ComposePostHandler::Exit() {
   exit(0);
 }
 
+class ComposePostServiceAsyncHandler : public ComposePostServiceCobSvIf {
+public:
+  ComposePostServiceAsyncHandler(
+      ClientPool<social_network::ThriftClient<PostStorageServiceClient>>
+          *post_storage_client_pool,
+      ClientPool<social_network::ThriftClient<UserTimelineServiceClient>>
+          *user_timeline_client_pool,
+      ClientPool<ThriftClient<UserServiceClient>> *user_service_client_pool,
+      ClientPool<ThriftClient<UniqueIdServiceClient>>
+          *unique_id_service_client_pool,
+      ClientPool<ThriftClient<MediaServiceClient>> *media_service_client_pool,
+      ClientPool<ThriftClient<TextServiceClient>> *text_service_client_pool,
+      ClientPool<ThriftClient<HomeTimelineServiceClient>>
+          *home_timeline_client_pool) {
+    syncHandler_ = std::auto_ptr<ComposePostHandler>(new ComposePostHandler(
+        post_storage_client_pool, user_timeline_client_pool,
+        user_service_client_pool, unique_id_service_client_pool,
+        media_service_client_pool, text_service_client_pool,
+        home_timeline_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~ComposePostServiceAsyncHandler();
+
+  void ComposePost(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &username, const int64_t user_id,
+      const std::string &text, const std::vector<int64_t> &media_ids,
+      const std::vector<std::string> &media_types,
+      const PostType::type post_type,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->ComposePost(req_id, username, user_id, text, media_ids,
+                              media_types, post_type, carrier);
+    return cob();
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<ComposePostHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_COMPOSEPOSTSERVICE_COMPOSEPOSTHANDLER_H_

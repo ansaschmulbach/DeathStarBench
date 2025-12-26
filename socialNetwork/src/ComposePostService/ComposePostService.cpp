@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
   //  auto server_transport =
   //  std::make_shared<SocketServerTransport>(TCP_SOCKET, "localhost", port);
   TThreadedServer server(
-      std::make_shared<ComposePostServiceProcessor>(
-          std::make_shared<ComposePostHandler>(
+      std::make_shared<ComposePostServiceAsyncProcessor>(
+          std::make_shared<ComposePostServiceAsyncHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
               &user_client_pool, &unique_id_client_pool, &media_client_pool,
               &text_client_pool, &home_timeline_client_pool)),
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
       std::make_shared<TBinaryProtocolFactory>());
 
   // TSimpleServer server(
-  //     std::make_shared<ComposePostServiceProcessor>(
+  //     std::make_shared<ComposePostAsyncServiceProcessor>(
   //         std::make_shared<ComposePostHandler>(
   //             &post_storage_client_pool, &user_timeline_client_pool,
   //             &user_client_pool, &unique_id_client_pool, &media_client_pool,

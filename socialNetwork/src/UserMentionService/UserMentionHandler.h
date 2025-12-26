@@ -256,6 +256,38 @@ void UserMentionHandler::Exit() {
   exit(0);
 }
 
+class UserMentionServiceAsyncHandler : public UserMentionServiceCobSvIf {
+public:
+  UserMentionServiceAsyncHandler(memcached_pool_st *memcached_client_pool,
+                                 mongoc_client_pool_t *mongodb_client_pool) {
+    syncHandler_ = std::auto_ptr<UserMentionHandler>(
+        new UserMentionHandler(memcached_client_pool, mongodb_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~UserMentionServiceAsyncHandler();
+
+  void ComposeUserMentions(
+      ::apache::thrift::stdcxx::function<
+          void(std::vector<UserMention> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::vector<std::string> &usernames,
+      const std::map<std::string, std::string> &carrier) {
+    std::vector<UserMention> _return;
+    syncHandler_->ComposeUserMentions(_return, req_id, usernames, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<UserMentionHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_USERMENTIONSERVICE_USERMENTIONHANDLER_H_

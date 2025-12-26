@@ -339,6 +339,53 @@ void HomeTimelineHandler::Exit() {
   exit(0);
 }
 
+class HomeTimelineServiceAsyncHandler : public HomeTimelineServiceCobSvIf {
+public:
+  HomeTimelineServiceAsyncHandler(
+      Redis *redis_pool,
+      ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool,
+      ClientPool<ThriftClient<SocialGraphServiceClient>>
+          *social_graph_client_pool) {
+    syncHandler_ = std::auto_ptr<HomeTimelineHandler>(new HomeTimelineHandler(
+        redis_pool, post_client_pool, social_graph_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~HomeTimelineServiceAsyncHandler();
+
+  void ReadHomeTimeline(
+      ::apache::thrift::stdcxx::function<void(std::vector<Post> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const int64_t user_id, const int32_t start,
+      const int32_t stop, const std::map<std::string, std::string> &carrier) {
+    std::vector<Post> _return;
+    syncHandler_->ReadHomeTimeline(_return, req_id, user_id, start, stop,
+                                   carrier);
+    return cob(_return);
+  }
+
+  void WriteHomeTimeline(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const int64_t post_id, const int64_t user_id,
+      const int64_t timestamp, const std::vector<int64_t> &user_mentions_id,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->WriteHomeTimeline(req_id, post_id, user_id, timestamp,
+                                    user_mentions_id, carrier);
+    return cob();
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<HomeTimelineHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_HOMETIMELINESERVICE_HOMETIMELINEHANDLER_H_

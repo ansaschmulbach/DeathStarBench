@@ -1,5 +1,14 @@
 #ifndef SOCIAL_NETWORK_MICROSERVICES_POSTSTORAGEHANDLER_H
 #define SOCIAL_NETWORK_MICROSERVICES_POSTSTORAGEHANDLER_H
+#if __cplusplus >= 201703L
+#error "C++17 or newer"
+#elif __cplusplus >= 201402L
+#warning "C++14"
+#elif __cplusplus >= 201103L
+#warning "C++11"
+#else
+#error "Pre-C++11"
+#endif
 
 #include <bson/bson.h>
 #include <libmemcached/memcached.h>
@@ -681,6 +690,58 @@ void PostStorageHandler::Exit() {
 
   exit(0);
 }
+
+class PostStorageServiceAsyncHandler : public PostStorageServiceCobSvIf {
+public:
+  PostStorageServiceAsyncHandler(memcached_pool_st *memcached_client_pool,
+                                 mongoc_client_pool_t *mongodb_client_pool) {
+    syncHandler_ = std::auto_ptr<PostStorageHandler>(
+        new PostStorageHandler(memcached_client_pool, mongodb_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~PostStorageServiceAsyncHandler();
+
+  void
+  StorePost(::apache::thrift::stdcxx::function<void()> cob,
+            ::apache::thrift::stdcxx::function<void(
+                ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+            const int64_t req_id, const Post &post,
+            const std::map<std::string, std::string> &carrier) {
+    syncHandler_->StorePost(req_id, post, carrier);
+    return cob();
+  }
+
+  void
+  ReadPost(::apache::thrift::stdcxx::function<void(Post const &_return)> cob,
+           ::apache::thrift::stdcxx::function<
+               void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+           const int64_t req_id, const int64_t post_id,
+           const std::map<std::string, std::string> &carrier) {
+    Post _return;
+    syncHandler_->ReadPost(_return, req_id, post_id, carrier);
+    return cob(_return);
+  }
+
+  void ReadPosts(
+      ::apache::thrift::stdcxx::function<void(std::vector<Post> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::vector<int64_t> &post_ids,
+      const std::map<std::string, std::string> &carrier) {
+    std::vector<Post> _return;
+    syncHandler_->ReadPosts(_return, req_id, post_ids, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<PostStorageHandler> syncHandler_;
+};
 
 } // namespace social_network
 

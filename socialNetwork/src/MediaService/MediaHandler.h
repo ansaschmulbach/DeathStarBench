@@ -92,6 +92,38 @@ void MediaHandler::Exit() {
   exit(0);
 }
 
+class MediaServiceAsyncHandler : public MediaServiceCobSvIf {
+public:
+  MediaServiceAsyncHandler() {
+    syncHandler_ = std::auto_ptr<MediaHandler>(new MediaHandler);
+    // Your initialization goes here
+  }
+  virtual ~MediaServiceAsyncHandler();
+
+  void ComposeMedia(
+      ::apache::thrift::stdcxx::function<
+          void(std::vector<Media> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::vector<std::string> &media_types,
+      const std::vector<int64_t> &media_ids,
+      const std::map<std::string, std::string> &carrier) {
+    std::vector<Media> _return;
+    syncHandler_->ComposeMedia(_return, req_id, media_types, media_ids,
+                               carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<MediaHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_MEDIASERVICE_MEDIAHANDLER_H_

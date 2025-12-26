@@ -408,6 +408,51 @@ void UserTimelineHandler::Exit() {
   exit(0);
 }
 
+class UserTimelineServiceAsyncHandler : public UserTimelineServiceCobSvIf {
+public:
+  UserTimelineServiceAsyncHandler(
+      Redis *redis_pool, mongoc_client_pool_t *mongodb_pool,
+      ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool) {
+    syncHandler_ = std::auto_ptr<UserTimelineHandler>(
+        new UserTimelineHandler(redis_pool, mongodb_pool, post_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~UserTimelineServiceAsyncHandler();
+
+  void WriteUserTimeline(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const int64_t post_id, const int64_t user_id,
+      const int64_t timestamp,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->WriteUserTimeline(req_id, post_id, user_id, timestamp,
+                                    carrier);
+    return cob();
+  }
+
+  void ReadUserTimeline(
+      ::apache::thrift::stdcxx::function<void(std::vector<Post> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const int64_t user_id, const int32_t start,
+      const int32_t stop, const std::map<std::string, std::string> &carrier) {
+    std::vector<Post> _return;
+    syncHandler_->ReadUserTimeline(_return, req_id, user_id, start, stop,
+                                   carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<UserTimelineHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_USERTIMELINESERVICE_USERTIMELINEHANDLER_H_

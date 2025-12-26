@@ -183,6 +183,36 @@ void UniqueIdHandler::Exit() {
   exit(0);
 }
 
+class UniqueIdServiceAsyncHandler : public UniqueIdServiceCobSvIf {
+public:
+  UniqueIdServiceAsyncHandler(std::mutex *thread_lock,
+                              const std::string &machine_id) {
+    syncHandler_ = std::auto_ptr<UniqueIdHandler>(
+        new UniqueIdHandler(thread_lock, machine_id));
+    // Your initialization goes here
+  }
+  virtual ~UniqueIdServiceAsyncHandler();
+
+  void ComposeUniqueId(
+      ::apache::thrift::stdcxx::function<void(int64_t const &_return)> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const PostType::type post_type,
+      const std::map<std::string, std::string> &carrier) {
+    int64_t _return = 0;
+    _return = syncHandler_->ComposeUniqueId(req_id, post_type, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<UniqueIdHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_UNIQUEIDHANDLER_H

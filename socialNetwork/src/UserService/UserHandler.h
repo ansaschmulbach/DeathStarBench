@@ -1059,6 +1059,104 @@ void UserHandler::Exit() {
   exit(0);
 }
 
+class UserServiceAsyncHandler : public UserServiceCobSvIf {
+public:
+  UserServiceAsyncHandler(std::mutex *thread_lock,
+                          const std::string &machine_id,
+                          const std::string &secret,
+                          memcached_pool_st *memcached_client_pool,
+                          mongoc_client_pool_t *mongodb_client_pool,
+                          ClientPool<ThriftClient<SocialGraphServiceClient>>
+                              *social_graph_client_pool) {
+    syncHandler_ = std::auto_ptr<UserHandler>(
+        new UserHandler(thread_lock, machine_id, secret, memcached_client_pool,
+                        mongodb_client_pool, social_graph_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~UserServiceAsyncHandler();
+
+  void
+  RegisterUser(::apache::thrift::stdcxx::function<void()> cob,
+               ::apache::thrift::stdcxx::function<void(
+                   ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+               const int64_t req_id, const std::string &first_name,
+               const std::string &last_name, const std::string &username,
+               const std::string &password,
+               const std::map<std::string, std::string> &carrier) {
+    syncHandler_->RegisterUser(req_id, first_name, last_name, username,
+                               password, carrier);
+    return cob();
+  }
+
+  void RegisterUserWithId(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &first_name,
+      const std::string &last_name, const std::string &username,
+      const std::string &password, const int64_t user_id,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->RegisterUserWithId(req_id, first_name, last_name, username,
+                                     password, user_id, carrier);
+    return cob();
+  }
+
+  void Login(
+      ::apache::thrift::stdcxx::function<void(std::string const &_return)> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &username,
+      const std::string &password,
+      const std::map<std::string, std::string> &carrier) {
+    std::string _return;
+    syncHandler_->Login(_return, req_id, username, password, carrier);
+    return cob(_return);
+  }
+
+  void ComposeCreatorWithUserId(
+      ::apache::thrift::stdcxx::function<void(Creator const &_return)> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const int64_t user_id, const std::string &username,
+      const std::map<std::string, std::string> &carrier) {
+    Creator _return;
+    syncHandler_->ComposeCreatorWithUserId(_return, req_id, user_id, username,
+                                           carrier);
+    return cob(_return);
+  }
+
+  void ComposeCreatorWithUsername(
+      ::apache::thrift::stdcxx::function<void(Creator const &_return)> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &username,
+      const std::map<std::string, std::string> &carrier) {
+    Creator _return;
+    syncHandler_->ComposeCreatorWithUsername(_return, req_id, username,
+                                             carrier);
+    return cob(_return);
+  }
+
+  void GetUserId(
+      ::apache::thrift::stdcxx::function<void(int64_t const &_return)> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &username,
+      const std::map<std::string, std::string> &carrier) {
+    int64_t _return = 0;
+    _return = syncHandler_->GetUserId(req_id, username, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<UserHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_USERHANDLER_H

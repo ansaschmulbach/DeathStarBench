@@ -197,6 +197,51 @@ void UrlShortenHandler::Exit() {
   exit(0);
 }
 
+class UrlShortenServiceAsyncHandler : public UrlShortenServiceCobSvIf {
+public:
+  UrlShortenServiceAsyncHandler(memcached_pool_st *memcached_client_pool,
+                                mongoc_client_pool_t *mongodb_client_pool,
+                                std::mutex *thread_lock) {
+    syncHandler_ = std::auto_ptr<UrlShortenHandler>(new UrlShortenHandler(
+        memcached_client_pool, mongodb_client_pool, thread_lock));
+    // Your initialization goes here
+  }
+  virtual ~UrlShortenServiceAsyncHandler();
+
+  void ComposeUrls(
+      ::apache::thrift::stdcxx::function<void(std::vector<Url> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::vector<std::string> &urls,
+      const std::map<std::string, std::string> &carrier) {
+    std::vector<Url> _return;
+    syncHandler_->ComposeUrls(_return, req_id, urls, carrier);
+    return cob(_return);
+  }
+
+  void GetExtendedUrls(
+      ::apache::thrift::stdcxx::function<
+          void(std::vector<std::string> const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::vector<std::string> &shortened_urls,
+      const std::map<std::string, std::string> &carrier) {
+    std::vector<std::string> _return;
+    syncHandler_->GetExtendedUrls(_return, req_id, shortened_urls, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<UrlShortenHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SRC_URLSHORTENSERVICE_URLSHORTENHANDLER_H_

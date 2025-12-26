@@ -294,6 +294,39 @@ void TextHandler::Exit() {
   exit(0);
 }
 
+class TextServiceAsyncHandler : public TextServiceCobSvIf {
+public:
+  TextServiceAsyncHandler(
+      ClientPool<ThriftClient<UrlShortenServiceClient>> *url_client_pool,
+      ClientPool<ThriftClient<UserMentionServiceClient>>
+          *user_mention_client_pool) {
+    syncHandler_ = std::auto_ptr<TextHandler>(
+        new TextHandler(url_client_pool, user_mention_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~TextServiceAsyncHandler();
+
+  void ComposeText(
+      ::apache::thrift::stdcxx::function<void(TextServiceReturn const &_return)>
+          cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &text,
+      const std::map<std::string, std::string> &carrier) {
+    TextServiceReturn _return;
+    syncHandler_->ComposeText(_return, req_id, text, carrier);
+    return cob(_return);
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<TextHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_TEXTHANDLER_H

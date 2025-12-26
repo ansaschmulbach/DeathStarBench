@@ -1132,6 +1132,106 @@ void SocialGraphHandler::Exit() {
   exit(0);
 }
 
+class SocialGraphServiceAsyncHandler : public SocialGraphServiceCobSvIf {
+public:
+  SocialGraphServiceAsyncHandler(
+      mongoc_client_pool_t *mongodb_client_pool, Redis *redis_client_pool,
+      ClientPool<ThriftClient<UserServiceClient>> *user_service_client_pool) {
+    syncHandler_ = std::auto_ptr<SocialGraphHandler>(new SocialGraphHandler(
+        mongodb_client_pool, redis_client_pool, user_service_client_pool));
+    // Your initialization goes here
+  }
+  virtual ~SocialGraphServiceAsyncHandler();
+
+  void
+  GetFollowers(::apache::thrift::stdcxx::function<
+                   void(std::vector<int64_t> const &_return)>
+                   cob,
+               ::apache::thrift::stdcxx::function<void(
+                   ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+               const int64_t req_id, const int64_t user_id,
+               const std::map<std::string, std::string> &carrier) {
+    std::vector<int64_t> _return;
+    syncHandler_->GetFollowers(_return, req_id, user_id, carrier);
+    return cob(_return);
+  }
+
+  void
+  GetFollowees(::apache::thrift::stdcxx::function<
+                   void(std::vector<int64_t> const &_return)>
+                   cob,
+               ::apache::thrift::stdcxx::function<void(
+                   ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+               const int64_t req_id, const int64_t user_id,
+               const std::map<std::string, std::string> &carrier) {
+    std::vector<int64_t> _return;
+    syncHandler_->GetFollowees(_return, req_id, user_id, carrier);
+    return cob(_return);
+  }
+
+  void Follow(::apache::thrift::stdcxx::function<void()> cob,
+              ::apache::thrift::stdcxx::function<void(
+                  ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+              const int64_t req_id, const int64_t user_id,
+              const int64_t followee_id,
+              const std::map<std::string, std::string> &carrier) {
+    syncHandler_->Follow(req_id, user_id, followee_id, carrier);
+    return cob();
+  }
+
+  void Unfollow(::apache::thrift::stdcxx::function<void()> cob,
+                ::apache::thrift::stdcxx::function<void(
+                    ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+                const int64_t req_id, const int64_t user_id,
+                const int64_t followee_id,
+                const std::map<std::string, std::string> &carrier) {
+    syncHandler_->Unfollow(req_id, user_id, followee_id, carrier);
+    return cob();
+  }
+
+  void FollowWithUsername(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &user_usernmae,
+      const std::string &followee_username,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->FollowWithUsername(req_id, user_usernmae, followee_username,
+                                     carrier);
+    return cob();
+  }
+
+  void UnfollowWithUsername(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &user_usernmae,
+      const std::string &followee_username,
+      const std::map<std::string, std::string> &carrier) {
+    syncHandler_->UnfollowWithUsername(req_id, user_usernmae, followee_username,
+                                       carrier);
+    return cob();
+  }
+
+  void
+  InsertUser(::apache::thrift::stdcxx::function<void()> cob,
+             ::apache::thrift::stdcxx::function<void(
+                 ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+             const int64_t req_id, const int64_t user_id,
+             const std::map<std::string, std::string> &carrier) {
+    syncHandler_->InsertUser(req_id, user_id, carrier);
+    return cob();
+  }
+
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    syncHandler_->Exit();
+    return cob();
+  }
+
+protected:
+  std::auto_ptr<SocialGraphHandler> syncHandler_;
+};
+
 } // namespace social_network
 
 #endif // SOCIAL_NETWORK_MICROSERVICES_SOCIALGRAPHHANDLER_H
