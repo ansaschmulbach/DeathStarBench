@@ -7,7 +7,13 @@
 #ifndef UrlShortenService_H
 #define UrlShortenService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -187,6 +193,7 @@ class UrlShortenService_ComposeUrls_presult {
   _UrlShortenService_ComposeUrls_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -313,6 +320,7 @@ class UrlShortenService_GetExtendedUrls_presult {
   _UrlShortenService_GetExtendedUrls_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -511,6 +519,136 @@ class UrlShortenServiceConcurrentClient : virtual public UrlShortenServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class UrlShortenServiceCobClient;
+
+class UrlShortenServiceCobClIf {
+ public:
+  virtual ~UrlShortenServiceCobClIf() {}
+  virtual void ComposeUrls(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetExtendedUrls(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob) = 0;
+};
+
+class UrlShortenServiceCobSvIf {
+ public:
+  virtual ~UrlShortenServiceCobSvIf() {}
+  virtual void ComposeUrls(::apache::thrift::stdcxx::function<void(std::vector<Url>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetExtendedUrls(::apache::thrift::stdcxx::function<void(std::vector<std::string>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class UrlShortenServiceCobSvIfFactory {
+ public:
+  typedef UrlShortenServiceCobSvIf Handler;
+
+  virtual ~UrlShortenServiceCobSvIfFactory() {}
+
+  virtual UrlShortenServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UrlShortenServiceCobSvIf* /* handler */) = 0;
+};
+
+class UrlShortenServiceCobSvIfSingletonFactory : virtual public UrlShortenServiceCobSvIfFactory {
+ public:
+  UrlShortenServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UrlShortenServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~UrlShortenServiceCobSvIfSingletonFactory() {}
+
+  virtual UrlShortenServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(UrlShortenServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UrlShortenServiceCobSvIf> iface_;
+};
+
+class UrlShortenServiceCobSvNull : virtual public UrlShortenServiceCobSvIf {
+ public:
+  virtual ~UrlShortenServiceCobSvNull() {}
+  void ComposeUrls(::apache::thrift::stdcxx::function<void(std::vector<Url>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::vector<std::string> & /* urls */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<Url>  _return;
+    return cob(_return);
+  }
+  void GetExtendedUrls(::apache::thrift::stdcxx::function<void(std::vector<std::string>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::vector<std::string> & /* shortened_urls */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<std::string>  _return;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class UrlShortenServiceCobClient : virtual public UrlShortenServiceCobClIf {
+ public:
+  UrlShortenServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void ComposeUrls(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier);
+  void send_ComposeUrls(const int64_t req_id, const std::vector<std::string> & urls, const std::map<std::string, std::string> & carrier);
+  void recv_ComposeUrls(std::vector<Url> & _return);
+  void GetExtendedUrls(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
+  void send_GetExtendedUrls(const int64_t req_id, const std::vector<std::string> & shortened_urls, const std::map<std::string, std::string> & carrier);
+  void recv_GetExtendedUrls(std::vector<std::string> & _return);
+  void Exit(::apache::thrift::stdcxx::function<void(UrlShortenServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class UrlShortenServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UrlShortenServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (UrlShortenServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_ComposeUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ComposeUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Url> & _return);
+  void throw_ComposeUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_GetExtendedUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_GetExtendedUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<std::string> & _return);
+  void throw_GetExtendedUrls(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  UrlShortenServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<UrlShortenServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["ComposeUrls"] = &UrlShortenServiceAsyncProcessor::process_ComposeUrls;
+    processMap_["GetExtendedUrls"] = &UrlShortenServiceAsyncProcessor::process_GetExtendedUrls;
+    processMap_["Exit"] = &UrlShortenServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~UrlShortenServiceAsyncProcessor() {}
+};
+
+class UrlShortenServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  UrlShortenServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UrlShortenServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< UrlShortenServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

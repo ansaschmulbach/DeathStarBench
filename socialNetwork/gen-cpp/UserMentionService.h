@@ -7,7 +7,13 @@
 #ifndef UserMentionService_H
 #define UserMentionService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -183,6 +189,7 @@ class UserMentionService_ComposeUserMentions_presult {
   _UserMentionService_ComposeUserMentions_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -363,6 +370,123 @@ class UserMentionServiceConcurrentClient : virtual public UserMentionServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class UserMentionServiceCobClient;
+
+class UserMentionServiceCobClIf {
+ public:
+  virtual ~UserMentionServiceCobClIf() {}
+  virtual void ComposeUserMentions(::apache::thrift::stdcxx::function<void(UserMentionServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(UserMentionServiceCobClient* client)> cob) = 0;
+};
+
+class UserMentionServiceCobSvIf {
+ public:
+  virtual ~UserMentionServiceCobSvIf() {}
+  virtual void ComposeUserMentions(::apache::thrift::stdcxx::function<void(std::vector<UserMention>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class UserMentionServiceCobSvIfFactory {
+ public:
+  typedef UserMentionServiceCobSvIf Handler;
+
+  virtual ~UserMentionServiceCobSvIfFactory() {}
+
+  virtual UserMentionServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UserMentionServiceCobSvIf* /* handler */) = 0;
+};
+
+class UserMentionServiceCobSvIfSingletonFactory : virtual public UserMentionServiceCobSvIfFactory {
+ public:
+  UserMentionServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UserMentionServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~UserMentionServiceCobSvIfSingletonFactory() {}
+
+  virtual UserMentionServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(UserMentionServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserMentionServiceCobSvIf> iface_;
+};
+
+class UserMentionServiceCobSvNull : virtual public UserMentionServiceCobSvIf {
+ public:
+  virtual ~UserMentionServiceCobSvNull() {}
+  void ComposeUserMentions(::apache::thrift::stdcxx::function<void(std::vector<UserMention>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::vector<std::string> & /* usernames */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<UserMention>  _return;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class UserMentionServiceCobClient : virtual public UserMentionServiceCobClIf {
+ public:
+  UserMentionServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void ComposeUserMentions(::apache::thrift::stdcxx::function<void(UserMentionServiceCobClient* client)> cob, const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
+  void send_ComposeUserMentions(const int64_t req_id, const std::vector<std::string> & usernames, const std::map<std::string, std::string> & carrier);
+  void recv_ComposeUserMentions(std::vector<UserMention> & _return);
+  void Exit(::apache::thrift::stdcxx::function<void(UserMentionServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class UserMentionServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserMentionServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (UserMentionServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_ComposeUserMentions(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ComposeUserMentions(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<UserMention> & _return);
+  void throw_ComposeUserMentions(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  UserMentionServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<UserMentionServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["ComposeUserMentions"] = &UserMentionServiceAsyncProcessor::process_ComposeUserMentions;
+    processMap_["Exit"] = &UserMentionServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~UserMentionServiceAsyncProcessor() {}
+};
+
+class UserMentionServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  UserMentionServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserMentionServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< UserMentionServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

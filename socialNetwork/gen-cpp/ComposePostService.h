@@ -7,109 +7,138 @@
 #ifndef ComposePostService_H
 #define ComposePostService_H
 
-#include <thrift/TDispatchProcessor.h>
-#include <thrift/async/TConcurrentClientSyncInfo.h>
+#include <thrift/stdcxx.h>
+#include <thrift/transport/TBufferTransports.h>
+namespace apache {
+namespace thrift {
+namespace async {
+class TAsyncChannel;
+}
+} // namespace thrift
+} // namespace apache
 #include "social_network_types.h"
+#include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
+#include <thrift/async/TConcurrentClientSyncInfo.h>
 
 namespace social_network {
 
 #ifdef _MSC_VER
-  #pragma warning( push )
-  #pragma warning (disable : 4250 ) //inheriting methods via dominance 
+#pragma warning(push)
+#pragma warning(disable : 4250) // inheriting methods via dominance
 #endif
 
 class ComposePostServiceIf {
- public:
+public:
   virtual ~ComposePostServiceIf() {}
-  virtual void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void
+  ComposePost(const int64_t req_id, const std::string &username,
+              const int64_t user_id, const std::string &text,
+              const std::vector<int64_t> &media_ids,
+              const std::vector<std::string> &media_types,
+              const PostType::type post_type,
+              const std::map<std::string, std::string> &carrier) = 0;
   virtual void Exit() = 0;
 };
 
 class ComposePostServiceIfFactory {
- public:
+public:
   typedef ComposePostServiceIf Handler;
 
   virtual ~ComposePostServiceIfFactory() {}
 
-  virtual ComposePostServiceIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
-  virtual void releaseHandler(ComposePostServiceIf* /* handler */) = 0;
+  virtual ComposePostServiceIf *
+  getHandler(const ::apache::thrift::TConnectionInfo &connInfo) = 0;
+  virtual void releaseHandler(ComposePostServiceIf * /* handler */) = 0;
 };
 
-class ComposePostServiceIfSingletonFactory : virtual public ComposePostServiceIfFactory {
- public:
-  ComposePostServiceIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf>& iface) : iface_(iface) {}
+class ComposePostServiceIfSingletonFactory
+    : virtual public ComposePostServiceIfFactory {
+public:
+  ComposePostServiceIfSingletonFactory(
+      const ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> &iface)
+      : iface_(iface) {}
   virtual ~ComposePostServiceIfSingletonFactory() {}
 
-  virtual ComposePostServiceIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+  virtual ComposePostServiceIf *
+  getHandler(const ::apache::thrift::TConnectionInfo &) {
     return iface_.get();
   }
-  virtual void releaseHandler(ComposePostServiceIf* /* handler */) {}
+  virtual void releaseHandler(ComposePostServiceIf * /* handler */) {}
 
- protected:
+protected:
   ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface_;
 };
 
 class ComposePostServiceNull : virtual public ComposePostServiceIf {
- public:
+public:
   virtual ~ComposePostServiceNull() {}
-  void ComposePost(const int64_t /* req_id */, const std::string& /* username */, const int64_t /* user_id */, const std::string& /* text */, const std::vector<int64_t> & /* media_ids */, const std::vector<std::string> & /* media_types */, const PostType::type /* post_type */, const std::map<std::string, std::string> & /* carrier */) {
+  void ComposePost(const int64_t /* req_id */,
+                   const std::string & /* username */,
+                   const int64_t /* user_id */, const std::string & /* text */,
+                   const std::vector<int64_t> & /* media_ids */,
+                   const std::vector<std::string> & /* media_types */,
+                   const PostType::type /* post_type */,
+                   const std::map<std::string, std::string> & /* carrier */) {
     return;
   }
-  void Exit() {
-    return;
-  }
+  void Exit() { return; }
 };
 
 typedef struct _ComposePostService_ComposePost_args__isset {
-  _ComposePostService_ComposePost_args__isset() : req_id(false), username(false), user_id(false), text(false), media_ids(false), media_types(false), post_type(false), carrier(false) {}
-  bool req_id :1;
-  bool username :1;
-  bool user_id :1;
-  bool text :1;
-  bool media_ids :1;
-  bool media_types :1;
-  bool post_type :1;
-  bool carrier :1;
+  _ComposePostService_ComposePost_args__isset()
+      : req_id(false), username(false), user_id(false), text(false),
+        media_ids(false), media_types(false), post_type(false), carrier(false) {
+  }
+  bool req_id : 1;
+  bool username : 1;
+  bool user_id : 1;
+  bool text : 1;
+  bool media_ids : 1;
+  bool media_types : 1;
+  bool post_type : 1;
+  bool carrier : 1;
 } _ComposePostService_ComposePost_args__isset;
 
 class ComposePostService_ComposePost_args {
- public:
-
-  ComposePostService_ComposePost_args(const ComposePostService_ComposePost_args&);
-  ComposePostService_ComposePost_args& operator=(const ComposePostService_ComposePost_args&);
-  ComposePostService_ComposePost_args() : req_id(0), username(), user_id(0), text(), post_type((PostType::type)0) {
-  }
+public:
+  ComposePostService_ComposePost_args(
+      const ComposePostService_ComposePost_args &);
+  ComposePostService_ComposePost_args &
+  operator=(const ComposePostService_ComposePost_args &);
+  ComposePostService_ComposePost_args()
+      : req_id(0), username(), user_id(0), text(),
+        post_type((PostType::type)0) {}
 
   virtual ~ComposePostService_ComposePost_args() throw();
   int64_t req_id;
   std::string username;
   int64_t user_id;
   std::string text;
-  std::vector<int64_t>  media_ids;
-  std::vector<std::string>  media_types;
+  std::vector<int64_t> media_ids;
+  std::vector<std::string> media_types;
   PostType::type post_type;
-  std::map<std::string, std::string>  carrier;
+  std::map<std::string, std::string> carrier;
 
   _ComposePostService_ComposePost_args__isset __isset;
 
   void __set_req_id(const int64_t val);
 
-  void __set_username(const std::string& val);
+  void __set_username(const std::string &val);
 
   void __set_user_id(const int64_t val);
 
-  void __set_text(const std::string& val);
+  void __set_text(const std::string &val);
 
-  void __set_media_ids(const std::vector<int64_t> & val);
+  void __set_media_ids(const std::vector<int64_t> &val);
 
-  void __set_media_types(const std::vector<std::string> & val);
+  void __set_media_types(const std::vector<std::string> &val);
 
   void __set_post_type(const PostType::type val);
 
-  void __set_carrier(const std::map<std::string, std::string> & val);
+  void __set_carrier(const std::map<std::string, std::string> &val);
 
-  bool operator == (const ComposePostService_ComposePost_args & rhs) const
-  {
+  bool operator==(const ComposePostService_ComposePost_args &rhs) const {
     if (!(req_id == rhs.req_id))
       return false;
     if (!(username == rhs.username))
@@ -128,215 +157,257 @@ class ComposePostService_ComposePost_args {
       return false;
     return true;
   }
-  bool operator != (const ComposePostService_ComposePost_args &rhs) const {
+  bool operator!=(const ComposePostService_ComposePost_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ComposePostService_ComposePost_args & ) const;
+  bool operator<(const ComposePostService_ComposePost_args &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
-
 class ComposePostService_ComposePost_pargs {
- public:
-
-
+public:
   virtual ~ComposePostService_ComposePost_pargs() throw();
-  const int64_t* req_id;
-  const std::string* username;
-  const int64_t* user_id;
-  const std::string* text;
-  const std::vector<int64_t> * media_ids;
-  const std::vector<std::string> * media_types;
-  const PostType::type* post_type;
-  const std::map<std::string, std::string> * carrier;
+  const int64_t *req_id;
+  const std::string *username;
+  const int64_t *user_id;
+  const std::string *text;
+  const std::vector<int64_t> *media_ids;
+  const std::vector<std::string> *media_types;
+  const PostType::type *post_type;
+  const std::map<std::string, std::string> *carrier;
 
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
 typedef struct _ComposePostService_ComposePost_result__isset {
   _ComposePostService_ComposePost_result__isset() : se(false) {}
-  bool se :1;
+  bool se : 1;
 } _ComposePostService_ComposePost_result__isset;
 
 class ComposePostService_ComposePost_result {
- public:
-
-  ComposePostService_ComposePost_result(const ComposePostService_ComposePost_result&);
-  ComposePostService_ComposePost_result& operator=(const ComposePostService_ComposePost_result&);
-  ComposePostService_ComposePost_result() {
-  }
+public:
+  ComposePostService_ComposePost_result(
+      const ComposePostService_ComposePost_result &);
+  ComposePostService_ComposePost_result &
+  operator=(const ComposePostService_ComposePost_result &);
+  ComposePostService_ComposePost_result() {}
 
   virtual ~ComposePostService_ComposePost_result() throw();
   ServiceException se;
 
   _ComposePostService_ComposePost_result__isset __isset;
 
-  void __set_se(const ServiceException& val);
+  void __set_se(const ServiceException &val);
 
-  bool operator == (const ComposePostService_ComposePost_result & rhs) const
-  {
+  bool operator==(const ComposePostService_ComposePost_result &rhs) const {
     if (!(se == rhs.se))
       return false;
     return true;
   }
-  bool operator != (const ComposePostService_ComposePost_result &rhs) const {
+  bool operator!=(const ComposePostService_ComposePost_result &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ComposePostService_ComposePost_result & ) const;
+  bool operator<(const ComposePostService_ComposePost_result &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
 typedef struct _ComposePostService_ComposePost_presult__isset {
   _ComposePostService_ComposePost_presult__isset() : se(false) {}
-  bool se :1;
+  bool se : 1;
 } _ComposePostService_ComposePost_presult__isset;
 
 class ComposePostService_ComposePost_presult {
- public:
-
-
+public:
   virtual ~ComposePostService_ComposePost_presult() throw();
   ServiceException se;
 
   _ComposePostService_ComposePost_presult__isset __isset;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
-
 class ComposePostService_Exit_args {
- public:
-
-  ComposePostService_Exit_args(const ComposePostService_Exit_args&);
-  ComposePostService_Exit_args& operator=(const ComposePostService_Exit_args&);
-  ComposePostService_Exit_args() {
-  }
+public:
+  ComposePostService_Exit_args(const ComposePostService_Exit_args &);
+  ComposePostService_Exit_args &operator=(const ComposePostService_Exit_args &);
+  ComposePostService_Exit_args() {}
 
   virtual ~ComposePostService_Exit_args() throw();
 
-  bool operator == (const ComposePostService_Exit_args & /* rhs */) const
-  {
+  bool operator==(const ComposePostService_Exit_args & /* rhs */) const {
     return true;
   }
-  bool operator != (const ComposePostService_Exit_args &rhs) const {
+  bool operator!=(const ComposePostService_Exit_args &rhs) const {
     return !(*this == rhs);
   }
 
-  bool operator < (const ComposePostService_Exit_args & ) const;
+  bool operator<(const ComposePostService_Exit_args &) const;
 
-  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
+  uint32_t read(::apache::thrift::protocol::TProtocol *iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
-
 class ComposePostService_Exit_pargs {
- public:
-
-
+public:
   virtual ~ComposePostService_Exit_pargs() throw();
 
-  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
-
+  uint32_t write(::apache::thrift::protocol::TProtocol *oprot) const;
 };
 
 class ComposePostServiceClient : virtual public ComposePostServiceIf {
- public:
-  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+public:
+  ComposePostServiceClient(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          prot) {
     setProtocol(prot);
   }
-  ComposePostServiceClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  ComposePostServiceClient(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          iprot,
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          oprot) {
+    setProtocol(iprot, oprot);
   }
- private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+
+private:
+  void setProtocol(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          prot) {
+    setProtocol(prot, prot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    piprot_=iprot;
-    poprot_=oprot;
+  void setProtocol(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          iprot,
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          oprot) {
+    piprot_ = iprot;
+    poprot_ = oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
- public:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
+
+public:
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+  getInputProtocol() {
     return piprot_;
   }
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+  getOutputProtocol() {
     return poprot_;
   }
-  void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
-  void send_ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  void ComposePost(const int64_t req_id, const std::string &username,
+                   const int64_t user_id, const std::string &text,
+                   const std::vector<int64_t> &media_ids,
+                   const std::vector<std::string> &media_types,
+                   const PostType::type post_type,
+                   const std::map<std::string, std::string> &carrier);
+  void send_ComposePost(const int64_t req_id, const std::string &username,
+                        const int64_t user_id, const std::string &text,
+                        const std::vector<int64_t> &media_ids,
+                        const std::vector<std::string> &media_types,
+                        const PostType::type post_type,
+                        const std::map<std::string, std::string> &carrier);
   void recv_ComposePost();
   void Exit();
   void send_Exit();
- protected:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
-  ::apache::thrift::protocol::TProtocol* iprot_;
-  ::apache::thrift::protocol::TProtocol* oprot_;
+
+protected:
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      piprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      poprot_;
+  ::apache::thrift::protocol::TProtocol *iprot_;
+  ::apache::thrift::protocol::TProtocol *oprot_;
 };
 
-class ComposePostServiceProcessor : public ::apache::thrift::TDispatchProcessor {
- protected:
+class ComposePostServiceProcessor
+    : public ::apache::thrift::TDispatchProcessor {
+protected:
   ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface_;
-  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, void* callContext);
- private:
-  typedef  void (ComposePostServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
+  virtual bool dispatchCall(::apache::thrift::protocol::TProtocol *iprot,
+                            ::apache::thrift::protocol::TProtocol *oprot,
+                            const std::string &fname, int32_t seqid,
+                            void *callContext);
+
+private:
+  typedef void (ComposePostServiceProcessor::*ProcessFunction)(
+      int32_t, ::apache::thrift::protocol::TProtocol *,
+      ::apache::thrift::protocol::TProtocol *, void *);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
-  void process_ComposePost(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
-  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
- public:
-  ComposePostServiceProcessor(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface) :
-    iface_(iface) {
-    processMap_["ComposePost"] = &ComposePostServiceProcessor::process_ComposePost;
+  void process_ComposePost(int32_t seqid,
+                           ::apache::thrift::protocol::TProtocol *iprot,
+                           ::apache::thrift::protocol::TProtocol *oprot,
+                           void *callContext);
+  void process_Exit(int32_t seqid, ::apache::thrift::protocol::TProtocol *iprot,
+                    ::apache::thrift::protocol::TProtocol *oprot,
+                    void *callContext);
+
+public:
+  ComposePostServiceProcessor(
+      ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface)
+      : iface_(iface) {
+    processMap_["ComposePost"] =
+        &ComposePostServiceProcessor::process_ComposePost;
     processMap_["Exit"] = &ComposePostServiceProcessor::process_Exit;
   }
 
   virtual ~ComposePostServiceProcessor() {}
 };
 
-class ComposePostServiceProcessorFactory : public ::apache::thrift::TProcessorFactory {
- public:
-  ComposePostServiceProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIfFactory >& handlerFactory) :
-      handlerFactory_(handlerFactory) {}
+class ComposePostServiceProcessorFactory
+    : public ::apache::thrift::TProcessorFactory {
+public:
+  ComposePostServiceProcessorFactory(
+      const ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIfFactory>
+          &handlerFactory)
+      : handlerFactory_(handlerFactory) {}
 
-  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::TProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::TProcessor>
+  getProcessor(const ::apache::thrift::TConnectionInfo &connInfo);
 
- protected:
-  ::apache::thrift::stdcxx::shared_ptr< ComposePostServiceIfFactory > handlerFactory_;
+protected:
+  ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIfFactory>
+      handlerFactory_;
 };
 
 class ComposePostServiceMultiface : virtual public ComposePostServiceIf {
- public:
-  ComposePostServiceMultiface(std::vector<apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> >& ifaces) : ifaces_(ifaces) {
-  }
+public:
+  ComposePostServiceMultiface(
+      std::vector<apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf>>
+          &ifaces)
+      : ifaces_(ifaces) {}
   virtual ~ComposePostServiceMultiface() {}
- protected:
-  std::vector<apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> > ifaces_;
+
+protected:
+  std::vector<apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf>> ifaces_;
   ComposePostServiceMultiface() {}
   void add(::apache::thrift::stdcxx::shared_ptr<ComposePostServiceIf> iface) {
     ifaces_.push_back(iface);
   }
- public:
-  void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier) {
+
+public:
+  void ComposePost(const int64_t req_id, const std::string &username,
+                   const int64_t user_id, const std::string &text,
+                   const std::vector<int64_t> &media_ids,
+                   const std::vector<std::string> &media_types,
+                   const PostType::type post_type,
+                   const std::map<std::string, std::string> &carrier) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->ComposePost(req_id, username, user_id, text, media_ids, media_types, post_type, carrier);
+      ifaces_[i]->ComposePost(req_id, username, user_id, text, media_ids,
+                              media_types, post_type, carrier);
     }
-    ifaces_[i]->ComposePost(req_id, username, user_id, text, media_ids, media_types, post_type, carrier);
+    ifaces_[i]->ComposePost(req_id, username, user_id, text, media_ids,
+                            media_types, post_type, carrier);
   }
 
   void Exit() {
@@ -347,54 +418,291 @@ class ComposePostServiceMultiface : virtual public ComposePostServiceIf {
     }
     ifaces_[i]->Exit();
   }
-
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
 // out of order responses.  It is slower than the regular client, so should
 // only be used when you need to share a connection among multiple threads
 class ComposePostServiceConcurrentClient : virtual public ComposePostServiceIf {
- public:
-  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
+public:
+  ComposePostServiceConcurrentClient(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          prot) {
     setProtocol(prot);
   }
-  ComposePostServiceConcurrentClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    setProtocol(iprot,oprot);
+  ComposePostServiceConcurrentClient(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          iprot,
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          oprot) {
+    setProtocol(iprot, oprot);
   }
- private:
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
-  setProtocol(prot,prot);
+
+private:
+  void setProtocol(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          prot) {
+    setProtocol(prot, prot);
   }
-  void setProtocol(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> iprot, apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> oprot) {
-    piprot_=iprot;
-    poprot_=oprot;
+  void setProtocol(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          iprot,
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+          oprot) {
+    piprot_ = iprot;
+    poprot_ = oprot;
     iprot_ = iprot.get();
     oprot_ = oprot.get();
   }
- public:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getInputProtocol() {
+
+public:
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+  getInputProtocol() {
     return piprot_;
   }
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+  getOutputProtocol() {
     return poprot_;
   }
-  void ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
-  int32_t send_ComposePost(const int64_t req_id, const std::string& username, const int64_t user_id, const std::string& text, const std::vector<int64_t> & media_ids, const std::vector<std::string> & media_types, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  void ComposePost(const int64_t req_id, const std::string &username,
+                   const int64_t user_id, const std::string &text,
+                   const std::vector<int64_t> &media_ids,
+                   const std::vector<std::string> &media_types,
+                   const PostType::type post_type,
+                   const std::map<std::string, std::string> &carrier);
+  int32_t send_ComposePost(const int64_t req_id, const std::string &username,
+                           const int64_t user_id, const std::string &text,
+                           const std::vector<int64_t> &media_ids,
+                           const std::vector<std::string> &media_types,
+                           const PostType::type post_type,
+                           const std::map<std::string, std::string> &carrier);
   void recv_ComposePost(const int32_t seqid);
   void Exit();
   void send_Exit();
- protected:
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
-  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
-  ::apache::thrift::protocol::TProtocol* iprot_;
-  ::apache::thrift::protocol::TProtocol* oprot_;
+
+protected:
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      piprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      poprot_;
+  ::apache::thrift::protocol::TProtocol *iprot_;
+  ::apache::thrift::protocol::TProtocol *oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
 };
 
+class ComposePostServiceCobClient;
+
+class ComposePostServiceCobClIf {
+public:
+  virtual ~ComposePostServiceCobClIf() {}
+  virtual void
+  ComposePost(::apache::thrift::stdcxx::function<
+                  void(ComposePostServiceCobClient *client)>
+                  cob,
+              const int64_t req_id, const std::string &username,
+              const int64_t user_id, const std::string &text,
+              const std::vector<int64_t> &media_ids,
+              const std::vector<std::string> &media_types,
+              const PostType::type post_type,
+              const std::map<std::string, std::string> &carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<
+                    void(ComposePostServiceCobClient *client)>
+                        cob) = 0;
+};
+
+class ComposePostServiceCobSvIf {
+public:
+  virtual ~ComposePostServiceCobSvIf() {}
+  virtual void ComposePost(
+      ::apache::thrift::stdcxx::function<void()> cob,
+      ::apache::thrift::stdcxx::function<
+          void(::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+      const int64_t req_id, const std::string &username, const int64_t user_id,
+      const std::string &text, const std::vector<int64_t> &media_ids,
+      const std::vector<std::string> &media_types,
+      const PostType::type post_type,
+      const std::map<std::string, std::string> &carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class ComposePostServiceCobSvIfFactory {
+public:
+  typedef ComposePostServiceCobSvIf Handler;
+
+  virtual ~ComposePostServiceCobSvIfFactory() {}
+
+  virtual ComposePostServiceCobSvIf *
+  getHandler(const ::apache::thrift::TConnectionInfo &connInfo) = 0;
+  virtual void releaseHandler(ComposePostServiceCobSvIf * /* handler */) = 0;
+};
+
+class ComposePostServiceCobSvIfSingletonFactory
+    : virtual public ComposePostServiceCobSvIfFactory {
+public:
+  ComposePostServiceCobSvIfSingletonFactory(
+      const ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceCobSvIf>
+          &iface)
+      : iface_(iface) {}
+  virtual ~ComposePostServiceCobSvIfSingletonFactory() {}
+
+  virtual ComposePostServiceCobSvIf *
+  getHandler(const ::apache::thrift::TConnectionInfo &) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(ComposePostServiceCobSvIf * /* handler */) {}
+
+protected:
+  ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceCobSvIf> iface_;
+};
+
+class ComposePostServiceCobSvNull : virtual public ComposePostServiceCobSvIf {
+public:
+  virtual ~ComposePostServiceCobSvNull() {}
+  void
+  ComposePost(::apache::thrift::stdcxx::function<void()> cob,
+              ::apache::thrift::stdcxx::function<void(
+                  ::apache::thrift::TDelayedException *_throw)> /* exn_cob */,
+              const int64_t /* req_id */, const std::string & /* username */,
+              const int64_t /* user_id */, const std::string & /* text */,
+              const std::vector<int64_t> & /* media_ids */,
+              const std::vector<std::string> & /* media_types */,
+              const PostType::type /* post_type */,
+              const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) { return cob(); }
+};
+
+class ComposePostServiceCobClient : virtual public ComposePostServiceCobClIf {
+public:
+  ComposePostServiceCobClient(
+      apache::thrift::stdcxx::shared_ptr<::apache::thrift::async::TAsyncChannel>
+          channel,
+      ::apache::thrift::protocol::TProtocolFactory *protocolFactory)
+      : channel_(channel),
+        itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+        otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+        piprot_(protocolFactory->getProtocol(itrans_)),
+        poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::async::TAsyncChannel>
+  getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void ComposePost(::apache::thrift::stdcxx::function<
+                       void(ComposePostServiceCobClient *client)>
+                       cob,
+                   const int64_t req_id, const std::string &username,
+                   const int64_t user_id, const std::string &text,
+                   const std::vector<int64_t> &media_ids,
+                   const std::vector<std::string> &media_types,
+                   const PostType::type post_type,
+                   const std::map<std::string, std::string> &carrier);
+  void send_ComposePost(const int64_t req_id, const std::string &username,
+                        const int64_t user_id, const std::string &text,
+                        const std::vector<int64_t> &media_ids,
+                        const std::vector<std::string> &media_types,
+                        const PostType::type post_type,
+                        const std::map<std::string, std::string> &carrier);
+  void recv_ComposePost();
+  void Exit(::apache::thrift::stdcxx::function<
+            void(ComposePostServiceCobClient *client)>
+                cob);
+  void send_Exit();
+
+protected:
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::async::TAsyncChannel>
+      channel_;
+  ::apache::thrift::stdcxx::shared_ptr<
+      ::apache::thrift::transport::TMemoryBuffer>
+      itrans_;
+  ::apache::thrift::stdcxx::shared_ptr<
+      ::apache::thrift::transport::TMemoryBuffer>
+      otrans_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      piprot_;
+  apache::thrift::stdcxx::shared_ptr<::apache::thrift::protocol::TProtocol>
+      poprot_;
+  ::apache::thrift::protocol::TProtocol *iprot_;
+  ::apache::thrift::protocol::TProtocol *oprot_;
+};
+
+class ComposePostServiceAsyncProcessor
+    : public ::apache::thrift::async::TAsyncDispatchProcessor {
+protected:
+  ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceCobSvIf> iface_;
+  virtual void
+  dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+               ::apache::thrift::protocol::TProtocol *iprot,
+               ::apache::thrift::protocol::TProtocol *oprot,
+               const std::string &fname, int32_t seqid);
+
+private:
+  typedef void (ComposePostServiceAsyncProcessor::*ProcessFunction)(
+      ::apache::thrift::stdcxx::function<void(bool ok)>, int32_t,
+      ::apache::thrift::protocol::TProtocol *,
+      ::apache::thrift::protocol::TProtocol *);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void
+  process_ComposePost(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                      int32_t seqid,
+                      ::apache::thrift::protocol::TProtocol *iprot,
+                      ::apache::thrift::protocol::TProtocol *oprot);
+  void return_ComposePost(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                          int32_t seqid,
+                          ::apache::thrift::protocol::TProtocol *oprot,
+                          void *ctx);
+  void throw_ComposePost(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                         int32_t seqid,
+                         ::apache::thrift::protocol::TProtocol *oprot,
+                         void *ctx,
+                         ::apache::thrift::TDelayedException *_throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                    int32_t seqid, ::apache::thrift::protocol::TProtocol *iprot,
+                    ::apache::thrift::protocol::TProtocol *oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                   int32_t seqid, ::apache::thrift::protocol::TProtocol *oprot,
+                   void *ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob,
+                  int32_t seqid, ::apache::thrift::protocol::TProtocol *oprot,
+                  void *ctx, ::apache::thrift::TDelayedException *_throw);
+
+public:
+  ComposePostServiceAsyncProcessor(
+      ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceCobSvIf> iface)
+      : iface_(iface) {
+    processMap_["ComposePost"] =
+        &ComposePostServiceAsyncProcessor::process_ComposePost;
+    processMap_["Exit"] = &ComposePostServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~ComposePostServiceAsyncProcessor() {}
+};
+
+class ComposePostServiceAsyncProcessorFactory
+    : public ::apache::thrift::async::TAsyncProcessorFactory {
+public:
+  ComposePostServiceAsyncProcessorFactory(
+      const ::apache::thrift::stdcxx::shared_ptr<
+          ComposePostServiceCobSvIfFactory> &handlerFactory)
+      : handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr<::apache::thrift::async::TAsyncProcessor>
+  getProcessor(const ::apache::thrift::TConnectionInfo &connInfo);
+
+protected:
+  ::apache::thrift::stdcxx::shared_ptr<ComposePostServiceCobSvIfFactory>
+      handlerFactory_;
+};
+
 #ifdef _MSC_VER
-  #pragma warning( pop )
+#pragma warning(pop)
 #endif
 
-} // namespace
+} // namespace social_network
 
 #endif

@@ -7,7 +7,13 @@
 #ifndef HomeTimelineService_H
 #define HomeTimelineService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -201,6 +207,7 @@ class HomeTimelineService_ReadHomeTimeline_presult {
   _HomeTimelineService_ReadHomeTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -340,6 +347,7 @@ class HomeTimelineService_WriteHomeTimeline_presult {
   _HomeTimelineService_WriteHomeTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -537,6 +545,135 @@ class HomeTimelineServiceConcurrentClient : virtual public HomeTimelineServiceIf
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class HomeTimelineServiceCobClient;
+
+class HomeTimelineServiceCobClIf {
+ public:
+  virtual ~HomeTimelineServiceCobClIf() {}
+  virtual void ReadHomeTimeline(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void WriteHomeTimeline(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob) = 0;
+};
+
+class HomeTimelineServiceCobSvIf {
+ public:
+  virtual ~HomeTimelineServiceCobSvIf() {}
+  virtual void ReadHomeTimeline(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void WriteHomeTimeline(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class HomeTimelineServiceCobSvIfFactory {
+ public:
+  typedef HomeTimelineServiceCobSvIf Handler;
+
+  virtual ~HomeTimelineServiceCobSvIfFactory() {}
+
+  virtual HomeTimelineServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(HomeTimelineServiceCobSvIf* /* handler */) = 0;
+};
+
+class HomeTimelineServiceCobSvIfSingletonFactory : virtual public HomeTimelineServiceCobSvIfFactory {
+ public:
+  HomeTimelineServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<HomeTimelineServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~HomeTimelineServiceCobSvIfSingletonFactory() {}
+
+  virtual HomeTimelineServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(HomeTimelineServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<HomeTimelineServiceCobSvIf> iface_;
+};
+
+class HomeTimelineServiceCobSvNull : virtual public HomeTimelineServiceCobSvIf {
+ public:
+  virtual ~HomeTimelineServiceCobSvNull() {}
+  void ReadHomeTimeline(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const int32_t /* start */, const int32_t /* stop */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<Post>  _return;
+    return cob(_return);
+  }
+  void WriteHomeTimeline(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* post_id */, const int64_t /* user_id */, const int64_t /* timestamp */, const std::vector<int64_t> & /* user_mentions_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class HomeTimelineServiceCobClient : virtual public HomeTimelineServiceCobClIf {
+ public:
+  HomeTimelineServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void ReadHomeTimeline(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
+  void send_ReadHomeTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
+  void recv_ReadHomeTimeline(std::vector<Post> & _return);
+  void WriteHomeTimeline(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id, const std::map<std::string, std::string> & carrier);
+  void send_WriteHomeTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::vector<int64_t> & user_mentions_id, const std::map<std::string, std::string> & carrier);
+  void recv_WriteHomeTimeline();
+  void Exit(::apache::thrift::stdcxx::function<void(HomeTimelineServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class HomeTimelineServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<HomeTimelineServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (HomeTimelineServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_ReadHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ReadHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return);
+  void throw_ReadHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_WriteHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_WriteHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_WriteHomeTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  HomeTimelineServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<HomeTimelineServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["ReadHomeTimeline"] = &HomeTimelineServiceAsyncProcessor::process_ReadHomeTimeline;
+    processMap_["WriteHomeTimeline"] = &HomeTimelineServiceAsyncProcessor::process_WriteHomeTimeline;
+    processMap_["Exit"] = &HomeTimelineServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~HomeTimelineServiceAsyncProcessor() {}
+};
+
+class HomeTimelineServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  HomeTimelineServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< HomeTimelineServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< HomeTimelineServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

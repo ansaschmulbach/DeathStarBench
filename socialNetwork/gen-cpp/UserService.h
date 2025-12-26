@@ -7,7 +7,13 @@
 #ifndef UserService_H
 #define UserService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -217,6 +223,7 @@ class UserService_RegisterUser_presult {
   _UserService_RegisterUser_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -363,6 +370,7 @@ class UserService_RegisterUserWithId_presult {
   _UserService_RegisterUserWithId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -496,6 +504,7 @@ class UserService_Login_presult {
   _UserService_Login_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -629,6 +638,7 @@ class UserService_ComposeCreatorWithUserId_presult {
   _UserService_ComposeCreatorWithUserId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -755,6 +765,7 @@ class UserService_ComposeCreatorWithUsername_presult {
   _UserService_ComposeCreatorWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -881,6 +892,7 @@ class UserService_GetUserId_presult {
   _UserService_GetUserId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -1148,6 +1160,186 @@ class UserServiceConcurrentClient : virtual public UserServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class UserServiceCobClient;
+
+class UserServiceCobClIf {
+ public:
+  virtual ~UserServiceCobClIf() {}
+  virtual void RegisterUser(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void RegisterUserWithId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Login(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetUserId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob) = 0;
+};
+
+class UserServiceCobSvIf {
+ public:
+  virtual ~UserServiceCobSvIf() {}
+  virtual void RegisterUser(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void RegisterUserWithId(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Login(::apache::thrift::stdcxx::function<void(std::string const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(Creator const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(Creator const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetUserId(::apache::thrift::stdcxx::function<void(int64_t const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class UserServiceCobSvIfFactory {
+ public:
+  typedef UserServiceCobSvIf Handler;
+
+  virtual ~UserServiceCobSvIfFactory() {}
+
+  virtual UserServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UserServiceCobSvIf* /* handler */) = 0;
+};
+
+class UserServiceCobSvIfSingletonFactory : virtual public UserServiceCobSvIfFactory {
+ public:
+  UserServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UserServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~UserServiceCobSvIfSingletonFactory() {}
+
+  virtual UserServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(UserServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserServiceCobSvIf> iface_;
+};
+
+class UserServiceCobSvNull : virtual public UserServiceCobSvIf {
+ public:
+  virtual ~UserServiceCobSvNull() {}
+  void RegisterUser(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* first_name */, const std::string& /* last_name */, const std::string& /* username */, const std::string& /* password */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void RegisterUserWithId(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* first_name */, const std::string& /* last_name */, const std::string& /* username */, const std::string& /* password */, const int64_t /* user_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void Login(::apache::thrift::stdcxx::function<void(std::string const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* username */, const std::string& /* password */, const std::map<std::string, std::string> & /* carrier */) {
+    std::string _return;
+    return cob(_return);
+  }
+  void ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(Creator const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const std::string& /* username */, const std::map<std::string, std::string> & /* carrier */) {
+    Creator _return;
+    return cob(_return);
+  }
+  void ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(Creator const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* username */, const std::map<std::string, std::string> & /* carrier */) {
+    Creator _return;
+    return cob(_return);
+  }
+  void GetUserId(::apache::thrift::stdcxx::function<void(int64_t const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* username */, const std::map<std::string, std::string> & /* carrier */) {
+    int64_t _return = 0;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class UserServiceCobClient : virtual public UserServiceCobClIf {
+ public:
+  UserServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void RegisterUser(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier);
+  void send_RegisterUser(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier);
+  void recv_RegisterUser();
+  void RegisterUserWithId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void send_RegisterUserWithId(const int64_t req_id, const std::string& first_name, const std::string& last_name, const std::string& username, const std::string& password, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void recv_RegisterUserWithId();
+  void Login(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier);
+  void send_Login(const int64_t req_id, const std::string& username, const std::string& password, const std::map<std::string, std::string> & carrier);
+  void recv_Login(std::string& _return);
+  void ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  void send_ComposeCreatorWithUserId(const int64_t req_id, const int64_t user_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  void recv_ComposeCreatorWithUserId(Creator& _return);
+  void ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  void send_ComposeCreatorWithUsername(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  void recv_ComposeCreatorWithUsername(Creator& _return);
+  void GetUserId(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob, const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  void send_GetUserId(const int64_t req_id, const std::string& username, const std::map<std::string, std::string> & carrier);
+  int64_t recv_GetUserId();
+  void Exit(::apache::thrift::stdcxx::function<void(UserServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class UserServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (UserServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_RegisterUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_RegisterUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_RegisterUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_RegisterUserWithId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_RegisterUserWithId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_RegisterUserWithId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Login(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Login(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::string& _return);
+  void throw_Login(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const Creator& _return);
+  void throw_ComposeCreatorWithUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const Creator& _return);
+  void throw_ComposeCreatorWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_GetUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_GetUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int64_t& _return);
+  void throw_GetUserId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  UserServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<UserServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["RegisterUser"] = &UserServiceAsyncProcessor::process_RegisterUser;
+    processMap_["RegisterUserWithId"] = &UserServiceAsyncProcessor::process_RegisterUserWithId;
+    processMap_["Login"] = &UserServiceAsyncProcessor::process_Login;
+    processMap_["ComposeCreatorWithUserId"] = &UserServiceAsyncProcessor::process_ComposeCreatorWithUserId;
+    processMap_["ComposeCreatorWithUsername"] = &UserServiceAsyncProcessor::process_ComposeCreatorWithUsername;
+    processMap_["GetUserId"] = &UserServiceAsyncProcessor::process_GetUserId;
+    processMap_["Exit"] = &UserServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~UserServiceAsyncProcessor() {}
+};
+
+class UserServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  UserServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< UserServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

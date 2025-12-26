@@ -7,7 +7,13 @@
 #ifndef UserTimelineService_H
 #define UserTimelineService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -193,6 +199,7 @@ class UserTimelineService_WriteUserTimeline_presult {
   _UserTimelineService_WriteUserTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -333,6 +340,7 @@ class UserTimelineService_ReadUserTimeline_presult {
   _UserTimelineService_ReadUserTimeline_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -530,6 +538,135 @@ class UserTimelineServiceConcurrentClient : virtual public UserTimelineServiceIf
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class UserTimelineServiceCobClient;
+
+class UserTimelineServiceCobClIf {
+ public:
+  virtual ~UserTimelineServiceCobClIf() {}
+  virtual void WriteUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob) = 0;
+};
+
+class UserTimelineServiceCobSvIf {
+ public:
+  virtual ~UserTimelineServiceCobSvIf() {}
+  virtual void WriteUserTimeline(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadUserTimeline(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class UserTimelineServiceCobSvIfFactory {
+ public:
+  typedef UserTimelineServiceCobSvIf Handler;
+
+  virtual ~UserTimelineServiceCobSvIfFactory() {}
+
+  virtual UserTimelineServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UserTimelineServiceCobSvIf* /* handler */) = 0;
+};
+
+class UserTimelineServiceCobSvIfSingletonFactory : virtual public UserTimelineServiceCobSvIfFactory {
+ public:
+  UserTimelineServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~UserTimelineServiceCobSvIfSingletonFactory() {}
+
+  virtual UserTimelineServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(UserTimelineServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceCobSvIf> iface_;
+};
+
+class UserTimelineServiceCobSvNull : virtual public UserTimelineServiceCobSvIf {
+ public:
+  virtual ~UserTimelineServiceCobSvNull() {}
+  void WriteUserTimeline(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* post_id */, const int64_t /* user_id */, const int64_t /* timestamp */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void ReadUserTimeline(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const int32_t /* start */, const int32_t /* stop */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<Post>  _return;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class UserTimelineServiceCobClient : virtual public UserTimelineServiceCobClIf {
+ public:
+  UserTimelineServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void WriteUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier);
+  void send_WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier);
+  void recv_WriteUserTimeline();
+  void ReadUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
+  void send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier);
+  void recv_ReadUserTimeline(std::vector<Post> & _return);
+  void Exit(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class UserTimelineServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (UserTimelineServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return);
+  void throw_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  UserTimelineServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<UserTimelineServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["WriteUserTimeline"] = &UserTimelineServiceAsyncProcessor::process_WriteUserTimeline;
+    processMap_["ReadUserTimeline"] = &UserTimelineServiceAsyncProcessor::process_ReadUserTimeline;
+    processMap_["Exit"] = &UserTimelineServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~UserTimelineServiceAsyncProcessor() {}
+};
+
+class UserTimelineServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  UserTimelineServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

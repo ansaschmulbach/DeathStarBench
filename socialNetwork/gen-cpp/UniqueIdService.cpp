@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "UniqueIdService.h"
+#include "thrift/async/TAsyncChannel.h"
 
 namespace social_network {
 
@@ -279,6 +280,25 @@ uint32_t UniqueIdService_ComposeUniqueId_presult::read(::apache::thrift::protoco
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t UniqueIdService_ComposeUniqueId_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UniqueIdService_ComposeUniqueId_presult");
+
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_I64, 0);
+  xfer += oprot->writeI64((*(this->success)));
+  xfer += oprot->writeFieldEnd();
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -650,6 +670,282 @@ void UniqueIdServiceConcurrentClient::send_Exit()
   oprot_->getTransport()->flush();
 
   sentry.commit();
+}
+
+void UniqueIdServiceCobClient::ComposeUniqueId(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob, const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+{
+  send_ComposeUniqueId(req_id, post_type, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void UniqueIdServiceCobClient::send_ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("ComposeUniqueId", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  UniqueIdService_ComposeUniqueId_pargs args;
+  args.req_id = &req_id;
+  args.post_type = &post_type;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+int64_t UniqueIdServiceCobClient::recv_ComposeUniqueId()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("ComposeUniqueId") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    int64_t _return;
+    UniqueIdService_ComposeUniqueId_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      completed = true;
+      completed__(true);
+      return _return;
+    }
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ComposeUniqueId failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void UniqueIdServiceCobClient::Exit(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob)
+{
+  send_Exit();
+  channel_->sendMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get());
+}
+
+void UniqueIdServiceCobClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UniqueIdService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void UniqueIdServiceAsyncProcessor::dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid) {
+  ProcessMap::iterator pfn;
+  pfn = processMap_.find(fname);
+  if (pfn == processMap_.end()) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  (this->*(pfn->second))(cob, seqid, iprot, oprot);
+  return;
+}
+
+void UniqueIdServiceAsyncProcessor::process_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  UniqueIdService_ComposeUniqueId_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UniqueIdService.ComposeUniqueId", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UniqueIdService.ComposeUniqueId");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "UniqueIdService.ComposeUniqueId");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "UniqueIdService.ComposeUniqueId", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UniqueIdService.ComposeUniqueId");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (UniqueIdServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int64_t& _return) =
+    &UniqueIdServiceAsyncProcessor::return_ComposeUniqueId;
+  void (UniqueIdServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &UniqueIdServiceAsyncProcessor::throw_ComposeUniqueId;
+  iface_->ComposeUniqueId(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.post_type,
+      args.carrier);
+}
+
+void UniqueIdServiceAsyncProcessor::return_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int64_t& _return)
+{
+  UniqueIdService_ComposeUniqueId_presult result;
+  result.success = const_cast<int64_t*>(&_return);
+  result.__isset.success = true;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UniqueIdService.ComposeUniqueId", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UniqueIdService.ComposeUniqueId");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UniqueIdService.ComposeUniqueId");
+  }
+
+  oprot->writeMessageBegin("ComposeUniqueId", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UniqueIdService.ComposeUniqueId", bytes);
+  }
+  return cob(true);
+}
+
+void UniqueIdServiceAsyncProcessor::throw_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UniqueIdService.ComposeUniqueId", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UniqueIdService.ComposeUniqueId");
+
+  UniqueIdService_ComposeUniqueId_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UniqueIdService.ComposeUniqueId");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("ComposeUniqueId", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UniqueIdService.ComposeUniqueId");
+  }
+
+  oprot->writeMessageBegin("ComposeUniqueId", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UniqueIdService.ComposeUniqueId", bytes);
+  }
+  return cob(true);
+}
+
+void UniqueIdServiceAsyncProcessor::process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  (void) seqid;
+  (void) oprot;
+  UniqueIdService_Exit_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UniqueIdService.Exit", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UniqueIdService.Exit");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "UniqueIdService.Exit");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "UniqueIdService.Exit", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UniqueIdService.Exit");
+    }
+    return cob(false);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "UniqueIdService.Exit");
+  }
+  freer.unregister();
+  iface_->Exit(::apache::thrift::stdcxx::bind(cob, true)
+);
+}
+
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > UniqueIdServiceAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< UniqueIdServiceCobSvIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > processor(new UniqueIdServiceAsyncProcessor(handler));
+  return processor;
 }
 
 } // namespace

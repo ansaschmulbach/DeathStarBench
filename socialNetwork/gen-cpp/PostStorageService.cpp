@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "PostStorageService.h"
+#include "thrift/async/TAsyncChannel.h"
 
 namespace social_network {
 
@@ -257,6 +258,21 @@ uint32_t PostStorageService_StorePost_presult::read(::apache::thrift::protocol::
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t PostStorageService_StorePost_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("PostStorageService_StorePost_presult");
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -529,6 +545,25 @@ uint32_t PostStorageService_ReadPost_presult::read(::apache::thrift::protocol::T
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t PostStorageService_ReadPost_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPost_presult");
+
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
+  xfer += (*(this->success)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -861,6 +896,33 @@ uint32_t PostStorageService_ReadPosts_presult::read(::apache::thrift::protocol::
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t PostStorageService_ReadPosts_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("PostStorageService_ReadPosts_presult");
+
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->success)).size()));
+    std::vector<Post> ::const_iterator _iter190;
+    for (_iter190 = (*(this->success)).begin(); _iter190 != (*(this->success)).end(); ++_iter190)
+    {
+      xfer += (*_iter190).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -1640,6 +1702,661 @@ void PostStorageServiceConcurrentClient::send_Exit()
   oprot_->getTransport()->flush();
 
   sentry.commit();
+}
+
+void PostStorageServiceCobClient::StorePost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+{
+  send_StorePost(req_id, post, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void PostStorageServiceCobClient::send_StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  PostStorageService_StorePost_pargs args;
+  args.req_id = &req_id;
+  args.post = &post;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void PostStorageServiceCobClient::recv_StorePost()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("StorePost") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    PostStorageService_StorePost_presult result;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    return;
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void PostStorageServiceCobClient::ReadPost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+{
+  send_ReadPost(req_id, post_id, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void PostStorageServiceCobClient::send_ReadPost(const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  PostStorageService_ReadPost_pargs args;
+  args.req_id = &req_id;
+  args.post_id = &post_id;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void PostStorageServiceCobClient::recv_ReadPost(Post& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("ReadPost") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    PostStorageService_ReadPost_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      // _return pointer has now been filled
+      completed = true;
+      completed__(true);
+      return;
+    }
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPost failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void PostStorageServiceCobClient::ReadPosts(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+{
+  send_ReadPosts(req_id, post_ids, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void PostStorageServiceCobClient::send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  PostStorageService_ReadPosts_pargs args;
+  args.req_id = &req_id;
+  args.post_ids = &post_ids;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void PostStorageServiceCobClient::recv_ReadPosts(std::vector<Post> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("ReadPosts") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    PostStorageService_ReadPosts_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      // _return pointer has now been filled
+      completed = true;
+      completed__(true);
+      return;
+    }
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadPosts failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void PostStorageServiceCobClient::Exit(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob)
+{
+  send_Exit();
+  channel_->sendMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get());
+}
+
+void PostStorageServiceCobClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  PostStorageService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void PostStorageServiceAsyncProcessor::dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid) {
+  ProcessMap::iterator pfn;
+  pfn = processMap_.find(fname);
+  if (pfn == processMap_.end()) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  (this->*(pfn->second))(cob, seqid, iprot, oprot);
+  return;
+}
+
+void PostStorageServiceAsyncProcessor::process_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  PostStorageService_StorePost_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.StorePost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.StorePost");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "PostStorageService.StorePost");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "PostStorageService.StorePost", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.StorePost");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (PostStorageServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx) =
+    &PostStorageServiceAsyncProcessor::return_StorePost;
+  void (PostStorageServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &PostStorageServiceAsyncProcessor::throw_StorePost;
+  iface_->StorePost(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.post,
+      args.carrier);
+}
+
+void PostStorageServiceAsyncProcessor::return_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx)
+{
+  PostStorageService_StorePost_presult result;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.StorePost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.StorePost");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.StorePost");
+  }
+
+  oprot->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.StorePost", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::throw_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.StorePost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.StorePost");
+
+  PostStorageService_StorePost_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.StorePost");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.StorePost");
+  }
+
+  oprot->writeMessageBegin("StorePost", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.StorePost", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::process_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  PostStorageService_ReadPost_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPost");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "PostStorageService.ReadPost");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "PostStorageService.ReadPost", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPost");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (PostStorageServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const Post& _return) =
+    &PostStorageServiceAsyncProcessor::return_ReadPost;
+  void (PostStorageServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &PostStorageServiceAsyncProcessor::throw_ReadPost;
+  iface_->ReadPost(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.post_id,
+      args.carrier);
+}
+
+void PostStorageServiceAsyncProcessor::return_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const Post& _return)
+{
+  PostStorageService_ReadPost_presult result;
+  result.success = const_cast<Post*>(&_return);
+  result.__isset.success = true;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPost");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPost");
+  }
+
+  oprot->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPost", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::throw_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPost", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPost");
+
+  PostStorageService_ReadPost_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPost");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPost");
+  }
+
+  oprot->writeMessageBegin("ReadPost", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPost", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::process_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  PostStorageService_ReadPosts_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPosts", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPosts");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "PostStorageService.ReadPosts");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "PostStorageService.ReadPosts", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPosts");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (PostStorageServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return) =
+    &PostStorageServiceAsyncProcessor::return_ReadPosts;
+  void (PostStorageServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &PostStorageServiceAsyncProcessor::throw_ReadPosts;
+  iface_->ReadPosts(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.post_ids,
+      args.carrier);
+}
+
+void PostStorageServiceAsyncProcessor::return_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return)
+{
+  PostStorageService_ReadPosts_presult result;
+  result.success = const_cast<std::vector<Post> *>(&_return);
+  result.__isset.success = true;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPosts", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPosts");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPosts");
+  }
+
+  oprot->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPosts", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::throw_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.ReadPosts", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.ReadPosts");
+
+  PostStorageService_ReadPosts_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.ReadPosts");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "PostStorageService.ReadPosts");
+  }
+
+  oprot->writeMessageBegin("ReadPosts", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "PostStorageService.ReadPosts", bytes);
+  }
+  return cob(true);
+}
+
+void PostStorageServiceAsyncProcessor::process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  (void) seqid;
+  (void) oprot;
+  PostStorageService_Exit_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("PostStorageService.Exit", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "PostStorageService.Exit");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "PostStorageService.Exit");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "PostStorageService.Exit", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "PostStorageService.Exit");
+    }
+    return cob(false);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "PostStorageService.Exit");
+  }
+  freer.unregister();
+  iface_->Exit(::apache::thrift::stdcxx::bind(cob, true)
+);
+}
+
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > PostStorageServiceAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< PostStorageServiceCobSvIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > processor(new PostStorageServiceAsyncProcessor(handler));
+  return processor;
 }
 
 } // namespace

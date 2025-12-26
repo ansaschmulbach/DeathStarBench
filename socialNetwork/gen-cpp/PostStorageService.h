@@ -7,7 +7,13 @@
 #ifndef PostStorageService_H
 #define PostStorageService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -183,6 +189,7 @@ class PostStorageService_StorePost_presult {
   _PostStorageService_StorePost_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -309,6 +316,7 @@ class PostStorageService_ReadPost_presult {
   _PostStorageService_ReadPost_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -435,6 +443,7 @@ class PostStorageService_ReadPosts_presult {
   _PostStorageService_ReadPosts_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -650,6 +659,148 @@ class PostStorageServiceConcurrentClient : virtual public PostStorageServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class PostStorageServiceCobClient;
+
+class PostStorageServiceCobClIf {
+ public:
+  virtual ~PostStorageServiceCobClIf() {}
+  virtual void StorePost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadPost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadPosts(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob) = 0;
+};
+
+class PostStorageServiceCobSvIf {
+ public:
+  virtual ~PostStorageServiceCobSvIf() {}
+  virtual void StorePost(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadPost(::apache::thrift::stdcxx::function<void(Post const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void ReadPosts(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class PostStorageServiceCobSvIfFactory {
+ public:
+  typedef PostStorageServiceCobSvIf Handler;
+
+  virtual ~PostStorageServiceCobSvIfFactory() {}
+
+  virtual PostStorageServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(PostStorageServiceCobSvIf* /* handler */) = 0;
+};
+
+class PostStorageServiceCobSvIfSingletonFactory : virtual public PostStorageServiceCobSvIfFactory {
+ public:
+  PostStorageServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~PostStorageServiceCobSvIfSingletonFactory() {}
+
+  virtual PostStorageServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(PostStorageServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceCobSvIf> iface_;
+};
+
+class PostStorageServiceCobSvNull : virtual public PostStorageServiceCobSvIf {
+ public:
+  virtual ~PostStorageServiceCobSvNull() {}
+  void StorePost(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const Post& /* post */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void ReadPost(::apache::thrift::stdcxx::function<void(Post const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* post_id */, const std::map<std::string, std::string> & /* carrier */) {
+    Post _return;
+    return cob(_return);
+  }
+  void ReadPosts(::apache::thrift::stdcxx::function<void(std::vector<Post>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::vector<int64_t> & /* post_ids */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<Post>  _return;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class PostStorageServiceCobClient : virtual public PostStorageServiceCobClIf {
+ public:
+  PostStorageServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void StorePost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier);
+  void send_StorePost(const int64_t req_id, const Post& post, const std::map<std::string, std::string> & carrier);
+  void recv_StorePost();
+  void ReadPost(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier);
+  void send_ReadPost(const int64_t req_id, const int64_t post_id, const std::map<std::string, std::string> & carrier);
+  void recv_ReadPost(Post& _return);
+  void ReadPosts(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob, const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
+  void send_ReadPosts(const int64_t req_id, const std::vector<int64_t> & post_ids, const std::map<std::string, std::string> & carrier);
+  void recv_ReadPosts(std::vector<Post> & _return);
+  void Exit(::apache::thrift::stdcxx::function<void(PostStorageServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class PostStorageServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<PostStorageServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (PostStorageServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_StorePost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const Post& _return);
+  void throw_ReadPost(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return);
+  void throw_ReadPosts(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  PostStorageServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<PostStorageServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["StorePost"] = &PostStorageServiceAsyncProcessor::process_StorePost;
+    processMap_["ReadPost"] = &PostStorageServiceAsyncProcessor::process_ReadPost;
+    processMap_["ReadPosts"] = &PostStorageServiceAsyncProcessor::process_ReadPosts;
+    processMap_["Exit"] = &PostStorageServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~PostStorageServiceAsyncProcessor() {}
+};
+
+class PostStorageServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  PostStorageServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< PostStorageServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "UserTimelineService.h"
+#include "thrift/async/TAsyncChannel.h"
 
 namespace social_network {
 
@@ -70,17 +71,17 @@ uint32_t UserTimelineService_WriteUserTimeline_args::read(::apache::thrift::prot
         if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             this->carrier.clear();
-            uint32_t _size226;
-            ::apache::thrift::protocol::TType _ktype227;
-            ::apache::thrift::protocol::TType _vtype228;
-            xfer += iprot->readMapBegin(_ktype227, _vtype228, _size226);
-            uint32_t _i230;
-            for (_i230 = 0; _i230 < _size226; ++_i230)
+            uint32_t _size228;
+            ::apache::thrift::protocol::TType _ktype229;
+            ::apache::thrift::protocol::TType _vtype230;
+            xfer += iprot->readMapBegin(_ktype229, _vtype230, _size228);
+            uint32_t _i232;
+            for (_i232 = 0; _i232 < _size228; ++_i232)
             {
-              std::string _key231;
-              xfer += iprot->readString(_key231);
-              std::string& _val232 = this->carrier[_key231];
-              xfer += iprot->readString(_val232);
+              std::string _key233;
+              xfer += iprot->readString(_key233);
+              std::string& _val234 = this->carrier[_key233];
+              xfer += iprot->readString(_val234);
             }
             xfer += iprot->readMapEnd();
           }
@@ -125,11 +126,11 @@ uint32_t UserTimelineService_WriteUserTimeline_args::write(::apache::thrift::pro
   xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 5);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter233;
-    for (_iter233 = this->carrier.begin(); _iter233 != this->carrier.end(); ++_iter233)
+    std::map<std::string, std::string> ::const_iterator _iter235;
+    for (_iter235 = this->carrier.begin(); _iter235 != this->carrier.end(); ++_iter235)
     {
-      xfer += oprot->writeString(_iter233->first);
-      xfer += oprot->writeString(_iter233->second);
+      xfer += oprot->writeString(_iter235->first);
+      xfer += oprot->writeString(_iter235->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -169,11 +170,11 @@ uint32_t UserTimelineService_WriteUserTimeline_pargs::write(::apache::thrift::pr
   xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 5);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter234;
-    for (_iter234 = (*(this->carrier)).begin(); _iter234 != (*(this->carrier)).end(); ++_iter234)
+    std::map<std::string, std::string> ::const_iterator _iter236;
+    for (_iter236 = (*(this->carrier)).begin(); _iter236 != (*(this->carrier)).end(); ++_iter236)
     {
-      xfer += oprot->writeString(_iter234->first);
-      xfer += oprot->writeString(_iter234->second);
+      xfer += oprot->writeString(_iter236->first);
+      xfer += oprot->writeString(_iter236->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -292,6 +293,21 @@ uint32_t UserTimelineService_WriteUserTimeline_presult::read(::apache::thrift::p
   return xfer;
 }
 
+uint32_t UserTimelineService_WriteUserTimeline_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UserTimelineService_WriteUserTimeline_presult");
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 
 UserTimelineService_ReadUserTimeline_args::~UserTimelineService_ReadUserTimeline_args() throw() {
 }
@@ -354,17 +370,17 @@ uint32_t UserTimelineService_ReadUserTimeline_args::read(::apache::thrift::proto
         if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             this->carrier.clear();
-            uint32_t _size235;
-            ::apache::thrift::protocol::TType _ktype236;
-            ::apache::thrift::protocol::TType _vtype237;
-            xfer += iprot->readMapBegin(_ktype236, _vtype237, _size235);
-            uint32_t _i239;
-            for (_i239 = 0; _i239 < _size235; ++_i239)
+            uint32_t _size237;
+            ::apache::thrift::protocol::TType _ktype238;
+            ::apache::thrift::protocol::TType _vtype239;
+            xfer += iprot->readMapBegin(_ktype238, _vtype239, _size237);
+            uint32_t _i241;
+            for (_i241 = 0; _i241 < _size237; ++_i241)
             {
-              std::string _key240;
-              xfer += iprot->readString(_key240);
-              std::string& _val241 = this->carrier[_key240];
-              xfer += iprot->readString(_val241);
+              std::string _key242;
+              xfer += iprot->readString(_key242);
+              std::string& _val243 = this->carrier[_key242];
+              xfer += iprot->readString(_val243);
             }
             xfer += iprot->readMapEnd();
           }
@@ -409,11 +425,11 @@ uint32_t UserTimelineService_ReadUserTimeline_args::write(::apache::thrift::prot
   xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 5);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>(this->carrier.size()));
-    std::map<std::string, std::string> ::const_iterator _iter242;
-    for (_iter242 = this->carrier.begin(); _iter242 != this->carrier.end(); ++_iter242)
+    std::map<std::string, std::string> ::const_iterator _iter244;
+    for (_iter244 = this->carrier.begin(); _iter244 != this->carrier.end(); ++_iter244)
     {
-      xfer += oprot->writeString(_iter242->first);
-      xfer += oprot->writeString(_iter242->second);
+      xfer += oprot->writeString(_iter244->first);
+      xfer += oprot->writeString(_iter244->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -453,11 +469,11 @@ uint32_t UserTimelineService_ReadUserTimeline_pargs::write(::apache::thrift::pro
   xfer += oprot->writeFieldBegin("carrier", ::apache::thrift::protocol::T_MAP, 5);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, static_cast<uint32_t>((*(this->carrier)).size()));
-    std::map<std::string, std::string> ::const_iterator _iter243;
-    for (_iter243 = (*(this->carrier)).begin(); _iter243 != (*(this->carrier)).end(); ++_iter243)
+    std::map<std::string, std::string> ::const_iterator _iter245;
+    for (_iter245 = (*(this->carrier)).begin(); _iter245 != (*(this->carrier)).end(); ++_iter245)
     {
-      xfer += oprot->writeString(_iter243->first);
-      xfer += oprot->writeString(_iter243->second);
+      xfer += oprot->writeString(_iter245->first);
+      xfer += oprot->writeString(_iter245->second);
     }
     xfer += oprot->writeMapEnd();
   }
@@ -498,14 +514,14 @@ uint32_t UserTimelineService_ReadUserTimeline_result::read(::apache::thrift::pro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size244;
-            ::apache::thrift::protocol::TType _etype247;
-            xfer += iprot->readListBegin(_etype247, _size244);
-            this->success.resize(_size244);
-            uint32_t _i248;
-            for (_i248 = 0; _i248 < _size244; ++_i248)
+            uint32_t _size246;
+            ::apache::thrift::protocol::TType _etype249;
+            xfer += iprot->readListBegin(_etype249, _size246);
+            this->success.resize(_size246);
+            uint32_t _i250;
+            for (_i250 = 0; _i250 < _size246; ++_i250)
             {
-              xfer += this->success[_i248].read(iprot);
+              xfer += this->success[_i250].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -544,10 +560,10 @@ uint32_t UserTimelineService_ReadUserTimeline_result::write(::apache::thrift::pr
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->success.size()));
-      std::vector<Post> ::const_iterator _iter249;
-      for (_iter249 = this->success.begin(); _iter249 != this->success.end(); ++_iter249)
+      std::vector<Post> ::const_iterator _iter251;
+      for (_iter251 = this->success.begin(); _iter251 != this->success.end(); ++_iter251)
       {
-        xfer += (*_iter249).write(oprot);
+        xfer += (*_iter251).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -592,14 +608,14 @@ uint32_t UserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::pr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size250;
-            ::apache::thrift::protocol::TType _etype253;
-            xfer += iprot->readListBegin(_etype253, _size250);
-            (*(this->success)).resize(_size250);
-            uint32_t _i254;
-            for (_i254 = 0; _i254 < _size250; ++_i254)
+            uint32_t _size252;
+            ::apache::thrift::protocol::TType _etype255;
+            xfer += iprot->readListBegin(_etype255, _size252);
+            (*(this->success)).resize(_size252);
+            uint32_t _i256;
+            for (_i256 = 0; _i256 < _size252; ++_i256)
             {
-              xfer += (*(this->success))[_i254].read(iprot);
+              xfer += (*(this->success))[_i256].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -625,6 +641,33 @@ uint32_t UserTimelineService_ReadUserTimeline_presult::read(::apache::thrift::pr
 
   xfer += iprot->readStructEnd();
 
+  return xfer;
+}
+
+uint32_t UserTimelineService_ReadUserTimeline_presult::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("UserTimelineService_ReadUserTimeline_presult");
+
+  xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>((*(this->success)).size()));
+    std::vector<Post> ::const_iterator _iter257;
+    for (_iter257 = (*(this->success)).begin(); _iter257 != (*(this->success)).end(); ++_iter257)
+    {
+      xfer += (*_iter257).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  if (this->__isset.se) {
+    xfer += oprot->writeFieldBegin("se", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->se.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
   return xfer;
 }
 
@@ -1202,6 +1245,475 @@ void UserTimelineServiceConcurrentClient::send_Exit()
   oprot_->getTransport()->flush();
 
   sentry.commit();
+}
+
+void UserTimelineServiceCobClient::WriteUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier)
+{
+  send_WriteUserTimeline(req_id, post_id, user_id, timestamp, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void UserTimelineServiceCobClient::send_WriteUserTimeline(const int64_t req_id, const int64_t post_id, const int64_t user_id, const int64_t timestamp, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  UserTimelineService_WriteUserTimeline_pargs args;
+  args.req_id = &req_id;
+  args.post_id = &post_id;
+  args.user_id = &user_id;
+  args.timestamp = &timestamp;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void UserTimelineServiceCobClient::recv_WriteUserTimeline()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("WriteUserTimeline") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    UserTimelineService_WriteUserTimeline_presult result;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    return;
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void UserTimelineServiceCobClient::ReadUserTimeline(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier)
+{
+  send_ReadUserTimeline(req_id, user_id, start, stop, carrier);
+  channel_->sendAndRecvMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get(), itrans_.get());
+}
+
+void UserTimelineServiceCobClient::send_ReadUserTimeline(const int64_t req_id, const int64_t user_id, const int32_t start, const int32_t stop, const std::map<std::string, std::string> & carrier)
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  UserTimelineService_ReadUserTimeline_pargs args;
+  args.req_id = &req_id;
+  args.user_id = &user_id;
+  args.start = &start;
+  args.stop = &stop;
+  args.carrier = &carrier;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void UserTimelineServiceCobClient::recv_ReadUserTimeline(std::vector<Post> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+  bool completed = false;
+
+  try {
+    iprot_->readMessageBegin(fname, mtype, rseqid);
+    if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+      ::apache::thrift::TApplicationException x;
+      x.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(true);
+      throw x;
+    }
+    if (mtype != ::apache::thrift::protocol::T_REPLY) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    if (fname.compare("ReadUserTimeline") != 0) {
+      iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+      completed = true;
+      completed__(false);
+    }
+    UserTimelineService_ReadUserTimeline_presult result;
+    result.success = &_return;
+    result.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+
+    if (result.__isset.success) {
+      // _return pointer has now been filled
+      completed = true;
+      completed__(true);
+      return;
+    }
+    if (result.__isset.se) {
+      completed = true;
+      completed__(true);
+      throw result.se;
+    }
+    completed = true;
+    completed__(true);
+    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "ReadUserTimeline failed: unknown result");
+  } catch (...) {
+    if (!completed) {
+      completed__(false);
+    }
+    throw;
+  }
+}
+
+void UserTimelineServiceCobClient::Exit(::apache::thrift::stdcxx::function<void(UserTimelineServiceCobClient* client)> cob)
+{
+  send_Exit();
+  channel_->sendMessage(::apache::thrift::stdcxx::bind(cob, this), otrans_.get());
+}
+
+void UserTimelineServiceCobClient::send_Exit()
+{
+  int32_t cseqid = 0;
+  otrans_->resetBuffer();
+  oprot_->writeMessageBegin("Exit", ::apache::thrift::protocol::T_ONEWAY, cseqid);
+
+  UserTimelineService_Exit_pargs args;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void UserTimelineServiceAsyncProcessor::dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid) {
+  ProcessMap::iterator pfn;
+  pfn = processMap_.find(fname);
+  if (pfn == processMap_.end()) {
+    iprot->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot->readMessageEnd();
+    iprot->getTransport()->readEnd();
+    ::apache::thrift::TApplicationException x(::apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
+    oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  (this->*(pfn->second))(cob, seqid, iprot, oprot);
+  return;
+}
+
+void UserTimelineServiceAsyncProcessor::process_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  UserTimelineService_WriteUserTimeline_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.WriteUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.WriteUserTimeline");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "UserTimelineService.WriteUserTimeline");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "UserTimelineService.WriteUserTimeline", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserTimelineService.WriteUserTimeline");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (UserTimelineServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx) =
+    &UserTimelineServiceAsyncProcessor::return_WriteUserTimeline;
+  void (UserTimelineServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &UserTimelineServiceAsyncProcessor::throw_WriteUserTimeline;
+  iface_->WriteUserTimeline(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.post_id,
+      args.user_id,
+      args.timestamp,
+      args.carrier);
+}
+
+void UserTimelineServiceAsyncProcessor::return_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx)
+{
+  UserTimelineService_WriteUserTimeline_presult result;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.WriteUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.WriteUserTimeline");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UserTimelineService.WriteUserTimeline");
+  }
+
+  oprot->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UserTimelineService.WriteUserTimeline", bytes);
+  }
+  return cob(true);
+}
+
+void UserTimelineServiceAsyncProcessor::throw_WriteUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.WriteUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.WriteUserTimeline");
+
+  UserTimelineService_WriteUserTimeline_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserTimelineService.WriteUserTimeline");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UserTimelineService.WriteUserTimeline");
+  }
+
+  oprot->writeMessageBegin("WriteUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UserTimelineService.WriteUserTimeline", bytes);
+  }
+  return cob(true);
+}
+
+void UserTimelineServiceAsyncProcessor::process_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  UserTimelineService_ReadUserTimeline_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.ReadUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.ReadUserTimeline");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "UserTimelineService.ReadUserTimeline");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "UserTimelineService.ReadUserTimeline", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserTimelineService.ReadUserTimeline");
+    }
+    return cob(false);
+  }
+  freer.unregister();
+  void (UserTimelineServiceAsyncProcessor::*return_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return) =
+    &UserTimelineServiceAsyncProcessor::return_ReadUserTimeline;
+  void (UserTimelineServiceAsyncProcessor::*throw_fn)(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw) =
+    &UserTimelineServiceAsyncProcessor::throw_ReadUserTimeline;
+  iface_->ReadUserTimeline(
+      ::apache::thrift::stdcxx::bind(return_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      ::apache::thrift::stdcxx::bind(throw_fn, this, cob, seqid, oprot, ctx, ::apache::thrift::stdcxx::placeholders::_1),
+      args.req_id,
+      args.user_id,
+      args.start,
+      args.stop,
+      args.carrier);
+}
+
+void UserTimelineServiceAsyncProcessor::return_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<Post> & _return)
+{
+  UserTimelineService_ReadUserTimeline_presult result;
+  result.success = const_cast<std::vector<Post> *>(&_return);
+  result.__isset.success = true;
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.ReadUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.ReadUserTimeline");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UserTimelineService.ReadUserTimeline");
+  }
+
+  oprot->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UserTimelineService.ReadUserTimeline", bytes);
+  }
+  return cob(true);
+}
+
+void UserTimelineServiceAsyncProcessor::throw_ReadUserTimeline(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw)
+{
+
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.ReadUserTimeline", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.ReadUserTimeline");
+
+  UserTimelineService_ReadUserTimeline_result result;
+
+  try {
+    _throw->throw_it();
+    return cob(false);
+  }  catch (ServiceException &se) {
+    result.se = se;
+    result.__isset.se = true;
+  }
+ catch (std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserTimelineService.ReadUserTimeline");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return cob(true);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "UserTimelineService.ReadUserTimeline");
+  }
+
+  oprot->writeMessageBegin("ReadUserTimeline", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  uint32_t bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "UserTimelineService.ReadUserTimeline", bytes);
+  }
+  return cob(true);
+}
+
+void UserTimelineServiceAsyncProcessor::process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+{
+  (void) seqid;
+  (void) oprot;
+  UserTimelineService_Exit_args args;
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("UserTimelineService.Exit", NULL);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "UserTimelineService.Exit");
+
+  try {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->preRead(ctx, "UserTimelineService.Exit");
+    }
+    args.read(iprot);
+    iprot->readMessageEnd();
+    uint32_t bytes = iprot->getTransport()->readEnd();
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->postRead(ctx, "UserTimelineService.Exit", bytes);
+    }
+  }
+  catch (const std::exception&) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "UserTimelineService.Exit");
+    }
+    return cob(false);
+  }
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->asyncComplete(ctx, "UserTimelineService.Exit");
+  }
+  freer.unregister();
+  iface_->Exit(::apache::thrift::stdcxx::bind(cob, true)
+);
+}
+
+::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > UserTimelineServiceAsyncProcessorFactory::getProcessor(const ::apache::thrift::TConnectionInfo& connInfo) {
+  ::apache::thrift::ReleaseHandler< UserTimelineServiceCobSvIfFactory > cleanup(handlerFactory_);
+  ::apache::thrift::stdcxx::shared_ptr< UserTimelineServiceCobSvIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > processor(new UserTimelineServiceAsyncProcessor(handler));
+  return processor;
 }
 
 } // namespace

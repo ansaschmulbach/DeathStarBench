@@ -7,7 +7,13 @@
 #ifndef SocialGraphService_H
 #define SocialGraphService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -207,6 +213,7 @@ class SocialGraphService_GetFollowers_presult {
   _SocialGraphService_GetFollowers_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -333,6 +340,7 @@ class SocialGraphService_GetFollowees_presult {
   _SocialGraphService_GetFollowees_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -458,6 +466,7 @@ class SocialGraphService_Follow_presult {
   _SocialGraphService_Follow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -583,6 +592,7 @@ class SocialGraphService_Unfollow_presult {
   _SocialGraphService_Unfollow_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -708,6 +718,7 @@ class SocialGraphService_FollowWithUsername_presult {
   _SocialGraphService_FollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -833,6 +844,7 @@ class SocialGraphService_UnfollowWithUsername_presult {
   _SocialGraphService_UnfollowWithUsername_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -951,6 +963,7 @@ class SocialGraphService_InsertUser_presult {
   _SocialGraphService_InsertUser_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -1234,6 +1247,196 @@ class SocialGraphServiceConcurrentClient : virtual public SocialGraphServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class SocialGraphServiceCobClient;
+
+class SocialGraphServiceCobClIf {
+ public:
+  virtual ~SocialGraphServiceCobClIf() {}
+  virtual void GetFollowers(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetFollowees(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Follow(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Unfollow(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void FollowWithUsername(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void UnfollowWithUsername(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void InsertUser(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob) = 0;
+};
+
+class SocialGraphServiceCobSvIf {
+ public:
+  virtual ~SocialGraphServiceCobSvIf() {}
+  virtual void GetFollowers(::apache::thrift::stdcxx::function<void(std::vector<int64_t>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void GetFollowees(::apache::thrift::stdcxx::function<void(std::vector<int64_t>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Follow(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Unfollow(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void FollowWithUsername(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void UnfollowWithUsername(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void InsertUser(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class SocialGraphServiceCobSvIfFactory {
+ public:
+  typedef SocialGraphServiceCobSvIf Handler;
+
+  virtual ~SocialGraphServiceCobSvIfFactory() {}
+
+  virtual SocialGraphServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(SocialGraphServiceCobSvIf* /* handler */) = 0;
+};
+
+class SocialGraphServiceCobSvIfSingletonFactory : virtual public SocialGraphServiceCobSvIfFactory {
+ public:
+  SocialGraphServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<SocialGraphServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~SocialGraphServiceCobSvIfSingletonFactory() {}
+
+  virtual SocialGraphServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(SocialGraphServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<SocialGraphServiceCobSvIf> iface_;
+};
+
+class SocialGraphServiceCobSvNull : virtual public SocialGraphServiceCobSvIf {
+ public:
+  virtual ~SocialGraphServiceCobSvNull() {}
+  void GetFollowers(::apache::thrift::stdcxx::function<void(std::vector<int64_t>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<int64_t>  _return;
+    return cob(_return);
+  }
+  void GetFollowees(::apache::thrift::stdcxx::function<void(std::vector<int64_t>  const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const std::map<std::string, std::string> & /* carrier */) {
+    std::vector<int64_t>  _return;
+    return cob(_return);
+  }
+  void Follow(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void Unfollow(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const int64_t /* followee_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void FollowWithUsername(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void UnfollowWithUsername(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const std::string& /* user_usernmae */, const std::string& /* followee_username */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void InsertUser(::apache::thrift::stdcxx::function<void()> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const int64_t /* user_id */, const std::map<std::string, std::string> & /* carrier */) {
+    return cob();
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class SocialGraphServiceCobClient : virtual public SocialGraphServiceCobClIf {
+ public:
+  SocialGraphServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void GetFollowers(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void send_GetFollowers(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void recv_GetFollowers(std::vector<int64_t> & _return);
+  void GetFollowees(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void send_GetFollowees(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void recv_GetFollowees(std::vector<int64_t> & _return);
+  void Follow(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier);
+  void send_Follow(const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier);
+  void recv_Follow();
+  void Unfollow(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier);
+  void send_Unfollow(const int64_t req_id, const int64_t user_id, const int64_t followee_id, const std::map<std::string, std::string> & carrier);
+  void recv_Unfollow();
+  void FollowWithUsername(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier);
+  void send_FollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier);
+  void recv_FollowWithUsername();
+  void UnfollowWithUsername(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier);
+  void send_UnfollowWithUsername(const int64_t req_id, const std::string& user_usernmae, const std::string& followee_username, const std::map<std::string, std::string> & carrier);
+  void recv_UnfollowWithUsername();
+  void InsertUser(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob, const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void send_InsertUser(const int64_t req_id, const int64_t user_id, const std::map<std::string, std::string> & carrier);
+  void recv_InsertUser();
+  void Exit(::apache::thrift::stdcxx::function<void(SocialGraphServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class SocialGraphServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<SocialGraphServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (SocialGraphServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_GetFollowers(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_GetFollowers(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<int64_t> & _return);
+  void throw_GetFollowers(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_GetFollowees(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_GetFollowees(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const std::vector<int64_t> & _return);
+  void throw_GetFollowees(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Follow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Follow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Follow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Unfollow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Unfollow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Unfollow(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_FollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_FollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_FollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_UnfollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_UnfollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_UnfollowWithUsername(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_InsertUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_InsertUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_InsertUser(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  SocialGraphServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<SocialGraphServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["GetFollowers"] = &SocialGraphServiceAsyncProcessor::process_GetFollowers;
+    processMap_["GetFollowees"] = &SocialGraphServiceAsyncProcessor::process_GetFollowees;
+    processMap_["Follow"] = &SocialGraphServiceAsyncProcessor::process_Follow;
+    processMap_["Unfollow"] = &SocialGraphServiceAsyncProcessor::process_Unfollow;
+    processMap_["FollowWithUsername"] = &SocialGraphServiceAsyncProcessor::process_FollowWithUsername;
+    processMap_["UnfollowWithUsername"] = &SocialGraphServiceAsyncProcessor::process_UnfollowWithUsername;
+    processMap_["InsertUser"] = &SocialGraphServiceAsyncProcessor::process_InsertUser;
+    processMap_["Exit"] = &SocialGraphServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~SocialGraphServiceAsyncProcessor() {}
+};
+
+class SocialGraphServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  SocialGraphServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< SocialGraphServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< SocialGraphServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER

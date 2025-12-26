@@ -7,7 +7,13 @@
 #ifndef UniqueIdService_H
 #define UniqueIdService_H
 
+#include <thrift/transport/TBufferTransports.h>
+#include <thrift/stdcxx.h>
+namespace apache { namespace thrift { namespace async {
+class TAsyncChannel;
+}}}
 #include <thrift/TDispatchProcessor.h>
+#include <thrift/async/TAsyncDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
 #include "social_network_types.h"
 
@@ -184,6 +190,7 @@ class UniqueIdService_ComposeUniqueId_presult {
   _UniqueIdService_ComposeUniqueId_presult__isset __isset;
 
   uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
 };
 
@@ -363,6 +370,123 @@ class UniqueIdServiceConcurrentClient : virtual public UniqueIdServiceIf {
   ::apache::thrift::protocol::TProtocol* iprot_;
   ::apache::thrift::protocol::TProtocol* oprot_;
   ::apache::thrift::async::TConcurrentClientSyncInfo sync_;
+};
+
+class UniqueIdServiceCobClient;
+
+class UniqueIdServiceCobClIf {
+ public:
+  virtual ~UniqueIdServiceCobClIf() {}
+  virtual void ComposeUniqueId(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob, const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob) = 0;
+};
+
+class UniqueIdServiceCobSvIf {
+ public:
+  virtual ~UniqueIdServiceCobSvIf() {}
+  virtual void ComposeUniqueId(::apache::thrift::stdcxx::function<void(int64_t const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier) = 0;
+  virtual void Exit(::apache::thrift::stdcxx::function<void()> cob) = 0;
+};
+
+class UniqueIdServiceCobSvIfFactory {
+ public:
+  typedef UniqueIdServiceCobSvIf Handler;
+
+  virtual ~UniqueIdServiceCobSvIfFactory() {}
+
+  virtual UniqueIdServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo& connInfo) = 0;
+  virtual void releaseHandler(UniqueIdServiceCobSvIf* /* handler */) = 0;
+};
+
+class UniqueIdServiceCobSvIfSingletonFactory : virtual public UniqueIdServiceCobSvIfFactory {
+ public:
+  UniqueIdServiceCobSvIfSingletonFactory(const ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceCobSvIf>& iface) : iface_(iface) {}
+  virtual ~UniqueIdServiceCobSvIfSingletonFactory() {}
+
+  virtual UniqueIdServiceCobSvIf* getHandler(const ::apache::thrift::TConnectionInfo&) {
+    return iface_.get();
+  }
+  virtual void releaseHandler(UniqueIdServiceCobSvIf* /* handler */) {}
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceCobSvIf> iface_;
+};
+
+class UniqueIdServiceCobSvNull : virtual public UniqueIdServiceCobSvIf {
+ public:
+  virtual ~UniqueIdServiceCobSvNull() {}
+  void ComposeUniqueId(::apache::thrift::stdcxx::function<void(int64_t const& _return)> cob, ::apache::thrift::stdcxx::function<void(::apache::thrift::TDelayedException* _throw)> /* exn_cob */, const int64_t /* req_id */, const PostType::type /* post_type */, const std::map<std::string, std::string> & /* carrier */) {
+    int64_t _return = 0;
+    return cob(_return);
+  }
+  void Exit(::apache::thrift::stdcxx::function<void()> cob) {
+    return cob();
+  }
+};
+
+class UniqueIdServiceCobClient : virtual public UniqueIdServiceCobClIf {
+ public:
+  UniqueIdServiceCobClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel, ::apache::thrift::protocol::TProtocolFactory* protocolFactory) :
+    channel_(channel),
+    itrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    otrans_(new ::apache::thrift::transport::TMemoryBuffer()),
+    piprot_(protocolFactory->getProtocol(itrans_)),
+    poprot_(protocolFactory->getProtocol(otrans_)) {
+    iprot_ = piprot_.get();
+    oprot_ = poprot_.get();
+  }
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> getChannel() {
+    return channel_;
+  }
+  virtual void completed__(bool /* success */) {}
+  void ComposeUniqueId(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob, const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  void send_ComposeUniqueId(const int64_t req_id, const PostType::type post_type, const std::map<std::string, std::string> & carrier);
+  int64_t recv_ComposeUniqueId();
+  void Exit(::apache::thrift::stdcxx::function<void(UniqueIdServiceCobClient* client)> cob);
+  void send_Exit();
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncChannel> channel_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> itrans_;
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::transport::TMemoryBuffer> otrans_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
+  apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
+  ::apache::thrift::protocol::TProtocol* iprot_;
+  ::apache::thrift::protocol::TProtocol* oprot_;
+};
+
+class UniqueIdServiceAsyncProcessor : public ::apache::thrift::async::TAsyncDispatchProcessor {
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceCobSvIf> iface_;
+  virtual void dispatchCall(::apache::thrift::stdcxx::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid);
+ private:
+  typedef  void (UniqueIdServiceAsyncProcessor::*ProcessFunction)(::apache::thrift::stdcxx::function<void(bool ok)>, int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*);
+  typedef std::map<std::string, ProcessFunction> ProcessMap;
+  ProcessMap processMap_;
+  void process_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, const int64_t& _return);
+  void throw_ComposeUniqueId(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+  void process_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot);
+  void return_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx);
+  void throw_Exit(::apache::thrift::stdcxx::function<void(bool ok)> cob, int32_t seqid, ::apache::thrift::protocol::TProtocol* oprot, void* ctx, ::apache::thrift::TDelayedException* _throw);
+ public:
+  UniqueIdServiceAsyncProcessor(::apache::thrift::stdcxx::shared_ptr<UniqueIdServiceCobSvIf> iface) :
+    iface_(iface) {
+    processMap_["ComposeUniqueId"] = &UniqueIdServiceAsyncProcessor::process_ComposeUniqueId;
+    processMap_["Exit"] = &UniqueIdServiceAsyncProcessor::process_Exit;
+  }
+
+  virtual ~UniqueIdServiceAsyncProcessor() {}
+};
+
+class UniqueIdServiceAsyncProcessorFactory : public ::apache::thrift::async::TAsyncProcessorFactory {
+ public:
+  UniqueIdServiceAsyncProcessorFactory(const ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceCobSvIfFactory >& handlerFactory) :
+      handlerFactory_(handlerFactory) {}
+
+  ::apache::thrift::stdcxx::shared_ptr< ::apache::thrift::async::TAsyncProcessor > getProcessor(const ::apache::thrift::TConnectionInfo& connInfo);
+
+ protected:
+  ::apache::thrift::stdcxx::shared_ptr< UniqueIdServiceCobSvIfFactory > handlerFactory_;
 };
 
 #ifdef _MSC_VER
