@@ -1,4 +1,6 @@
 #include <signal.h>
+#include <thrift/async/TAsyncProtocolProcessor.h>
+#include <thrift/async/TEvhttpServer.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/server/TThreadedServer.h>
@@ -15,6 +17,9 @@
 #include "../utils_thrift.h"
 #include "HomeTimelineHandler.h"
 
+using apache::thrift::async::TAsyncBufferProcessor;
+using apache::thrift::async::TAsyncProtocolProcessor;
+using apache::thrift::async::TEvhttpServer;
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::server::TSimpleServer;
 using apache::thrift::server::TThreadedServer;
@@ -98,23 +103,23 @@ int main(int argc, char *argv[]) {
       social_graph_conns, social_graph_timeout, social_graph_keepalive,
       config_json);
 
-  std::shared_ptr<TServerSocket> server_socket =
-      get_server_socket(config_json, "localhost", port);
-
   if (redis_replica_config_flag) {
     Redis redis_replica_client_pool =
         init_redis_replica_client_pool(config_json, "redis-replica");
     Redis redis_primary_client_pool =
         init_redis_replica_client_pool(config_json, "redis-primary");
 
-    TThreadedServer server(
-        std::make_shared<HomeTimelineServiceProcessor>(
-            std::make_shared<HomeTimelineHandler>(
+    std::shared_ptr<apache::thrift::async::TAsyncProcessor> processorAsync =
+        std::make_shared<HomeTimelineServiceAsyncProcessor>(
+            std::make_shared<HomeTimelineServiceAsyncHandler>(
                 &redis_replica_client_pool, &redis_primary_client_pool,
-                &post_storage_client_pool, &social_graph_client_pool)),
-        server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+                &post_storage_client_pool, &social_graph_client_pool));
 
+    std::shared_ptr<apache::thrift::async::TAsyncBufferProcessor>
+        bufferProcessor(new TAsyncProtocolProcessor(
+            processorAsync, std::make_shared<TBinaryProtocolFactory>()));
+
+    TEvhttpServer server(bufferProcessor, port);
     LOG(info) << "Starting the home-timeline-service server with replicated "
                  "Redis support...";
     server.serve();
@@ -124,13 +129,18 @@ int main(int argc, char *argv[]) {
   else if (redis_cluster_flag || redis_cluster_config_flag) {
     RedisCluster redis_cluster_client_pool =
         init_redis_cluster_client_pool(config_json, "home-timeline");
-    TThreadedServer server(
-        std::make_shared<HomeTimelineServiceProcessor>(
-            std::make_shared<HomeTimelineHandler>(&redis_cluster_client_pool,
-                                                  &post_storage_client_pool,
-                                                  &social_graph_client_pool)),
-        server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+
+    std::shared_ptr<apache::thrift::async::TAsyncProcessor> processorAsync =
+        std::make_shared<HomeTimelineServiceAsyncProcessor>(
+            std::make_shared<HomeTimelineServiceAsyncHandler>(
+                &redis_cluster_client_pool, &post_storage_client_pool,
+                &social_graph_client_pool));
+
+    std::shared_ptr<apache::thrift::async::TAsyncBufferProcessor>
+        bufferProcessor(new TAsyncProtocolProcessor(
+            processorAsync, std::make_shared<TBinaryProtocolFactory>()));
+
+    TEvhttpServer server(bufferProcessor, port);
 
     LOG(info) << "Starting the home-timeline-service server with Redis Cluster "
                  "support...";
@@ -138,13 +148,18 @@ int main(int argc, char *argv[]) {
   } else {
     Redis redis_client_pool =
         init_redis_client_pool(config_json, "home-timeline");
-    TThreadedServer server(
-        std::make_shared<HomeTimelineServiceProcessor>(
-            std::make_shared<HomeTimelineHandler>(&redis_client_pool,
-                                                  &post_storage_client_pool,
-                                                  &social_graph_client_pool)),
-        server_socket, std::make_shared<TFramedTransportFactory>(),
-        std::make_shared<TBinaryProtocolFactory>());
+
+    std::shared_ptr<apache::thrift::async::TAsyncProcessor> processorAsync =
+        std::make_shared<HomeTimelineServiceAsyncProcessor>(
+            std::make_shared<HomeTimelineServiceAsyncHandler>(
+                &redis_client_pool, &post_storage_client_pool,
+                &social_graph_client_pool));
+
+    std::shared_ptr<apache::thrift::async::TAsyncBufferProcessor>
+        bufferProcessor(new TAsyncProtocolProcessor(
+            processorAsync, std::make_shared<TBinaryProtocolFactory>()));
+
+    TEvhttpServer server(bufferProcessor, port);
 
     LOG(info) << "Starting the home-timeline-service server...";
     server.serve();

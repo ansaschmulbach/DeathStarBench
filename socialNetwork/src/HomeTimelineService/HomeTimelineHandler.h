@@ -350,7 +350,26 @@ public:
         redis_pool, post_client_pool, social_graph_client_pool));
     // Your initialization goes here
   }
-  virtual ~HomeTimelineServiceAsyncHandler();
+
+  HomeTimelineServiceAsyncHandler(
+      Redis *redis_pool, Redis *redis_pool2,
+      ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool,
+      ClientPool<ThriftClient<SocialGraphServiceClient>>
+          *social_graph_client_pool) {
+    syncHandler_ = std::auto_ptr<HomeTimelineHandler>(new HomeTimelineHandler(
+        redis_pool, redis_pool2, post_client_pool, social_graph_client_pool));
+    // Your initialization goes here
+  }
+
+  HomeTimelineServiceAsyncHandler(
+      RedisCluster *redis_cluster,
+      ClientPool<ThriftClient<PostStorageServiceClient>> *post_client_pool,
+      ClientPool<ThriftClient<SocialGraphServiceClient>>
+          *social_graph_client_pool) {
+    syncHandler_ = std::auto_ptr<HomeTimelineHandler>(new HomeTimelineHandler(
+        redis_cluster, post_client_pool, social_graph_client_pool));
+    // Your initialization goes here
+  }
 
   void ReadHomeTimeline(
       ::apache::thrift::stdcxx::function<void(std::vector<Post> const &_return)>

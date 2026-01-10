@@ -1,6 +1,8 @@
 #include <signal.h>
 #include <thrift/protocol/TBinaryProtocol.h>
 // #include <thrift/server/TSimpleServer.h>
+#include <thrift/async/TAsyncProtocolProcessor.h>
+#include <thrift/async/TEvhttpServer.h>
 #include <thrift/server/TSimpleServer.h>
 #include <thrift/server/TThreadedServer.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -13,6 +15,9 @@
 #include "../utils_thrift.h"
 #include "ComposePostHandler.h"
 
+using apache::thrift::async::TAsyncBufferProcessor;
+using apache::thrift::async::TAsyncProtocolProcessor;
+using apache::thrift::async::TEvhttpServer;
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::server::TSimpleServer;
 using apache::thrift::server::TThreadedServer;
@@ -82,10 +87,11 @@ int main(int argc, char *argv[]) {
   int unique_id_timeout = config_json["unique-id-service"]["timeout_ms"];
   int unique_id_keepalive = config_json["unique-id-service"]["keepalive_ms"];
 
-  ClientPool<ThriftClient<PostStorageServiceClient>> post_storage_client_pool(
-      "post-storage-client", post_storage_addr, post_storage_port, 0,
-      post_storage_conns, post_storage_timeout, post_storage_keepalive,
-      config_json);
+  ClientPool<ThriftClient<PostStorageServiceCobClient>>
+      post_storage_client_pool("post-storage-client", post_storage_addr,
+                               post_storage_port, 0, post_storage_conns,
+                               post_storage_timeout, post_storage_keepalive,
+                               config_json);
   ClientPool<ThriftClient<UserTimelineServiceClient>> user_timeline_client_pool(
       "user-timeline-client", user_timeline_addr, user_timeline_port, 0,
       user_timeline_conns, user_timeline_timeout, user_timeline_keepalive,
@@ -107,20 +113,25 @@ int main(int argc, char *argv[]) {
       "unique-id-service-client", unique_id_addr, unique_id_port, 0,
       unique_id_conns, unique_id_timeout, unique_id_keepalive, config_json);
 
-  std::shared_ptr<TServerSocket> server_socket =
-      get_server_socket(config_json, "0.0.0.0", port);
+  // std::shared_ptr<TServerSocket> server_socket =
+  //     get_server_socket(config_json, "0.0.0.0", port);
   // std::shared_ptr<TServerSocket> server_socket =
   // std::make_shared<TServerSocket>("0.0.0.0", port);
   //  auto server_transport =
   //  std::make_shared<SocketServerTransport>(TCP_SOCKET, "localhost", port);
-  TThreadedServer server(
+
+  std::shared_ptr<apache::thrift::async::TAsyncProcessor> processorAsync =
       std::make_shared<ComposePostServiceAsyncProcessor>(
           std::make_shared<ComposePostServiceAsyncHandler>(
               &post_storage_client_pool, &user_timeline_client_pool,
               &user_client_pool, &unique_id_client_pool, &media_client_pool,
-              &text_client_pool, &home_timeline_client_pool)),
-      server_socket, std::make_shared<TFramedTransportFactory>(),
-      std::make_shared<TBinaryProtocolFactory>());
+              &text_client_pool, &home_timeline_client_pool));
+
+  std::shared_ptr<apache::thrift::async::TAsyncBufferProcessor> bufferProcessor(
+      new TAsyncProtocolProcessor(processorAsync,
+                                  std::make_shared<TBinaryProtocolFactory>()));
+
+  TEvhttpServer server(bufferProcessor, port);
 
   // TSimpleServer server(
   //     std::make_shared<ComposePostAsyncServiceProcessor>(

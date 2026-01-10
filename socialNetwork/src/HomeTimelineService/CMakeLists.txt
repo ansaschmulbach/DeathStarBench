@@ -17,7 +17,7 @@ target_include_directories(
 target_link_libraries(
     HomeTimelineService
     nlohmann_json::nlohmann_json
-    ${THRIFT_LIB}
+    ${THRIFT_LIBS}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     Boost::log

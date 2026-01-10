@@ -31,7 +31,7 @@ using std::chrono::system_clock;
 
 class ComposePostHandler : public ComposePostServiceIf {
 public:
-  ComposePostHandler(ClientPool<ThriftClient<PostStorageServiceClient>> *,
+  ComposePostHandler(ClientPool<ThriftClient<PostStorageServiceCobClient>> *,
                      ClientPool<ThriftClient<UserTimelineServiceClient>> *,
                      ClientPool<ThriftClient<UserServiceClient>> *,
                      ClientPool<ThriftClient<UniqueIdServiceClient>> *,
@@ -580,9 +580,7 @@ public:
         user_service_client_pool, unique_id_service_client_pool,
         media_service_client_pool, text_service_client_pool,
         home_timeline_client_pool));
-    // Your initialization goes here
   }
-  virtual ~ComposePostServiceAsyncHandler();
 
   void ComposePost(
       ::apache::thrift::stdcxx::function<void()> cob,
