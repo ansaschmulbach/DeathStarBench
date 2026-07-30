@@ -19,7 +19,6 @@
 
 #include "../utils.h"
 #include "../utils_thrift.h"
-#include "../tcpflow_file_server.h"
 #include "UniqueIdHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
@@ -35,14 +34,12 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   MaybeJoinGhostEnclave();
   init_logger();
-  SetUpTracer("config/jaeger-config.yml", "unique-id-service");
 
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
-  int port = config_json["unique-id-service"]["port"];
   std::string netif = config_json["unique-id-service"]["netif"];
 
   std::string machine_id = GetMachineId(netif);
@@ -53,17 +50,26 @@ int main(int argc, char *argv[]) {
 
   std::mutex thread_lock;
 
+  const char *trace_file_env = std::getenv("TRACE_FILE");
+  std::string trace_file = trace_file_env ? trace_file_env : "trace-unique-id-service";
+
+	auto _transportIn = openFileTransport(trace_file.c_str(), false);
+	if (!_transportIn) {
+		LOG(error) << "could not open input trace file " << trace_file;
+		exit(EXIT_FAILURE);
+	}
+  std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
+
 	auto _transportOut = openFileTransport("out-unique-id-service", true);
 	if (!_transportOut) {
 		LOG(error) << "could not open output trace file";
 	}
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
-	std::string reportFilename = "/social-network-microservices/report.xml";
 
-  TcpDumpFileServer server(
+  TFileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-			port, reportFilename, _transportOut, _protocolOut
+			_transportIn, _protocolIn, _transportOut, _protocolOut
 		  );
 
   LOG(info) << "Starting the unique-id-service server ...";

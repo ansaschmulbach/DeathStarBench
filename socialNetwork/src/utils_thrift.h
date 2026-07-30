@@ -5,6 +5,8 @@
 #include <cstring>
 #include <fcntl.h>
 #include <cstddef>
+#include <cstdlib>
+#include <sched.h>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <thrift/transport/TServerSocket.h>
@@ -77,16 +79,15 @@ public:
 			 protocolOut(protocolOut)
 			 	{ }
 	void serve() {
-		bool print = true;
+		static const bool skip_yield = std::getenv("GHOST_SKIP_YIELD") != nullptr;
 		for (;;) {
 				try {
 					processor.get()->process(protocolIn, protocolOut, NULL);
-					print = true;
+					if (!skip_yield) sched_yield();
 				} catch (TTransportException& ttx) {
 					if (ttx.getType() == TTransportException::TTransportExceptionType::END_OF_FILE) {
-						if (print) LOG(info) << "ran out of data: " << ttx.what() << "\n";
-						print = false;
-						continue;
+						LOG(info) << "ran out of data: " << ttx.what() << "\n";
+						break;
 					}
 					LOG(error) << "breaking: " << ttx.what();
 					break;

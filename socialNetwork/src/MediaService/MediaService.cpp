@@ -6,7 +6,6 @@
 
 #include "../utils.h"
 #include "../utils_thrift.h"
-#include "../tcpflow_file_server.h"
 #include "MediaHandler.h"
 
 using apache::thrift::protocol::TBinaryProtocolFactory;
@@ -22,24 +21,30 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   MaybeJoinGhostEnclave();
   init_logger();
-  SetUpTracer("config/jaeger-config.yml", "media-service");
   json config_json;
   if (load_config_file("config/service-config.json", &config_json) != 0) {
     exit(EXIT_FAILURE);
   }
 
-  int port = config_json["media-service"]["port"];
+  const char *trace_file_env = std::getenv("TRACE_FILE");
+  std::string trace_file = trace_file_env ? trace_file_env : "trace-media-service";
+
+  auto _transportIn = openFileTransport(trace_file.c_str(), false);
+  if (!_transportIn) {
+    LOG(error) << "could not open input trace file " << trace_file;
+    exit(EXIT_FAILURE);
+  }
+  std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
 
   auto _transportOut = openFileTransport("out-media-service", true);
   if (!_transportOut) {
     LOG(error) << "could not open output trace file";
   }
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
-  std::string reportFilename = "/social-network-microservices/report-media.xml";
 
-  TcpDumpFileServer server(
+  TFileServer server(
       std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
-      port, reportFilename, _transportOut, _protocolOut
+      _transportIn, _protocolIn, _transportOut, _protocolOut
       );
 
   LOG(info) << "Starting the media-service server...";
