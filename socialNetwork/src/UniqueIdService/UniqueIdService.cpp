@@ -35,17 +35,12 @@ int main(int argc, char *argv[]) {
   MaybeJoinGhostEnclave();
   init_logger();
 
-  json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
-    exit(EXIT_FAILURE);
-  }
-
-  std::string netif = config_json["unique-id-service"]["netif"];
-
-  std::string machine_id = GetMachineId(netif);
-  if (machine_id == "") {
-    exit(EXIT_FAILURE);
-  }
+  // Hardcoded: was previously derived from config/service-config.json's
+  // "netif" via GetMachineId()'s MAC-address lookup, which only worked on
+  // hosts with that specific interface name. Any fixed value works just as
+  // well here since we only need it to be stable across a run, not tied to
+  // real hardware.
+  std::string machine_id = "2d4";
   LOG(info) << "machine_id = " << machine_id;
 
   std::mutex thread_lock;
@@ -60,10 +55,8 @@ int main(int argc, char *argv[]) {
 	}
   std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
 
-	auto _transportOut = openFileTransport("out-unique-id-service", true);
-	if (!_transportOut) {
-		LOG(error) << "could not open output trace file";
-	}
+  auto _memOut = openMemoryTransport();
+  std::shared_ptr<TTransport> _transportOut(new TFramedTransport(_memOut));
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
 
   TFileServer server(
@@ -74,4 +67,6 @@ int main(int argc, char *argv[]) {
 
   LOG(info) << "Starting the unique-id-service server ...";
   server.serve();
+
+  dumpMemoryTransportToFile(_memOut, "out-unique-id-service");
 }

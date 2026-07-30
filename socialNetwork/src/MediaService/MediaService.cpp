@@ -21,10 +21,6 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   MaybeJoinGhostEnclave();
   init_logger();
-  json config_json;
-  if (load_config_file("config/service-config.json", &config_json) != 0) {
-    exit(EXIT_FAILURE);
-  }
 
   const char *trace_file_env = std::getenv("TRACE_FILE");
   std::string trace_file = trace_file_env ? trace_file_env : "trace-media-service";
@@ -36,10 +32,8 @@ int main(int argc, char *argv[]) {
   }
   std::shared_ptr<TProtocol> _protocolIn(new TBinaryProtocol(_transportIn));
 
-  auto _transportOut = openFileTransport("out-media-service", true);
-  if (!_transportOut) {
-    LOG(error) << "could not open output trace file";
-  }
+  auto _memOut = openMemoryTransport();
+  std::shared_ptr<TTransport> _transportOut(new TFramedTransport(_memOut));
   std::shared_ptr<TProtocol> _protocolOut(new TBinaryProtocol(_transportOut));
 
   TFileServer server(
@@ -49,4 +43,6 @@ int main(int argc, char *argv[]) {
 
   LOG(info) << "Starting the media-service server...";
   server.serve();
+
+  dumpMemoryTransportToFile(_memOut, "out-media-service");
 }

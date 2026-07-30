@@ -24,6 +24,7 @@ using apache::thrift::transport::TSSLServerSocket;
 using apache::thrift::transport::TSSLSocketFactory;
 using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TFDTransport;
+using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::TProcessor;
 using apache::thrift::protocol::TTransport;
 using apache::thrift::protocol::TProtocol;
@@ -67,6 +68,30 @@ std::shared_ptr<TFramedTransport>  openFileTransport(const char* name, bool out)
 	std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
 	std::shared_ptr<TFramedTransport> transport(new TFramedTransport(file));
 	return transport;
+}
+
+// Response output no longer touches disk during the request loop: replies go
+// to an in-memory buffer (pre-sized to avoid reallocation mid-run) instead of
+// a file, so per-request write() syscalls don't show up in IPC/cycle counts.
+std::shared_ptr<TMemoryBuffer> openMemoryTransport(uint32_t size_hint = 32 * 1024 * 1024) {
+	return std::make_shared<TMemoryBuffer>(size_hint);
+}
+
+// Dumps the memory buffer's accumulated bytes to `name` in one write, for
+// after-the-fact correctness checks (e.g. `strings out-file | grep -c ...`).
+// Call once, after serve() returns -- never from the request-handling loop.
+void dumpMemoryTransportToFile(const std::shared_ptr<TMemoryBuffer> &mem, const char* name) {
+	std::string data = mem->getBufferAsString();
+	int fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
+	if (-1 == fd) {
+		LOG(error) << "could not open " << name << " to dump memory transport";
+		return;
+	}
+	ssize_t written = write(fd, data.data(), data.size());
+	if (written < 0 || static_cast<size_t>(written) != data.size()) {
+		LOG(error) << "short/failed write dumping memory transport to " << name;
+	}
+	close(fd);
 }
 
 class TFileServer {

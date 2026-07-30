@@ -49,6 +49,34 @@ else
   echo "$STDCXX_H already present, skipping."
 fi
 
+# perf: used to measure per-request cycles/instructions/IPC (see
+# tools/run_with_perf.sh). Ubuntu ships perf as a kernel-version-specific
+# package. DO NOT `apt-get install "linux-tools-$(uname -r)"` -- on a
+# custom kernel string (e.g. a ghOSt kernel, or anything apt doesn't have an
+# exact package for) this doesn't cleanly fail "unable to locate package"
+# the way you'd expect: apt's fuzzy name matching can instead go unpack
+# every package that merely shares the version-number prefix (every
+# unrelated cloud-flavor kernel-tools package: aws/azure/gcp/oracle, every
+# point release, ...), leaving the system with dozens of half-installed
+# packages and a broken `apt-get check`. Only ever install the generic
+# metapackage; if /usr/bin/perf's own version-dispatch wrapper can't find a
+# kernel-matched binary, symlink whatever generic one DID get installed --
+# perf's basic hardware-counter `stat` mode doesn't need an exact match.
+$SUDO DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  linux-tools-common linux-tools-generic
+
+if ! command -v perf >/dev/null 2>&1 || ! perf --version >/dev/null 2>&1; then
+  FALLBACK_PERF=$(find /usr/lib/linux-tools-* -maxdepth 1 -name perf 2>/dev/null | head -1)
+  if [ -n "$FALLBACK_PERF" ]; then
+    echo "No kernel-matched perf; symlinking $FALLBACK_PERF -> /usr/local/bin/perf"
+    $SUDO ln -sf "$FALLBACK_PERF" /usr/local/bin/perf
+    hash -r  # forget this shell's cached (kernel-mismatched) `perf` lookup
+  else
+    echo "WARNING: could not find any perf binary to use." >&2
+  fi
+fi
+perf --version || true
+
 echo "Done. Build with:"
 echo "  mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j\$(nproc) UniqueIdService MediaService"
 echo
