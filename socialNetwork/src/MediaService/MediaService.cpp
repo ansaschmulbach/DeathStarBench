@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 
   TFileServer server(
       std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
-      _transportIn, _protocolIn, _transportOut, _protocolOut
+      _transportIn, _protocolIn, _transportOut, _protocolOut, "media"
       );
 
   LOG(info) << "Starting the media-service server...";

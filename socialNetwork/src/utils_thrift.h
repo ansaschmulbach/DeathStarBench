@@ -22,6 +22,7 @@
 
 #include "futex_wait.h"
 #include "ingress.h"
+#include "shm_log.h"
 
 namespace social_network{
 using json = nlohmann::json;
@@ -111,13 +112,23 @@ void dumpMemoryTransportToFile(const std::shared_ptr<TMemoryBuffer> &mem, const 
 
 class TFileServer {
 public:
-	TFileServer(std::shared_ptr<TProcessor> processor, std::shared_ptr<TTransport> transportIn, std::shared_ptr<TProtocol> protocolIn, std::shared_ptr<TTransport> transportOut, std::shared_ptr<TProtocol> protocolOut) :
-			 processor(processor), 
+	// `label` (e.g. "uid", "media") is only used for the shm timeline log
+	// (see shm_log.h): if non-null, every request logs a "<label>_start" and
+	// "<label>_end" event (SHM_LOG_NAME env var permitting; otherwise this
+	// is all a no-op). Leave null to skip logging entirely.
+	TFileServer(std::shared_ptr<TProcessor> processor, std::shared_ptr<TTransport> transportIn, std::shared_ptr<TProtocol> protocolIn, std::shared_ptr<TTransport> transportOut, std::shared_ptr<TProtocol> protocolOut, const char *label = nullptr) :
+			 processor(processor),
 			 transportIn(transportIn),
 			 protocolIn(protocolIn),
 			 transportOut(transportOut),
 			 protocolOut(protocolOut)
-			 	{ }
+			 	{
+				if (label) {
+					shm_log_ = MaybeOpenShmLog();
+					label_start_ = std::string(label) + "_start";
+					label_end_ = std::string(label) + "_end";
+				}
+			}
 	void serve() {
 		if (std::getenv("USE_DISPATCHER") != nullptr) {
 			ServeWithDispatcher();
@@ -126,7 +137,10 @@ public:
 		static const bool skip_yield = std::getenv("GHOST_SKIP_YIELD") != nullptr;
 		for (;;) {
 				try {
+					LogShmEvent(shm_log_, label_start_.c_str(), req_seq_);
 					processor.get()->process(protocolIn, protocolOut, NULL);
+					LogShmEvent(shm_log_, label_end_.c_str(), req_seq_);
+					req_seq_++;
 					if (!skip_yield) sched_yield();
 				} catch (TTransportException& ttx) {
 					if (ttx.getType() == TTransportException::TTransportExceptionType::END_OF_FILE) {
@@ -226,7 +240,10 @@ private:
 		for (;;) {
 			futex_wait.WaitUntilRunnable();
 			try {
+				LogShmEvent(shm_log_, label_start_.c_str(), req_seq_);
 				processor.get()->process(protocolIn, protocolOut, NULL);
+				LogShmEvent(shm_log_, label_end_.c_str(), req_seq_);
+				req_seq_++;
 				futex_wait.MarkIdle();
 			} catch (TTransportException& ttx) {
 				if (ttx.getType() == TTransportException::TTransportExceptionType::END_OF_FILE) {
@@ -246,6 +263,11 @@ private:
 		std::shared_ptr<TProtocol> protocolIn;
 		std::shared_ptr<TTransport> transportOut;
 		std::shared_ptr<TProtocol> protocolOut;
+
+		ShmLogRegion *shm_log_ = nullptr;
+		std::string label_start_;
+		std::string label_end_;
+		uint32_t req_seq_ = 0;
 };
 
 } //namespace social_network

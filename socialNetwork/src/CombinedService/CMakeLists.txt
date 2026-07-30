@@ -15,6 +15,7 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     Boost::log
     Boost::log_setup
+    rt
 )
 
 install(TARGETS CombinedService DESTINATION ./)

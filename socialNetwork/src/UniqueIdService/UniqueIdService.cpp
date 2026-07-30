@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
   TFileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-			_transportIn, _protocolIn, _transportOut, _protocolOut
+			_transportIn, _protocolIn, _transportOut, _protocolOut, "uid"
 		  );
 
   LOG(info) << "Starting the unique-id-service server ...";

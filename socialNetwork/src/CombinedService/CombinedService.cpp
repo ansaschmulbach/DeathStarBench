@@ -59,7 +59,7 @@ void RunUniqueIdThread() {
   TFileServer server(
       std::make_shared<UniqueIdServiceProcessor>(
           std::make_shared<UniqueIdHandler>(&thread_lock, machine_id)),
-      _transportIn, _protocolIn, _transportOut, _protocolOut);
+      _transportIn, _protocolIn, _transportOut, _protocolOut, "uid");
 
   LOG(info) << "Starting the unique-id-service thread ...";
   server.serve();
@@ -88,7 +88,7 @@ void RunMediaThread() {
 
   TFileServer server(
       std::make_shared<MediaServiceProcessor>(std::make_shared<MediaHandler>()),
-      _transportIn, _protocolIn, _transportOut, _protocolOut);
+      _transportIn, _protocolIn, _transportOut, _protocolOut, "media");
 
   LOG(info) << "Starting the media-service thread ...";
   server.serve();

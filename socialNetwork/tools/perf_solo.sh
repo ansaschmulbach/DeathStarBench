@@ -24,6 +24,7 @@ BIN="$1"
 TRACE_FILE="${2:-}"
 PERF_OUT="${3:-perf_solo.txt}"
 GHOST_CPUS="${GHOST_CPUS:-1-2}"  # agent CPU + exactly one worker CPU
+QUIET_LOGGING="${QUIET_LOGGING:-1}"  # see ../src/logger.h -- unset to get logs back
 
 BIN_ABS="$(cd "$(dirname "$BIN")" && pwd)/$(basename "$BIN")"
 
@@ -36,6 +37,7 @@ ENV_ARGS=(GHOST_ENCLAVE_TASKS="$GHOST_ENCLAVE_DIR/tasks")
 if [ -n "$TRACE_FILE" ]; then
   ENV_ARGS+=(TRACE_FILE="$(cd "$(dirname "$TRACE_FILE")" && pwd)/$(basename "$TRACE_FILE")")
 fi
+if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
 
 cd "$(dirname "$BIN_ABS")"
 sudo env "${ENV_ARGS[@]}" perf stat \

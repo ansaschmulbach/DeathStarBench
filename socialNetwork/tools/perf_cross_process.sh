@@ -32,6 +32,16 @@
 # round and they'd run in true parallel instead of alternating on a shared
 # core -- defeating the point of this measurement.
 #
+# Reports a per-service breakdown (perf's --per-thread against the two
+# PIDs), not just a combined total -- UniqueIdService and MediaService do
+# different amounts of work per request, so summing them hides that.
+#
+# QUIET_LOGGING=1 is set on both services by default (see ../src/logger.h):
+# per-request LOG(debug) calls are already filtered out by init_logger()'s
+# default (>= info), but this also silences the one-time startup LOG(info)
+# lines, for a completely clean logging-free run. Unset QUIET_LOGGING (env)
+# to get logs back.
+#
 # Usage:
 #   ./tools/perf_cross_process.sh [uid_trace] [media_trace] [perf_output_file] [startup_delay_ms]
 set -euo pipefail
@@ -48,6 +58,7 @@ MEDIA_TRACE="${2:-$SOCIALNET_DIR/../../social-network-microservices/trace-media-
 PERF_OUT="${3:-perf_cross_process.txt}"
 STARTUP_DELAY_MS="${4:-6000}"
 GHOST_CPUS="${GHOST_CPUS:-1-2}"  # agent CPU + exactly one worker CPU -- see header note
+QUIET_LOGGING="${QUIET_LOGGING:-1}"
 
 echo "=== launching ab_alternator_agent (--ghost_cpus=$GHOST_CPUS) ==="
 ghost_launch_agent "$GHOST_USERSPACE_DIR/bazel-bin/ab_alternator_agent" --ghost_cpus="$GHOST_CPUS"
@@ -57,11 +68,14 @@ TASKS_FILE="$GHOST_ENCLAVE_DIR/tasks"
 UID_LOG="$(mktemp /tmp/uid_XXXXXX.log)"
 MEDIA_LOG="$(mktemp /tmp/media_XXXXXX.log)"
 
-echo "=== launching UniqueIdService and MediaService (STARTUP_DELAY_MS=$STARTUP_DELAY_MS), both enrolled in $TASKS_FILE ==="
-sudo env GHOST_ENCLAVE_TASKS="$TASKS_FILE" TRACE_FILE="$UID_TRACE" STARTUP_DELAY_MS="$STARTUP_DELAY_MS" \
+ENV_ARGS=(GHOST_ENCLAVE_TASKS="$TASKS_FILE" STARTUP_DELAY_MS="$STARTUP_DELAY_MS")
+if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
+
+echo "=== launching UniqueIdService and MediaService (STARTUP_DELAY_MS=$STARTUP_DELAY_MS, QUIET_LOGGING=$QUIET_LOGGING), both enrolled in $TASKS_FILE ==="
+sudo env "${ENV_ARGS[@]}" TRACE_FILE="$UID_TRACE" \
   "$UID_BIN" > "$UID_LOG" 2>&1 &
 UID_SUDO_PID=$!
-sudo env GHOST_ENCLAVE_TASKS="$TASKS_FILE" TRACE_FILE="$MEDIA_TRACE" STARTUP_DELAY_MS="$STARTUP_DELAY_MS" \
+sudo env "${ENV_ARGS[@]}" TRACE_FILE="$MEDIA_TRACE" \
   "$MEDIA_BIN" > "$MEDIA_LOG" 2>&1 &
 MEDIA_SUDO_PID=$!
 
@@ -83,7 +97,7 @@ while [ -z "$UID_PID" ] || [ -z "$MEDIA_PID" ]; do
 done
 echo "UniqueIdService PID=$UID_PID, MediaService PID=$MEDIA_PID"
 
-sudo perf stat -p "$UID_PID,$MEDIA_PID" \
+sudo perf stat -p "$UID_PID,$MEDIA_PID" --per-thread \
   -e cycles:u,cycles:k,instructions:u,instructions:k,task-clock,context-switches \
   -o "$PERF_OUT" &
 PERF_SUDO_PID=$!
@@ -103,7 +117,7 @@ PERF_PID="$(sudo_child_pid "$PERF_SUDO_PID" 2>/dev/null || true)"
 sudo kill -INT "${PERF_PID:-$PERF_SUDO_PID}" 2>/dev/null || true
 wait "$PERF_SUDO_PID" 2>/dev/null || true
 
-echo "--- perf stats ($PERF_OUT), combined across both processes ---"
+echo "--- perf stats ($PERF_OUT), per-process ---"
 cat "$PERF_OUT"
 echo "--- UniqueIdService log ($UID_LOG) ---"; cat "$UID_LOG"
 echo "--- MediaService log ($MEDIA_LOG) ---"; cat "$MEDIA_LOG"

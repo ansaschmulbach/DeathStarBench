@@ -34,6 +34,7 @@ MEDIA_TRACE="${2:-$SOCIALNET_DIR/../../social-network-microservices/trace-media-
 PERF_OUT="${3:-perf_same_process.txt}"
 STARTUP_DELAY_MS="${4:-6000}"
 GHOST_CPUS="${GHOST_CPUS:-1-2}"  # agent CPU + exactly one worker CPU
+QUIET_LOGGING="${QUIET_LOGGING:-1}"  # see ../src/logger.h -- unset to get logs back
 
 echo "=== launching ab_alternator_agent (--ghost_cpus=$GHOST_CPUS) ==="
 ghost_launch_agent "$GHOST_USERSPACE_DIR/bazel-bin/ab_alternator_agent" --ghost_cpus="$GHOST_CPUS"
@@ -42,11 +43,12 @@ trap ghost_teardown_agent EXIT
 TASKS_FILE="$GHOST_ENCLAVE_DIR/tasks"
 COMBINED_LOG="$(mktemp /tmp/combined_XXXXXX.log)"
 
-echo "=== launching CombinedService (STARTUP_DELAY_MS=$STARTUP_DELAY_MS) ==="
+ENV_ARGS=(GHOST_ENCLAVE_TASKS="$TASKS_FILE" TRACE_FILE_UID="$UID_TRACE" TRACE_FILE_MEDIA="$MEDIA_TRACE" STARTUP_DELAY_MS="$STARTUP_DELAY_MS")
+if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
+
+echo "=== launching CombinedService (STARTUP_DELAY_MS=$STARTUP_DELAY_MS, QUIET_LOGGING=$QUIET_LOGGING) ==="
 ( cd "$(dirname "$COMBINED_BIN")" && \
-  sudo env GHOST_ENCLAVE_TASKS="$TASKS_FILE" \
-    TRACE_FILE_UID="$UID_TRACE" TRACE_FILE_MEDIA="$MEDIA_TRACE" \
-    STARTUP_DELAY_MS="$STARTUP_DELAY_MS" \
+  sudo env "${ENV_ARGS[@]}" \
     "./$(basename "$COMBINED_BIN")" > "$COMBINED_LOG" 2>&1 ) &
 COMBINED_SHELL_PID=$!
 
