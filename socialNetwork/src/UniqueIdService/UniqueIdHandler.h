@@ -43,8 +43,7 @@ class UniqueIdHandler : public UniqueIdServiceIf {
   ~UniqueIdHandler() override = default;
   UniqueIdHandler(std::mutex *, const std::string &);
 
-  int64_t ComposeUniqueId(int64_t, PostType::type,
-                          const std::map<std::string, std::string> &) override;
+  int64_t ComposeUniqueId(int64_t, PostType::type) override;
 
  private:
   std::mutex *_thread_lock;
@@ -58,8 +57,7 @@ UniqueIdHandler::UniqueIdHandler(std::mutex *thread_lock,
 }
 
 int64_t UniqueIdHandler::ComposeUniqueId(
-    int64_t req_id, PostType::type post_type,
-    const std::map<std::string, std::string> &carrier) {
+    int64_t req_id, PostType::type post_type) {
   _thread_lock->lock();
   int64_t timestamp =
       duration_cast<milliseconds>(system_clock::now().time_since_epoch())

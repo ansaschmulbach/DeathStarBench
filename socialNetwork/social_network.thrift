@@ -75,8 +75,7 @@ struct Post {
 service UniqueIdService {
   i64 ComposeUniqueId (
       1: i64 req_id,
-      2: PostType post_type,
-      3: map<string, string> carrier
+      2: PostType post_type
   ) throws (1: ServiceException se)
 }
 

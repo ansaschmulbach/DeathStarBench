@@ -47,8 +47,7 @@ int main(int argc, char** argv) {
 
   for (int i = 0; i < num_requests; i++) {
     int64_t req_id = 2000000 + i;
-    std::map<std::string, std::string> carrier;
-    client.send_ComposeUniqueId(req_id, social_network::PostType::POST, carrier);
+    client.send_ComposeUniqueId(req_id, social_network::PostType::POST);
 
     if (i % 10000 == 0) printf("wrote %d/%d\n", i, num_requests);
   }

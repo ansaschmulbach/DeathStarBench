@@ -25,3 +25,4 @@ set(THRIFT_GEN_CPP_DIR ../../gen-cpp)
 
 add_subdirectory(UniqueIdService)
 add_subdirectory(MediaService)
+add_subdirectory(CombinedService)
