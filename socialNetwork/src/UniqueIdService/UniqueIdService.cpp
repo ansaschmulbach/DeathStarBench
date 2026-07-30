@@ -33,6 +33,7 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
+  MaybeJoinGhostEnclave();
   init_logger();
   SetUpTracer("config/jaeger-config.yml", "unique-id-service");
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[]) {
 
   std::mutex thread_lock;
 
-	auto _transportOut = openFileTransport("out", true);
+	auto _transportOut = openFileTransport("out-unique-id-service", true);
 	if (!_transportOut) {
 		LOG(error) << "could not open output trace file";
 	}

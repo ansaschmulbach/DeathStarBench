@@ -3,6 +3,7 @@ add_executable(
     MediaService.cpp
     ${THRIFT_GEN_CPP_DIR}/MediaService.cpp
     ${THRIFT_GEN_CPP_DIR}/social_network_types.cpp
+    ../stream.cpp
 )
 
 target_include_directories(
@@ -19,6 +20,7 @@ target_link_libraries(
     Boost::log
     Boost::log_setup
     jaegertracing
+    tinyxml2
 )
 
 install(TARGETS MediaService DESTINATION ./)

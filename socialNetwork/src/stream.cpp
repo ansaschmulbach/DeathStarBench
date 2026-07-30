@@ -153,7 +153,6 @@ std::string Client::streamData() {
 
 	Stream nextStream = streams.front();
 	streams.pop_front();
-	std::this_thread::sleep_for(nextStream.delay_time);
 	return nextStream.filename;
 }
 

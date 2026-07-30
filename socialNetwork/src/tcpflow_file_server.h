@@ -5,6 +5,8 @@
 #include <cstring>
 #include <fcntl.h>
 #include <cstddef>
+#include <cstdlib>
+#include <sched.h>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <thrift/transport/TServerSocket.h>
@@ -49,6 +51,8 @@ public:
   					std::shared_ptr<TProtocol> protocolIn(new TBinaryProtocol(transportIn));
 					processor.get()->process(protocolIn, protocolOut, NULL);
 					transportIn->close();
+					static const bool skip_yield = std::getenv("GHOST_SKIP_YIELD") != nullptr;
+					if (!skip_yield) sched_yield();
 				} catch (TTransportException& ttx) {
 					LOG(error) << "breaking: " << ttx.what();
 					break;
