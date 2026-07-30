@@ -20,6 +20,7 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   MaybeJoinGhostEnclave();
+  MaybeAnnounceAndDelay("media");
   init_logger();
 
   const char *trace_file_env = std::getenv("TRACE_FILE");

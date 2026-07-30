@@ -38,6 +38,7 @@ void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 int main(int argc, char *argv[]) {
   signal(SIGINT, sigintHandler);
   MaybeJoinGhostEnclave();
+  MaybeAnnounceAndDelay("uid");
   init_logger();
 
   // Hardcoded: was previously derived from config/service-config.json's

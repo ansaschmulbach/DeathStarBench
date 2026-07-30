@@ -6,8 +6,13 @@
 #include <iostream>
 #include <cstdlib>
 #include <fcntl.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 #include <nlohmann/json.hpp>
+
+#include <chrono>
+#include <cstdio>
+#include <thread>
 
 #include "logger.h"
 
@@ -50,6 +55,23 @@ void MaybeJoinGhostEnclave() {
     LOG(info) << "enrolled into ghost enclave " << tasks_path;
   }
   close(fd);
+}
+
+// Lets an external `perf stat -t <tid1>,<tid2> --per-thread` (or -p <pid>)
+// attach before real request processing starts, without racing it: prints
+// this thread/process's TID and sleeps for STARTUP_DELAY_MS before
+// returning, giving a reliable window to read the TID off stdout and attach
+// perf while nothing's happening yet. Call this AFTER MaybeJoinGhostEnclave()
+// so the announced TID is already a ghost task, matching steady-state
+// conditions. A no-op if STARTUP_DELAY_MS isn't set (the default), so this
+// is always safe to leave in a hot path.
+void MaybeAnnounceAndDelay(const char *label) {
+  const char *delay_env = std::getenv("STARTUP_DELAY_MS");
+  if (!delay_env) return;
+  int delay_ms = std::atoi(delay_env);
+  printf("[startup_delay] %s tid=%ld\n", label, static_cast<long>(syscall(SYS_gettid)));
+  fflush(stdout);
+  std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
 }
 
 } //namespace social_network

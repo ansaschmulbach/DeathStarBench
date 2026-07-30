@@ -9,3 +9,7 @@ build
 wrk2/wrk
 wrk2/*.[oa]
 wrk2/obj/
+
+# Response-dump output written by UniqueIdService/MediaService/CombinedService
+# (dumpMemoryTransportToFile) whenever they're run from socialNetwork/.
+socialNetwork/out-*-service*

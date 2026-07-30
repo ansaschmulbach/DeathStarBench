@@ -30,19 +30,9 @@ using namespace social_network;
 
 void sigintHandler(int sig) { exit(EXIT_SUCCESS); }
 
-// Lets an external `perf stat -t <tid1>,<tid2> --per-thread` attach before
-// real request processing starts. Enrollment happens first (so the tid is
-// already a ghost task, matching steady-state conditions), then the tid is
-// printed and the thread sleeps briefly so there's a reliable window to
-// attach. Controlled by STARTUP_DELAY_MS (default 0 -- no delay, no print).
-void MaybeAnnounceAndDelay(const char *label) {
-  const char *delay_env = std::getenv("STARTUP_DELAY_MS");
-  if (!delay_env) return;
-  int delay_ms = std::atoi(delay_env);
-  printf("[combined] %s tid=%ld\n", label, static_cast<long>(syscall(SYS_gettid)));
-  fflush(stdout);
-  std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));
-}
+// MaybeAnnounceAndDelay() (used below, right after each thread's
+// MaybeJoinGhostEnclave()) is shared with UniqueIdService/MediaService --
+// see its definition in ../utils.h.
 
 void RunUniqueIdThread() {
   MaybeJoinGhostEnclave();
