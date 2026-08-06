@@ -42,6 +42,13 @@ struct ShmLogRecord {
   int32_t cpu;   // sched_getcpu() at the moment of the call
   uint32_t seq;  // caller-assigned (e.g. request index)
   char label[16];  // e.g. "uid_start", "uid_end", "media_start", "media_end"
+  // Published (via __atomic_store_n(..., __ATOMIC_RELEASE)) as the LAST
+  // write once every field above is filled in; readers must
+  // __atomic_load_n(..., __ATOMIC_ACQUIRE) this and see 1 before trusting
+  // the rest of the record -- see the NOTE in LogShmEvent. Plain uint32_t
+  // (not std::atomic<uint32_t>) so ShmLogRecord stays a POD/trivially
+  // copyable type, since callers store it by value in std::vector<ShmLogRecord>.
+  uint32_t ready;
 };
 
 struct ShmLogRegion {
@@ -88,6 +95,19 @@ inline ShmLogRegion *MaybeOpenShmLog() {
 // Appends one record. A no-op if region is null (SHM_LOG_NAME unset) or the
 // ring is full (drops rather than wraps/overwrites, so a slow consumer
 // never corrupts data the producer thinks it already wrote).
+//
+// NOTE on the ready flag: fetch_add reserves a slot, but reserving isn't
+// the same as the slot being safe to read -- a reader on a different core
+// (this is always a cross-process reader) can observe the bumped
+// next_index and start reading records[idx] before this function has
+// finished writing its fields. An earlier version had no ready flag and
+// used next_index itself as the "how much is safe to read" bound; it
+// produced occasional torn reads (e.g. a fully-written pid/seq paired with
+// a still-zero timestamp_ns), which showed up as an absurd
+// (timestamp_ns_end - timestamp_ns_start) duration wrapping around as
+// unsigned when the "start" side was the torn one. Every field is written
+// here BEFORE the release-store to `ready`, so a reader that observes
+// ready==1 via an acquire-load is guaranteed to see all of them.
 inline void LogShmEvent(ShmLogRegion *region, const char *label, uint32_t seq) {
   if (!region) return;
   uint32_t idx = region->next_index.fetch_add(1, std::memory_order_relaxed);
@@ -103,10 +123,8 @@ inline void LogShmEvent(ShmLogRegion *region, const char *label, uint32_t seq) {
   rec.seq = seq;
   std::strncpy(rec.label, label, sizeof(rec.label) - 1);
   rec.label[sizeof(rec.label) - 1] = '\0';
-  // timestamp last: minimizes the gap between "when this actually happened"
-  // and "when it became visible to a reader", though on this record's own
-  // fields, not cross-record ordering (which fetch_add already gives us).
   rec.timestamp_ns = static_cast<uint64_t>(ts.tv_sec) * 1000000000ull + ts.tv_nsec;
+  __atomic_store_n(&rec.ready, 1u, __ATOMIC_RELEASE);
 }
 
 // --- Consumer side (shared by tools/Logger and tools/ScheduleLogger) ---
@@ -148,6 +166,14 @@ inline ShmLogRegion *CreateShmLog(const char *name, uint32_t capacity) {
 // wall-clock order should sort by timestamp_ns themselves, since producers
 // in different processes can interleave their fetch_adds out of timestamp
 // order under contention).
+//
+// next_index is only used here as an upper bound on which slots have been
+// RESERVED, not which are safe to read -- each slot's own `ready` flag
+// (acquire-loaded, paired with LogShmEvent's release-store) is what
+// actually gates inclusion. seen only advances over a contiguous run of
+// ready slots, so a slot that's reserved but not yet fully written just
+// pauses collection at that index until it becomes ready, rather than
+// racing ahead and reading torn data.
 inline std::vector<ShmLogRecord> CollectShmLogEvents(ShmLogRegion *region,
                                                        uint32_t expected_events,
                                                        double idle_timeout_sec) {
@@ -155,11 +181,19 @@ inline std::vector<ShmLogRecord> CollectShmLogEvents(ShmLogRegion *region,
   uint32_t seen = 0;
   auto last_progress = std::chrono::steady_clock::now();
   while (seen < expected_events) {
-    uint32_t written = region->next_index.load(std::memory_order_acquire);
-    if (written > region->capacity) written = region->capacity;
-    if (written > seen) {
-      for (uint32_t i = seen; i < written; i++) records.push_back(region->records[i]);
-      seen = written;
+    uint32_t reserved = region->next_index.load(std::memory_order_relaxed);
+    if (reserved > region->capacity) reserved = region->capacity;
+
+    bool progressed = false;
+    while (seen < reserved) {
+      ShmLogRecord &rec = region->records[seen];
+      if (__atomic_load_n(&rec.ready, __ATOMIC_ACQUIRE) != 1) break;
+      records.push_back(rec);
+      seen++;
+      progressed = true;
+    }
+
+    if (progressed) {
       last_progress = std::chrono::steady_clock::now();
     } else {
       double idle = std::chrono::duration<double>(std::chrono::steady_clock::now() -

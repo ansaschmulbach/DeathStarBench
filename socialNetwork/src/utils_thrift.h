@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstring>
 #include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 #include <cstddef>
 #include <cstdlib>
 #include <atomic>
@@ -22,6 +24,7 @@
 
 #include "futex_wait.h"
 #include "ingress.h"
+#include "perf_counter.h"
 #include "shm_log.h"
 
 namespace social_network{
@@ -60,29 +63,55 @@ std::shared_ptr<TServerSocket> get_server_socket(const json &config_json, const 
 };
 
 // NOTE: TFramedTransport's per-message framing overhead is expensive relative
-// to the tiny requests these services process. A/B'd against an unframed
-// TBufferedTransport read path on UniqueIdService (100k ComposeUniqueId
-// requests, -O3, task-scoped `perf stat -p`): framing alone accounted for a
-// ~2.8x increase in cycles (833M -> 320M cycles removing it) and dropped IPC
-// from 2.15 to 1.40 -- the dominant factor (far more than the also-tested
-// removal of the unused `carrier` map field, which only moved cycles ~3%).
-// Left as TFramedTransport for now since that's what's actually deployed;
-// worth revisiting if per-request overhead matters more than wire framing.
-std::shared_ptr<TFramedTransport>  openFileTransport(const char* name, bool out) {
-	int fd;
+// to the tiny requests these services process -- A/B'd against an unframed
+// mmap+TMemoryBuffer(OBSERVE) read path on UniqueIdService (100k
+// ComposeUniqueId requests, -O3, task-scoped `perf stat -p`): framing alone
+// accounted for a ~2.8x increase in cycles (833M -> 320M cycles removing it)
+// and dropped IPC from 2.15 to 1.40 -- the dominant factor (far more than the
+// also-tested removal of the unused `carrier` map field, which only moved
+// cycles ~3%). So the read path (out=false) below mmaps the trace file and
+// wraps it in a TMemoryBuffer(OBSERVE) instead of TFDTransport+
+// TFramedTransport: zero read() syscalls after the initial mmap() (TBinaryProtocol
+// messages are self-delimiting via readMessageBegin/T_STOP, so no framing
+// layer is needed once the whole file is already addressable memory), and no
+// length-prefix framing cost either. This means `name` must point to an
+// UNFRAMED trace file (see tools/gen_uniqueid_trace.cpp/gen_media_trace.cpp,
+// which write unframed output directly, and deframe.py-style stripping for
+// any pre-existing framed trace). The write path (out=true) is unchanged --
+// TFramedTransport over a real fd -- since it's for producing new files, not
+// the hot read loop this was about.
+std::shared_ptr<TTransport> openFileTransport(const char* name, bool out) {
 	if (out) {
-		fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
-	} else {
-		fd = open(name, O_RDONLY);
-	}
-	if (-1 == fd)
-	{
-		LOG(error) << ("ERROR: Open/create for write failed!\n");
-		return nullptr;
+		int fd = open(name, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
+		if (-1 == fd) {
+			LOG(error) << ("ERROR: Open/create for write failed!\n");
+			return nullptr;
+		}
+		std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
+		std::shared_ptr<TFramedTransport> transport(new TFramedTransport(file));
+		return transport;
 	}
 
-	std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
-	std::shared_ptr<TFramedTransport> transport(new TFramedTransport(file));
+	int fd = open(name, O_RDONLY);
+	if (-1 == fd) {
+		LOG(error) << ("ERROR: Open for read failed!\n");
+		return nullptr;
+	}
+	struct stat st;
+	if (fstat(fd, &st) != 0) {
+		LOG(error) << ("ERROR: fstat on input trace file failed!\n");
+		close(fd);
+		return nullptr;
+	}
+	void *mapped = mmap(nullptr, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (mapped == MAP_FAILED) {
+		LOG(error) << ("ERROR: mmap on input trace file failed!\n");
+		close(fd);
+		return nullptr;
+	}
+	close(fd);  // mapping stays valid after the fd is closed.
+	std::shared_ptr<TMemoryBuffer> transport(new TMemoryBuffer(
+	    reinterpret_cast<uint8_t *>(mapped), st.st_size, TMemoryBuffer::OBSERVE));
 	return transport;
 }
 
@@ -125,8 +154,9 @@ public:
 			 	{
 				if (label) {
 					shm_log_ = MaybeOpenShmLog();
-					label_start_ = std::string(label) + "_start";
-					label_end_ = std::string(label) + "_end";
+					label_ = std::string(label);
+					label_start_ = label_ + "_start";
+					label_end_ = label_ + "_end";
 				}
 			}
 	void serve() {
@@ -135,6 +165,22 @@ public:
 			return;
 		}
 		static const bool skip_yield = std::getenv("GHOST_SKIP_YIELD") != nullptr;
+		// Bracket the WHOLE loop (one Read() before, one after), not each
+		// individual request -- see perf_counter.h. A per-request bracket
+		// (Read() around just processor->process()) was tried first and
+		// dropped: it doubles the syscall count of a workload that's already
+		// this syscall-cheap, and worse, injects a read() syscall right next
+		// to the exact code region being measured on every single iteration,
+		// perturbing cache/TLB state for the very thing under test. A
+		// whole-loop bracket still isolates "just the worker loop actually
+		// running" -- excludes setup (trace-file open, processor construction,
+		// both above this point), the ghOSt agent thread, dispatch machinery,
+		// and (cross-process/same-process) every other process/thread, since
+		// this counter is self-scoped to the calling thread -- at the cost of
+		// also including LogShmEvent (a no-op unless SHM_LOG_NAME is set) and
+		// sched_yield() in the total, which per-request bracketing excluded.
+		uint64_t instr_before = instr_counter_.Read();
+		uint64_t cycles_before = cycle_counter_.Read();
 		for (;;) {
 				try {
 					LogShmEvent(shm_log_, label_start_.c_str(), req_seq_);
@@ -151,8 +197,26 @@ public:
 					break;
 				}
 		}
+		instr_u_total_ = instr_counter_.Read() - instr_before;
+		cycles_u_total_ = cycle_counter_.Read() - cycles_before;
+		PrintInstructionStats();
 	}
 private:
+	// Prints to stderr (not LOG(), so it's never suppressed by
+	// QUIET_LOGGING -- same convention latency_stats.h's PrintLatencyStats
+	// uses) regardless of which scenario this TFileServer is running under
+	// (solo/cross-process/same-process all share this one serve() path).
+	void PrintInstructionStats() {
+		std::cerr << "=== instructions:u/cycles:u (whole worker loop"
+		          << (label_.empty() ? "" : ", label=" + label_) << ") ===\n"
+		          << "n=" << req_seq_
+		          << " instructions_u_total=" << instr_u_total_
+		          << " instructions_u_avg=" << (req_seq_ ? static_cast<double>(instr_u_total_) / req_seq_ : 0.0)
+		          << " cycles_u_total=" << cycles_u_total_
+		          << " cycles_u_avg=" << (req_seq_ ? static_cast<double>(cycles_u_total_) / req_seq_ : 0.0)
+		          << "\n";
+	}
+
 	// USE_DISPATCHER (env var): instead of processing requests back-to-back,
 	// spawn a second, CFS-pinned thread ("dispatcher") that runs a ported
 	// version of ghost-userspace's Ingress Poisson-arrival generator
@@ -178,6 +242,16 @@ private:
 		int cpu;
 		FutexWait *futex_wait;
 		std::atomic<bool> *done;
+		// Arrival logging (see shm_log.h): if shm_log is non-null, every
+		// synthetic arrival Ingress generates logs one "<label>_arrival"
+		// event BEFORE waking the worker -- distinct from the worker's own
+		// "<label>_start"/"<label>_end" (serve()'s LogShmEvent calls below),
+		// so a captured timeline can show "when did this request arrive"
+		// separately from "when was it actually serviced". The gap between
+		// the two is queueing/scheduling delay, not part of the arrival
+		// process itself.
+		ShmLogRegion *shm_log;
+		std::string arrival_label;  // precomputed "<label>_arrival"
 	};
 
 	// pthread_create trampoline (not a lambda/std::thread): see the
@@ -192,8 +266,10 @@ private:
 
 		Ingress ingress(args->throughput);
 		ingress.Start();
+		uint32_t arrival_seq = 0;
 		while (!args->done->load(std::memory_order_acquire)) {
 			if (ingress.HasNewArrival()) {
+				LogShmEvent(args->shm_log, args->arrival_label.c_str(), arrival_seq++);
 				args->futex_wait->MarkRunnable();
 			}
 		}
@@ -208,7 +284,8 @@ private:
 
 		FutexWait futex_wait;
 		std::atomic<bool> done{false};
-		DispatcherArgs args{throughput, dispatcher_cpu, &futex_wait, &done};
+		DispatcherArgs args{throughput, dispatcher_cpu, &futex_wait, &done,
+		                    shm_log_, label_ + "_arrival"};
 
 		// IMPORTANT: this is real pthread_create, not std::thread, because
 		// POSIX's default (PTHREAD_INHERIT_SCHED) makes a new thread inherit
@@ -237,6 +314,16 @@ private:
 			exit(EXIT_FAILURE);
 		}
 
+		// Same whole-loop bracket serve() uses (see the comment there) --
+		// excludes dispatcher-thread setup above and the join/teardown below,
+		// covers only the worker actually waiting for and processing
+		// requests. Missing from this path until now: ServeWithDispatcher()
+		// never populated instr_u_total_/cycles_u_total_ or called
+		// PrintInstructionStats(), so USE_DISPATCHER runs silently never
+		// printed the "instructions:u/cycles:u (whole worker loop, ...)"
+		// line serve() always does.
+		uint64_t instr_before = instr_counter_.Read();
+		uint64_t cycles_before = cycle_counter_.Read();
 		for (;;) {
 			futex_wait.WaitUntilRunnable();
 			try {
@@ -254,6 +341,10 @@ private:
 				break;
 			}
 		}
+		instr_u_total_ = instr_counter_.Read() - instr_before;
+		cycles_u_total_ = cycle_counter_.Read() - cycles_before;
+		PrintInstructionStats();
+
 		done.store(true, std::memory_order_release);
 		pthread_join(dispatcher_thread, nullptr);
 	}
@@ -265,9 +356,15 @@ private:
 		std::shared_ptr<TProtocol> protocolOut;
 
 		ShmLogRegion *shm_log_ = nullptr;
+		std::string label_;
 		std::string label_start_;
 		std::string label_end_;
 		uint32_t req_seq_ = 0;
+
+		HardwareCounter instr_counter_{PERF_COUNT_HW_INSTRUCTIONS};
+		HardwareCounter cycle_counter_{PERF_COUNT_HW_CPU_CYCLES};
+		uint64_t instr_u_total_ = 0;
+		uint64_t cycles_u_total_ = 0;
 };
 
 } //namespace social_network

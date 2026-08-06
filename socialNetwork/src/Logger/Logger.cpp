@@ -22,14 +22,20 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <map>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 
+#include "../latency_stats.h"
 #include "../shm_log.h"
 
 using social_network::CollectShmLogEvents;
+using social_network::ComputeLatencyStats;
 using social_network::CreateShmLog;
 using social_network::DestroyShmLog;
+using social_network::LatencyStats;
+using social_network::PrintLatencyStats;
 using social_network::ShmLogRecord;
 using social_network::ShmLogRegion;
 
@@ -83,9 +89,17 @@ int main(int argc, char **argv) {
   };
 
   emit("=== timeline (" + std::to_string(records.size()) + " events) ===");
+  uint64_t t0 = records.empty() ? 0 : records.front().timestamp_ns;
+  // Absolute CLOCK_MONOTONIC ns for rel_time_us=0.0, so an external
+  // consumer can reconstruct absolute timestamps (rel_time_us*1000 + t0_ns)
+  // and correlate against anything else on the same clock -- e.g.
+  // ghost-userspace's MonotonicNow(), which is the same clock_gettime
+  // (CLOCK_MONOTONIC) call. Doesn't disturb existing parsers: it's neither
+  // the "rel_time_us..." header line nor a 6-tab-field data line, so code
+  // that only recognizes those two shapes skips it silently.
+  emit("t0_ns=" + std::to_string(t0));
   emit("rel_time_us\tcpu\tpid\ttid\tlabel\tseq");
 
-  uint64_t t0 = records.empty() ? 0 : records.front().timestamp_ns;
   int last_cpu = -1;
   char line[256];
   for (const auto &rec : records) {
@@ -120,6 +134,12 @@ int main(int argc, char **argv) {
   emit("");
   emit("=== per-request durations ===");
   emit("label\tseq\tpid\tstart_cpu\tend_cpu\tduration_us");
+  // Per-label (uid/media/...) duration + start-timestamp collection, for the
+  // latency percentile summary below -- see ../latency_stats.h (ported from
+  // ghost-userspace's experiments/rocksdb/latency.h).
+  std::map<std::string, std::vector<double>> durations_ns_by_label;
+  std::map<std::string, uint64_t> first_start_ns_by_label;
+  std::map<std::string, uint64_t> last_end_ns_by_label;
   for (const auto &start_rec : records) {
     std::string start_label(start_rec.label);
     auto suffix_pos = start_label.rfind("_start");
@@ -135,7 +155,25 @@ int main(int argc, char **argv) {
               base.c_str(), start_rec.seq, start_rec.pid, start_rec.cpu,
               end_rec.cpu, dur_us);
     emit(line);
+
+    durations_ns_by_label[base].push_back(end_rec.timestamp_ns - start_rec.timestamp_ns);
+    auto &first = first_start_ns_by_label[base];
+    if (first == 0 || start_rec.timestamp_ns < first) first = start_rec.timestamp_ns;
+    auto &last = last_end_ns_by_label[base];
+    if (end_rec.timestamp_ns > last) last = end_rec.timestamp_ns;
   }
+
+  emit("");
+  emit("=== latency (per request, request start -> request end) ===");
+  std::ostringstream latency_out;
+  for (const auto &kv : durations_ns_by_label) {
+    const std::string &label = kv.first;
+    double runtime_sec =
+        (last_end_ns_by_label[label] - first_start_ns_by_label[label]) / 1e9;
+    LatencyStats stats = ComputeLatencyStats(kv.second, runtime_sec);
+    PrintLatencyStats(latency_out, label, stats);
+  }
+  emit(latency_out.str());
 
   if (out_file.is_open()) out_file.close();
   DestroyShmLog(shm_name.c_str(), region, capacity);

@@ -43,7 +43,7 @@ void RunUniqueIdThread() {
 
   const char *trace_file_env = std::getenv("TRACE_FILE_UID");
   std::string trace_file =
-      trace_file_env ? trace_file_env : "trace-unique-id-service";
+      trace_file_env ? trace_file_env : "trace-unique-id-service-unframed";
 
   auto _transportIn = openFileTransport(trace_file.c_str(), false);
   if (!_transportIn) {
@@ -73,7 +73,7 @@ void RunMediaThread() {
 
   const char *trace_file_env = std::getenv("TRACE_FILE_MEDIA");
   std::string trace_file =
-      trace_file_env ? trace_file_env : "trace-media-service";
+      trace_file_env ? trace_file_env : "trace-media-service-unframed";
 
   auto _transportIn = openFileTransport(trace_file.c_str(), false);
   if (!_transportIn) {

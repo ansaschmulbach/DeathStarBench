@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   init_logger();
 
   const char *trace_file_env = std::getenv("TRACE_FILE");
-  std::string trace_file = trace_file_env ? trace_file_env : "trace-media-service";
+  std::string trace_file = trace_file_env ? trace_file_env : "trace-media-service-unframed";
 
   auto _transportIn = openFileTransport(trace_file.c_str(), false);
   if (!_transportIn) {

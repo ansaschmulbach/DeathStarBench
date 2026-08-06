@@ -69,8 +69,12 @@ SHM_CAPACITY=$((EXPECTED_EVENTS + 100))  # headroom above what's actually needed
 SHM_NAME="/schedule_$$"
 SCHEDLOG_LOG="$(mktemp /tmp/schedlog_XXXXXX.log)"
 
-echo "=== launching ScheduleLogger (shm=$SHM_NAME, capacity=$SHM_CAPACITY, expecting $EXPECTED_EVENTS events) ==="
-"$SCHEDULE_LOGGER_BIN" "$SHM_NAME" "$SHM_CAPACITY" "$EXPECTED_EVENTS" 15 "$SCHEDULE_OUT" > "$SCHEDLOG_LOG" 2>&1 &
+# Pin ScheduleLogger off of both the agent CPU and the worker CPU(s) in
+# $GHOST_CPUS, and off their HT twins too -- see the matching note in
+# timeline_cross_process.sh / pick_isolated_cpu in ghost_agent_lib.sh.
+SCHEDLOG_CPU="$(pick_isolated_cpu "$GHOST_CPUS")"
+echo "=== launching ScheduleLogger (shm=$SHM_NAME, capacity=$SHM_CAPACITY, expecting $EXPECTED_EVENTS events, pinned to cpu $SCHEDLOG_CPU) ==="
+taskset -c "$SCHEDLOG_CPU" "$SCHEDULE_LOGGER_BIN" "$SHM_NAME" "$SHM_CAPACITY" "$EXPECTED_EVENTS" 15 "$SCHEDULE_OUT" > "$SCHEDLOG_LOG" 2>&1 &
 SCHEDLOG_PID=$!
 waited=0
 until grep -q "\[ScheduleLogger\] ready" "$SCHEDLOG_LOG" 2>/dev/null; do
@@ -93,6 +97,7 @@ MEDIA_LOG="$(mktemp /tmp/media_XXXXXX.log)"
 
 ENV_ARGS=(GHOST_ENCLAVE_TASKS="$TASKS_FILE" SHM_LOG_NAME="$SHM_NAME")
 if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
+if [ -n "${GHOST_SKIP_YIELD:-}" ]; then ENV_ARGS+=(GHOST_SKIP_YIELD="$GHOST_SKIP_YIELD"); fi
 
 echo "=== launching UniqueIdService and MediaService, both enrolled in $TASKS_FILE ==="
 sudo env "${ENV_ARGS[@]}" TRACE_FILE="$UID_TRACE" \
@@ -125,7 +130,13 @@ REPLAY_PERF_OUT="/tmp/perf_replay.txt"
 # script here.
 REPLAY_ENV_ARGS=()
 if [ -n "$QUIET_LOGGING" ]; then REPLAY_ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
-sudo env "${REPLAY_ENV_ARGS[@]}" perf stat -e cycles:u,cycles:k,instructions:u,instructions:k,task-clock,context-switches \
+# cycles:u/instructions:u deliberately omitted: ScheduleReplay self-monitors
+# those per-service via perf_event_open (see ../src/perf_counter.h) and
+# prints them at the end of its own run -- more precisely scoped (per-call,
+# excludes setup) than an external attach can be anyway, which can only give
+# ONE combined total across both services here since it's a single thread.
+# :k stays since self-monitoring is userspace-only (exclude_kernel=1).
+sudo env "${REPLAY_ENV_ARGS[@]}" perf stat -e cycles:k,instructions:k,task-clock,context-switches \
   -o "$REPLAY_PERF_OUT" \
   -- "$REPLAY_BIN" "$SCHEDULE_OUT" "$UID_TRACE" "$MEDIA_TRACE"
 echo "--- perf stats ($REPLAY_PERF_OUT), single-process replay ---"

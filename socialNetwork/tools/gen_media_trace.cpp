@@ -11,6 +11,12 @@
 //
 // Usage: gen_media_trace <output_file> <num_requests>
 // Then point MediaService at it: TRACE_FILE=<output_file> ./MediaService
+//
+// Writes UNFRAMED output (TBufferedTransport, not TFramedTransport) --
+// matches MediaService.cpp's default (via openFileTransport() in
+// ../src/utils_thrift.h) mmap+TMemoryBuffer(OBSERVE) unframed read path.
+// TBinaryProtocol messages are self-delimiting, so no length-prefix framing
+// is needed.
 
 #include <cstdio>
 #include <fcntl.h>
@@ -24,8 +30,8 @@
 
 using apache::thrift::protocol::TBinaryProtocol;
 using apache::thrift::protocol::TProtocol;
+using apache::thrift::transport::TBufferedTransport;
 using apache::thrift::transport::TFDTransport;
-using apache::thrift::transport::TFramedTransport;
 using apache::thrift::transport::TTransport;
 
 int main(int argc, char** argv) {
@@ -42,7 +48,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::shared_ptr<TFDTransport> file(new TFDTransport(fd));
-  std::shared_ptr<TFramedTransport> transport(new TFramedTransport(file));
+  std::shared_ptr<TBufferedTransport> transport(new TBufferedTransport(file));
   std::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
   transport->open();
 

@@ -42,6 +42,35 @@
 # lines, for a completely clean logging-free run. Unset QUIET_LOGGING (env)
 # to get logs back.
 #
+# USE_DISPATCHER (env var, unset by default): switches each service from its
+# plain back-to-back request loop to ServeWithDispatcher() (see
+# ../src/utils_thrift.h) -- a second, CFS-pinned thread per process runs a
+# Poisson-arrival generator (ghost-userspace's Ingress, ported) and wakes
+# the ghOSt-enrolled worker thread via a real futex per synthetic arrival,
+# instead of the worker just processing requests as fast as it can. Set to
+# any non-empty value to enable.
+#   THROUGHPUT        target requests/sec for Ingress (default 10000,
+#                      applied to BOTH services -- set per-service by
+#                      exporting UID_THROUGHPUT/MEDIA_THROUGHPUT instead if
+#                      they should differ).
+#   UID_DISPATCHER_CPU, MEDIA_DISPATCHER_CPU
+#                      CPU each service's dispatcher thread is pinned to.
+#                      Auto-picked (two DISTINCT CPUs, off of $GHOST_CPUS and
+#                      off each other, and off both sets' HT siblings -- see
+#                      pick_isolated_cpu in ghost_agent_lib.sh) if unset.
+#                      Sharing one CPU between two spinning Ingress threads
+#                      would have them contend with each other for no
+#                      reason, so the auto-pick deliberately keeps them
+#                      apart; only override if you understand that tradeoff.
+#
+# Each worker's OWN cpu affinity is restricted (via `sudo taskset -pc`, once
+# its PID is known below) to $GHOST_CPUS minus the agent's cpu -- see
+# ghost_worker_cpus() in ghost_agent_lib.sh: ghOSt's GlobalSchedule() is
+# supposed to exclude the agent's cpu from ever receiving dispatched work,
+# but that hasn't held up empirically (real ghOSt-scheduled tasks were
+# repeatedly observed running there anyway). A hard kernel-level affinity
+# mask enforces it regardless of whatever's causing that.
+#
 # Usage:
 #   ./tools/perf_cross_process.sh [uid_trace] [media_trace] [perf_output_file] [startup_delay_ms]
 set -euo pipefail
@@ -71,11 +100,22 @@ MEDIA_LOG="$(mktemp /tmp/media_XXXXXX.log)"
 ENV_ARGS=(GHOST_ENCLAVE_TASKS="$TASKS_FILE" STARTUP_DELAY_MS="$STARTUP_DELAY_MS")
 if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
 
+UID_DISPATCHER_ARGS=()
+MEDIA_DISPATCHER_ARGS=()
+if [ -n "${USE_DISPATCHER:-}" ]; then
+  THROUGHPUT="${THROUGHPUT:-10000}"
+  UID_DISPATCHER_CPU="${UID_DISPATCHER_CPU:-$(pick_isolated_cpu "$GHOST_CPUS")}"
+  MEDIA_DISPATCHER_CPU="${MEDIA_DISPATCHER_CPU:-$(pick_isolated_cpu "$GHOST_CPUS,$UID_DISPATCHER_CPU")}"
+  UID_DISPATCHER_ARGS=(USE_DISPATCHER=1 THROUGHPUT="${UID_THROUGHPUT:-$THROUGHPUT}" DISPATCHER_CPU="$UID_DISPATCHER_CPU")
+  MEDIA_DISPATCHER_ARGS=(USE_DISPATCHER=1 THROUGHPUT="${MEDIA_THROUGHPUT:-$THROUGHPUT}" DISPATCHER_CPU="$MEDIA_DISPATCHER_CPU")
+  echo "=== USE_DISPATCHER enabled: uid dispatcher cpu=$UID_DISPATCHER_CPU throughput=${UID_THROUGHPUT:-$THROUGHPUT}, media dispatcher cpu=$MEDIA_DISPATCHER_CPU throughput=${MEDIA_THROUGHPUT:-$THROUGHPUT} ==="
+fi
+
 echo "=== launching UniqueIdService and MediaService (STARTUP_DELAY_MS=$STARTUP_DELAY_MS, QUIET_LOGGING=$QUIET_LOGGING), both enrolled in $TASKS_FILE ==="
-sudo env "${ENV_ARGS[@]}" TRACE_FILE="$UID_TRACE" \
+sudo env "${ENV_ARGS[@]}" "${UID_DISPATCHER_ARGS[@]}" TRACE_FILE="$UID_TRACE" \
   "$UID_BIN" > "$UID_LOG" 2>&1 &
 UID_SUDO_PID=$!
-sudo env "${ENV_ARGS[@]}" TRACE_FILE="$MEDIA_TRACE" \
+sudo env "${ENV_ARGS[@]}" "${MEDIA_DISPATCHER_ARGS[@]}" TRACE_FILE="$MEDIA_TRACE" \
   "$MEDIA_BIN" > "$MEDIA_LOG" 2>&1 &
 MEDIA_SUDO_PID=$!
 
@@ -97,8 +137,27 @@ while [ -z "$UID_PID" ] || [ -z "$MEDIA_PID" ]; do
 done
 echo "UniqueIdService PID=$UID_PID, MediaService PID=$MEDIA_PID"
 
+# Restrict each worker to the non-agent cpu(s) -- see the header comment.
+# sudo because these run as root (via the sudo launch above). `|| true`:
+# STARTUP_DELAY_MS gives a wide safety margin against the process exiting
+# before this runs, but tolerate the race anyway (matches
+# timeline_cross_process.sh, which doesn't have that margin) rather than
+# letting `set -e` abort the whole run over it.
+WORKER_CPUS="$(ghost_worker_cpus "$GHOST_CPUS")"
+sudo taskset -pc "$WORKER_CPUS" "$UID_PID" > /dev/null 2>&1 || true
+sudo taskset -pc "$WORKER_CPUS" "$MEDIA_PID" > /dev/null 2>&1 || true
+
+# cycles:u/instructions:u deliberately omitted: each process self-monitors
+# those via perf_event_open (see ../src/perf_counter.h) and prints them at
+# the end of its own run, whole-loop-bracketed -- more precisely scoped
+# (worker-loop-only, no setup) than an external attach can be anyway. Two
+# processes asking perf for the same hardware events on top of that self-
+# monitoring badly oversubscribes the CPU's limited physical PMU counters;
+# observed in practice (same-process scenario) to silently zero out one
+# thread's self-monitored cycles counter under multiplexing. :k stays since
+# self-monitoring is userspace-only (exclude_kernel=1).
 sudo perf stat -p "$UID_PID,$MEDIA_PID" --per-thread \
-  -e cycles:u,cycles:k,instructions:u,instructions:k,task-clock,context-switches \
+  -e cycles:k,instructions:k,task-clock,context-switches \
   -o "$PERF_OUT" &
 PERF_SUDO_PID=$!
 

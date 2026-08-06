@@ -24,11 +24,14 @@
 // (use the SAME trace files the schedule was captured against, so request
 // content and order match what the schedule expects)
 
+#include <chrono>
 #include <cstdio>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <string>
+#include <vector>
 
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TBufferTransports.h>
@@ -36,7 +39,9 @@
 
 #include "../MediaService/MediaHandler.h"
 #include "../UniqueIdService/UniqueIdHandler.h"
+#include "../latency_stats.h"
 #include "../logger.h"
+#include "../perf_counter.h"
 #include "../utils_thrift.h"
 
 using namespace social_network;
@@ -85,17 +90,71 @@ int main(int argc, char **argv) {
   std::shared_ptr<TProtocol> media_protocol_out(new TBinaryProtocol(media_transport_out));
   MediaServiceProcessor media_processor(std::make_shared<MediaHandler>());
 
+  // Per-request start->end timing, same "one clock read before, one after"
+  // approach the real services' shm_log.h instrumentation uses, so the
+  // measurement methodology is comparable, not just the code path. Kept in
+  // memory (not shm) since this is single-process/single-threaded -- no
+  // separate observer process is needed here. Throughput is computed from
+  // each label's own first-start -> last-end span (matching Logger.cpp),
+  // not the whole run's span, since uid and media don't each occupy the
+  // full run the way a naive "total requests / total wall time" would imply.
+  std::vector<double> uid_durations_ns, media_durations_ns;
+  double uid_first_start_ns = 0, uid_last_end_ns = 0;
+  double media_first_start_ns = 0, media_last_end_ns = 0;
+
+  // Self-monitoring instructions:u/cycles:u counters (see ../perf_counter.h),
+  // bracketed around each individual processor->process() call below. One
+  // group object, shared by both services, since this is a single thread --
+  // the per-call Read()-before/Read()-after delta is what separates uid's
+  // cost from media's even though an EXTERNAL `perf stat -t <tid>` couldn't
+  // (only one tid exists here). Deliberately per-call here, unlike
+  // TFileServer::serve() (utils_thrift.h)'s whole-loop bracket: per-call is
+  // the only way to get the uid/media split at all for a single alternating
+  // thread, and unlike the real scheduled paths, there's no scheduler here
+  // for the extra read() syscalls to perturb -- this is a synthetic replay
+  // with no scheduling decisions in the loop to disturb, so the syscall cost
+  // is a wash-through, not a confound. HardwareCounterGroup (rather than two
+  // separate HardwareCounters) halves that syscall cost: one grouped read()
+  // returns both instructions and cycles instead of two separate read()s.
+  HardwareCounterGroup counters(PERF_COUNT_HW_INSTRUCTIONS, PERF_COUNT_HW_CPU_CYCLES);
+  uint64_t uid_instr_u_total = 0, media_instr_u_total = 0;
+  uint64_t uid_cycles_u_total = 0, media_cycles_u_total = 0;
+
   std::string label;
   uint32_t seq;  // unused (see header note) -- just consumed to advance past it
   uint32_t uid_count = 0, media_count = 0;
   bool uid_done = false, media_done = false;
+  auto epoch = std::chrono::steady_clock::now();
+  auto ns_since_epoch = [&](std::chrono::steady_clock::time_point t) {
+    return std::chrono::duration<double, std::nano>(t - epoch).count();
+  };
   while (schedule_file >> label >> seq) {
     try {
       if (label == "uid" && !uid_done) {
+        auto t0 = std::chrono::steady_clock::now();
+        HardwareCounterGroup::Reading before = counters.Read();
         uid_processor.process(uid_protocol_in, uid_protocol_out, nullptr);
+        HardwareCounterGroup::Reading after = counters.Read();
+        uid_instr_u_total += after.leader_value - before.leader_value;
+        uid_cycles_u_total += after.member_value - before.member_value;
+        auto t1 = std::chrono::steady_clock::now();
+        uid_durations_ns.push_back(
+            std::chrono::duration<double, std::nano>(t1 - t0).count());
+        if (uid_count == 0) uid_first_start_ns = ns_since_epoch(t0);
+        uid_last_end_ns = ns_since_epoch(t1);
         uid_count++;
       } else if (label == "media" && !media_done) {
+        auto t0 = std::chrono::steady_clock::now();
+        HardwareCounterGroup::Reading before = counters.Read();
         media_processor.process(media_protocol_in, media_protocol_out, nullptr);
+        HardwareCounterGroup::Reading after = counters.Read();
+        media_instr_u_total += after.leader_value - before.leader_value;
+        media_cycles_u_total += after.member_value - before.member_value;
+        auto t1 = std::chrono::steady_clock::now();
+        media_durations_ns.push_back(
+            std::chrono::duration<double, std::nano>(t1 - t0).count());
+        if (media_count == 0) media_first_start_ns = ns_since_epoch(t0);
+        media_last_end_ns = ns_since_epoch(t1);
         media_count++;
       }
     } catch (TTransportException &ttx) {
@@ -109,5 +168,28 @@ int main(int argc, char **argv) {
   }
 
   fprintf(stderr, "replayed %u uid + %u media requests\n", uid_count, media_count);
+
+  std::cerr << "=== instructions:u/cycles:u (processor->process() only, per service) ===\n"
+            << "uid        n=" << uid_count
+            << " instructions_u_total=" << uid_instr_u_total
+            << " instructions_u_avg=" << (uid_count ? static_cast<double>(uid_instr_u_total) / uid_count : 0.0)
+            << " cycles_u_total=" << uid_cycles_u_total
+            << " cycles_u_avg=" << (uid_count ? static_cast<double>(uid_cycles_u_total) / uid_count : 0.0)
+            << "\n"
+            << "media      n=" << media_count
+            << " instructions_u_total=" << media_instr_u_total
+            << " instructions_u_avg=" << (media_count ? static_cast<double>(media_instr_u_total) / media_count : 0.0)
+            << " cycles_u_total=" << media_cycles_u_total
+            << " cycles_u_avg=" << (media_count ? static_cast<double>(media_cycles_u_total) / media_count : 0.0)
+            << "\n";
+
+  std::cerr << "=== latency (per request, processor->process() call only) ===\n";
+  PrintLatencyStats(std::cerr, "uid",
+                     ComputeLatencyStats(uid_durations_ns,
+                                         (uid_last_end_ns - uid_first_start_ns) / 1e9));
+  PrintLatencyStats(std::cerr, "media",
+                     ComputeLatencyStats(media_durations_ns,
+                                         (media_last_end_ns - media_first_start_ns) / 1e9));
+
   return 0;
 }

@@ -40,8 +40,16 @@ fi
 if [ -n "$QUIET_LOGGING" ]; then ENV_ARGS+=(QUIET_LOGGING="$QUIET_LOGGING"); fi
 
 cd "$(dirname "$BIN_ABS")"
+# cycles:u/instructions:u deliberately omitted here: the binary itself now
+# self-monitors those via perf_event_open (see ../src/perf_counter.h),
+# printed at the end of its own run -- more precisely scoped (worker-loop-
+# only, excludes setup) than an external attach can be anyway. Asking perf
+# for the same hardware events on top of that self-monitoring oversubscribes
+# the CPU's limited physical PMU counters; observed in practice to silently
+# zero out one of the self-monitored counters under multiplexing. :k stays
+# here since self-monitoring is userspace-only (exclude_kernel=1).
 sudo env "${ENV_ARGS[@]}" perf stat \
-  -e cycles:u,cycles:k,instructions:u,instructions:k,task-clock,context-switches \
+  -e cycles:k,instructions:k,task-clock,context-switches \
   -o "$PERF_OUT" \
   -- "./$(basename "$BIN_ABS")"
 

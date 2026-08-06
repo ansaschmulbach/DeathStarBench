@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   std::mutex thread_lock;
 
   const char *trace_file_env = std::getenv("TRACE_FILE");
-  std::string trace_file = trace_file_env ? trace_file_env : "trace-unique-id-service";
+  std::string trace_file = trace_file_env ? trace_file_env : "trace-unique-id-service-unframed";
 
   // TRACE_WRAP (env var): how to wrap the input trace file's transport.
   // A/B'd against userspace-scheduling-prototype's file_server (never used
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
   // framed/buffered_around_framed/framed_around_buffered/mmap_framed all need
   // a *framed* TRACE_FILE; unframed/mmap_unframed need the unframed one.
   const char *wrap_env = std::getenv("TRACE_WRAP");
-  std::string wrap = wrap_env ? wrap_env : "framed";
+  std::string wrap = wrap_env ? wrap_env : "mmap_unframed";
 
   int trace_fd = open(trace_file.c_str(), O_RDONLY);
   if (trace_fd < 0) {

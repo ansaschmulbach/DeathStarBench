@@ -6,7 +6,12 @@
 # same-process alternation shares one mm/page-table set, so it should NOT
 # pay the CR3 reload / TLB-domain switch that perf_cross_process.sh's
 # separate-process alternation does -- compare cycles:k between the two to
-# see the effect (or lack of one).
+# see the effect (or lack of one). Each worker thread is `taskset` off the
+# agent's own cpu below, same as perf_cross_process.sh -- without that
+# restriction here too, a worker occasionally landing on the agent's cpu and
+# contending with its polling loop is a confound that swamps the effect
+# being measured (observed in practice: it inflated cycles:k here by 4-12%
+# despite near-identical instructions:k, before this restriction was added).
 #
 # perf's --per-thread breakdown (separate counts for the uid thread vs. the
 # media thread, not just a combined total) is only available via live attach
@@ -70,8 +75,26 @@ while [ -z "$UID_TID" ] || [ -z "$MEDIA_TID" ]; do
 done
 echo "uid tid=$UID_TID, media tid=$MEDIA_TID"
 
+# Restrict each worker thread to the non-agent cpu(s) -- see
+# perf_cross_process.sh's header comment for why this is needed even though
+# ghOSt's GlobalSchedule() is supposed to already exclude the agent's own cpu
+# from dispatch: that exclusion hasn't held up in practice. `|| true` since
+# STARTUP_DELAY_MS gives a wide safety margin but isn't a hard guarantee.
+WORKER_CPUS="$(ghost_worker_cpus "$GHOST_CPUS")"
+sudo taskset -pc "$WORKER_CPUS" "$UID_TID" > /dev/null 2>&1 || true
+sudo taskset -pc "$WORKER_CPUS" "$MEDIA_TID" > /dev/null 2>&1 || true
+
+# cycles:u/instructions:u deliberately omitted: each thread self-monitors
+# those via perf_event_open (see ../src/perf_counter.h) and prints them at
+# the end of its own run, whole-loop-bracketed -- more precisely scoped
+# (worker-loop-only, no setup) than an external attach can be anyway. Two
+# threads asking perf for the same hardware events on top of that self-
+# monitoring badly oversubscribes the CPU's limited physical PMU counters;
+# observed in practice to silently zero out one thread's self-monitored
+# cycles counter under multiplexing. :k stays since self-monitoring is
+# userspace-only (exclude_kernel=1).
 sudo perf stat -t "$UID_TID,$MEDIA_TID" --per-thread \
-  -e cycles:u,cycles:k,instructions:u,instructions:k,task-clock,context-switches \
+  -e cycles:k,instructions:k,task-clock,context-switches \
   -o "$PERF_OUT" &
 PERF_PID=$!
 
